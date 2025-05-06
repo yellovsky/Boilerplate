@@ -1,0 +1,22 @@
+{
+  "name": "@repo/api-models",
+  "version": "0.0.0",
+  "description": "Shared API models",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "lint": "eslint",
+    "build": "tsup src/index.ts --format cjs,esm --dts --sourcemap",
+    "postinstall": "yarn build"
+  },
+  "dependencies": {
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "*",
+    "tsup": "^8.4.0"
+  }
+}

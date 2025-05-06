@@ -1,0 +1,43 @@
+import type * as zod from 'zod';
+import { getOneWorkoutQuerySchema } from '@repo/api-models';
+import { ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Inject, Param, Query } from '@nestjs/common';
+
+import { ApiCommonErrorResponses } from 'src/shared/utils/api-common-response';
+import { ZodValidationPipe } from 'src/shared/utils/zod-validation-pipe';
+
+import { GetOneWorkoutBySlugOrIdUseCase } from './application/use-cases/get-one-workout-by-slug-or-id.use-case';
+import { GetOneWorkoutResponseDto } from './application/dto/get-one-workout-response.dto';
+
+@ApiTags('Workouts')
+@Controller({ path: 'workouts', version: '1' })
+export class WorkoutsControllerV1 {
+  constructor(
+    @Inject()
+    private readonly getOneWorkoutBySlugOrIdUseCase: GetOneWorkoutBySlugOrIdUseCase,
+  ) {}
+
+  @Get(':slugOrId')
+  @ApiOperation({
+    description: 'Returns one workout by slug or ID',
+    operationId: 'Get one workout',
+  })
+  @ApiParam({
+    description: 'Workout slug or id',
+    examples: {
+      slug: { summary: 'Workout slug', value: 'workout-unique-slug' },
+      uuid: { summary: 'Workout id', value: '550e8400-e29b-41d4-a716-446655440000' },
+    },
+    name: 'slugOrId',
+  })
+  @ApiQuery({ description: 'Locale', example: 'en', name: 'locale', type: 'string' })
+  @ApiOkResponse({ type: GetOneWorkoutResponseDto })
+  @ApiCommonErrorResponses('not_found', 'bad_request')
+  async findOne(
+    @Param('slugOrId') slugOrId: string,
+    @Query(new ZodValidationPipe(getOneWorkoutQuerySchema))
+    query: zod.infer<typeof getOneWorkoutQuerySchema>,
+  ): Promise<GetOneWorkoutResponseDto | null> {
+    return this.getOneWorkoutBySlugOrIdUseCase.execute(slugOrId, query);
+  }
+}
