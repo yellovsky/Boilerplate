@@ -1,42 +1,40 @@
-import { DB } from '../../src/shared/infrastructure/db/drizzle-client';
+import { PrismaClient } from '@generated/prisma';
 
-import {
-  DBWorkoutInsert,
-  DBWorkoutTranslationsInsert,
-  workouts,
-  workoutTranslations,
-} from '../../src/shared/infrastructure/db/schema';
+type DBClient = Omit<
+  PrismaClient,
+  '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
+>;
 
-export const seedWorkouts = async (tx: DB): Promise<Array<{ id: string }>> => {
-  const workout: DBWorkoutInsert = {
-    publishedAt: new Date(),
-    slug: 'test',
-  };
-
-  const [{ id }] = await tx.insert(workouts).values(workout).returning().execute();
-
-  const translations: DBWorkoutTranslationsInsert[] = [
-    {
-      languageCode: 'en',
-      name: 'Test tile [en]',
+const seedTestWorkout = async (tx: DBClient) =>
+  tx.workout.create({
+    data: {
       publishedAt: new Date(),
-      seoDescription: 'tst seo_description [en]',
-      seoKeywords: 'tst seo_keywords [en]',
-      seoTitle: 'tst seo_title [en]',
-      workoutId: id,
+      slug: 'test',
+      translations: {
+        createMany: {
+          data: [
+            {
+              languageCode: 'en',
+              name: 'Test tile [en]',
+              publishedAt: new Date(),
+              seoDescription: 'tst seo_description [en]',
+              seoKeywords: 'tst seo_keywords [en]',
+              seoTitle: 'tst seo_title [en]',
+            },
+            {
+              languageCode: 'ru',
+              name: 'Test tile [ru]',
+              seoDescription: 'tst seo_description [ru]',
+              seoKeywords: 'tst seo_keywords [ru]',
+              seoTitle: 'tst seo_title [ru]',
+            },
+          ],
+        },
+      },
     },
+  });
 
-    {
-      languageCode: 'ru',
-      name: 'Test tile [ru]',
-      seoDescription: 'tst seo_description [ru]',
-      seoKeywords: 'tst seo_keywords [ru]',
-      seoTitle: 'tst seo_title [ru]',
-      workoutId: id,
-    },
-  ];
-
-  await tx.insert(workoutTranslations).values(translations).execute();
-
-  return [{ id }];
+export const seedWorkouts = async (tx: DBClient) => {
+  await tx.workout.deleteMany();
+  await seedTestWorkout(tx);
 };

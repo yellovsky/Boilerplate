@@ -1,20 +1,17 @@
-import { eq } from 'drizzle-orm';
+import { Prisma } from '@generated/prisma';
 import { validate } from 'uuid';
 import { Inject, Injectable } from '@nestjs/common';
 
-import { DRIZZLE_SRV } from 'src/modules/drizzle';
-import { IdentifierOf } from 'src/shared/utils/injectable-identifier';
+import { PrismaService } from 'src/modules/prisma';
 
 import { WorkoutEntity } from '../../domain/entites/workout.entity';
 import { WorkoutsRepository } from '../../domain/interfaces/workouts.repository.interface';
 
-import { workouts } from './schema/workout.schema';
-
 @Injectable()
-export class DrizzleWorkoutRepository implements WorkoutsRepository {
+export class WorkoutsRepositoryImpl implements WorkoutsRepository {
   constructor(
-    @Inject(DRIZZLE_SRV)
-    private readonly drizzleSrv: IdentifierOf<typeof DRIZZLE_SRV>,
+    @Inject()
+    private readonly prismaSrv: PrismaService,
   ) {}
 
   async createOne(_data: { name: string }): Promise<WorkoutEntity> {
@@ -22,13 +19,14 @@ export class DrizzleWorkoutRepository implements WorkoutsRepository {
   }
 
   async findOneBySlugOrId(slugOrId: string): Promise<WorkoutEntity | null> {
-    const where = validate(slugOrId) ? eq(workouts.id, slugOrId) : eq(workouts.slug, slugOrId);
+    const where: Prisma.WorkoutWhereUniqueInput = validate(slugOrId)
+      ? { id: slugOrId }
+      : { slug: slugOrId };
 
-    const dbWorkout = await this.drizzleSrv.query.workouts.findFirst({
+    const dbWorkout = await this.prismaSrv.workout.findUnique({
+      include: { translations: true },
       where,
-      with: { translations: true },
     });
-
     if (!dbWorkout) return null;
 
     return WorkoutEntity.from({

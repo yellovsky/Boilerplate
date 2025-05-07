@@ -78,6 +78,8 @@ async function bootstrap() {
 
   setupRedoc(app);
 
+  // const prisma = new PrismaClient();
+  // console.log('prisma.language.findMany()', await prisma.language.findMany());
   await app.listen(port);
 }
 

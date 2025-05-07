@@ -4,7 +4,8 @@ import { PassportModule } from '@nestjs/passport';
 import { utilities as nestWinstonModuleUtilities, WinstonModule } from 'nest-winston';
 
 import { AppConfigModule } from 'src/modules/app-config';
-import { I18nModule } from './modules/i18n';
+import { I18nModule } from 'src/modules/i18n';
+import { PrismaModule } from 'src/modules/prisma';
 import { WorkoutsModule } from 'src/modules/workouts';
 
 @Module({
@@ -27,6 +28,7 @@ import { WorkoutsModule } from 'src/modules/workouts';
     AppConfigModule,
     WorkoutsModule,
     I18nModule,
+    PrismaModule,
   ],
 })
 export class AppModule {}

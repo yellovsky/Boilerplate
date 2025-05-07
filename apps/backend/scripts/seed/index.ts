@@ -1,18 +1,18 @@
-import 'dotenv/config';
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { reset } from 'drizzle-seed';
+import { PrismaClient } from '@generated/prisma';
 
-import * as schema from 'src/shared/infrastructure/db/schema';
-
-import { seedLanguages } from './languages.seed';
 import { seedWorkouts } from './workouts.seed';
 
 const main = async () => {
-  const db = drizzle(process.env.DATABASE_URL!, { logger: true, schema });
+  const prisma = new PrismaClient();
 
-  await reset(db, schema);
-  await seedLanguages(db);
-  await seedWorkouts(db);
+  try {
+    await seedWorkouts(prisma);
+  } catch (e) {
+    console.error(e);
+    process.exit(1);
+  } finally {
+    await prisma.$disconnect();
+  }
 };
 
 main();

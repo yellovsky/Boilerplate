@@ -1,0 +1,7 @@
+model Language {
+  code String @id @map("code")
+
+  workoutTranslations WorkoutTranslation[]
+
+  @@map("languages")
+}
