@@ -1,0 +1,14 @@
+model Profile {
+  id String @id @default(uuid()) @map("id")
+
+  accountId String  @map("account_id")
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  name   String  @map("name")
+  isRoot Boolean @default(false) @map("is_root")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@map("profiles")
+}

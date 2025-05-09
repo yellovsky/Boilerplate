@@ -7,6 +7,7 @@ export const failedResponseErrorCodeSchema = zod.union([
   zod.literal('bad_request'),
   zod.literal('forbidden'),
   zod.literal('unauthorized'),
+  zod.literal('invalid_access_token'),
 ]);
 
 export type FailedResponseErrorCode = zod.infer<typeof failedResponseErrorCodeSchema>;

@@ -4,6 +4,7 @@ import { ZodError } from 'zod';
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common';
 import { Request, Response } from 'express';
 
+import { DomainError } from 'src/shared/domain/errors/domain-error';
 import { FailedResponseDto } from 'src/shared/presentation/dtos/failure-response.dto';
 import { I18nService } from 'src/modules/i18n';
 
@@ -21,6 +22,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
   #getResponse(exception: Error, host: ArgumentsHost): FailedResponseDto {
     const ctx = host.switchToHttp();
     const request = ctx.getRequest<Request>();
+
+    if (exception instanceof DomainError) {
+      return exception.toFailedResponseDto();
+    }
 
     if (exception instanceof FailedResponseDto) {
       return exception;

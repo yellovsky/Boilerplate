@@ -5,3 +5,4 @@ export * from './common/iso-date.vo';
 export * from './common/seo';
 
 export * from './workout';
+export * from './auth';

@@ -1,12 +1,16 @@
 import * as winston from 'winston';
-import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { PassportModule } from '@nestjs/passport';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { utilities as nestWinstonModuleUtilities, WinstonModule } from 'nest-winston';
 
 import { AppConfigModule } from 'src/modules/app-config';
 import { I18nModule } from 'src/modules/i18n';
 import { PrismaModule } from 'src/modules/prisma';
 import { WorkoutsModule } from 'src/modules/workouts';
+import { AuthModule, JwtGuard, JwtStrategy } from 'src/modules/auth';
+
+import { RequestLoggerMiddleware } from './request-logger.middleware';
 
 @Module({
   imports: [
@@ -29,6 +33,12 @@ import { WorkoutsModule } from 'src/modules/workouts';
     WorkoutsModule,
     I18nModule,
     PrismaModule,
+    AuthModule,
   ],
+  providers: [{ provide: APP_GUARD, useClass: JwtGuard }, JwtStrategy],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(RequestLoggerMiddleware).forRoutes('*path');
+  }
+}

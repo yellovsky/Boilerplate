@@ -1,0 +1,6 @@
+import * as zod from 'zod';
+
+import { statusSuccessResponseSchema } from '../common/success-response.dto';
+
+export const logoutResponseSchema = statusSuccessResponseSchema;
+export type LogoutResponse = zod.infer<typeof logoutResponseSchema>;

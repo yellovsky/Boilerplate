@@ -25,3 +25,6 @@ export const getItemsWithPaginationSchema = <TItem>(itemSchema: zod.ZodType<TIte
     items: itemSchema.array(),
     pagination: responsePaginationSchema,
   });
+
+export const statusSuccessResponseSchema = getSuccessResponseSchema(zod.null());
+export type StatusSuccessResponse = zod.infer<typeof statusSuccessResponseSchema>;

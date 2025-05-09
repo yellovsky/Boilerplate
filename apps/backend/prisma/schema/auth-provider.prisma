@@ -1,0 +1,22 @@
+enum AuthProviderType {
+  EMAIL  @map("email")
+  GOOGLE @map("google")
+}
+
+model AuthProvider {
+  id String @id @default(uuid()) @map("id")
+
+  accountId String  @map("account_id")
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  providerType   AuthProviderType @map("provider_type")
+  providerUserId String?          @map("provider_user_id")
+  email          String?          @map("email")
+  passwordHash   String?          @map("password_hash")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@unique([accountId, providerType, providerUserId])
+  @@map("auth_providers")
+}

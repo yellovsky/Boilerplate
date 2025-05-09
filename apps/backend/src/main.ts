@@ -1,10 +1,13 @@
+import 'winston-daily-rotate-file';
+import * as winston from 'winston';
 import cookieParser from 'cookie-parser';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { Response } from 'express';
-import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { ClassSerializerInterceptor, ValidationPipe, VersioningType } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { format, transports } from 'winston';
 import { NestFactory, Reflector } from '@nestjs/core';
+import { utilities as nestWinstonModuleUtilities, WinstonModule } from 'nest-winston';
 
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './http-exception-filter';
@@ -24,13 +27,37 @@ const getSwaggerOptions = () =>
       { bearerFormat: 'JWT', in: 'cookie', scheme: 'bearer', type: 'http' },
       'access-token',
     )
-    .addGlobalParameters({
-      description: 'User locale',
-      in: 'query',
-      name: 'locale',
-      style: 'simple',
-    })
     .build();
+
+const winstonLogger = WinstonModule.createLogger({
+  transports: [
+    new transports.DailyRotateFile({
+      datePattern: 'YYYY-MM-DD',
+      filename: `logs/%DATE%-error.log`,
+      format: format.combine(format.timestamp(), format.json()),
+      level: 'error',
+      maxFiles: '30d',
+      zippedArchive: false,
+    }),
+    new transports.DailyRotateFile({
+      datePattern: 'YYYY-MM-DD',
+      filename: `logs/%DATE%-combined.log`,
+      format: format.combine(format.timestamp(), format.json()),
+      maxFiles: '30d',
+      zippedArchive: false,
+    }),
+    new transports.Console({
+      format: format.combine(
+        format.splat(),
+        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
+        nestWinstonModuleUtilities.format.nestLike('api', {
+          appName: false,
+          processId: false,
+        }),
+      ),
+    }),
+  ],
+});
 
 async function bootstrap() {
   const secret = process.env.SESSION_SECRET;
@@ -43,6 +70,7 @@ async function bootstrap() {
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: { origin: [webClientHostname] },
+    logger: winstonLogger,
   });
 
   app.enableCors({ credentials: true, origin: webClientHostname });
@@ -71,15 +99,12 @@ async function bootstrap() {
   app.use('/swagger-json', (_: unknown, res: Response) => res.json(document));
 
   // app.enableShutdownHooks();
-  app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
 
   const port = process.env.API_PORT;
   if (!port) throw new Error('process.env.API_PORT must be provided');
 
   setupRedoc(app);
 
-  // const prisma = new PrismaClient();
-  // console.log('prisma.language.findMany()', await prisma.language.findMany());
   await app.listen(port);
 }
 

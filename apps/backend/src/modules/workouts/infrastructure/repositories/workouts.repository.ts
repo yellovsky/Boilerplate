@@ -2,7 +2,8 @@ import { Prisma } from '@generated/prisma';
 import { validate } from 'uuid';
 import { Inject, Injectable } from '@nestjs/common';
 
-import { PrismaService } from 'src/modules/prisma';
+import { IdentifierOf } from 'src/shared/utils/injectable-identifier';
+import { PRISMA_SRV } from 'src/modules/prisma';
 
 import { WorkoutEntity } from '../../domain/entites/workout.entity';
 import { WorkoutsRepository } from '../../domain/interfaces/workouts.repository.interface';
@@ -10,8 +11,8 @@ import { WorkoutsRepository } from '../../domain/interfaces/workouts.repository.
 @Injectable()
 export class WorkoutsRepositoryImpl implements WorkoutsRepository {
   constructor(
-    @Inject()
-    private readonly prismaSrv: PrismaService,
+    @Inject(PRISMA_SRV)
+    private readonly prismaSrv: IdentifierOf<typeof PRISMA_SRV>,
   ) {}
 
   async createOne(_data: { name: string }): Promise<WorkoutEntity> {

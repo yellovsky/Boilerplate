@@ -1,11 +1,6 @@
 import { PrismaClient } from '@generated/prisma';
 
-type DBClient = Omit<
-  PrismaClient,
-  '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
->;
-
-const seedTestWorkout = async (tx: DBClient) =>
+const seedTestWorkout = async (tx: PrismaClient) =>
   tx.workout.create({
     data: {
       publishedAt: new Date(),
@@ -34,7 +29,7 @@ const seedTestWorkout = async (tx: DBClient) =>
     },
   });
 
-export const seedWorkouts = async (tx: DBClient) => {
+export const seedWorkouts = async (tx: PrismaClient) => {
   await tx.workout.deleteMany();
   await seedTestWorkout(tx);
 };

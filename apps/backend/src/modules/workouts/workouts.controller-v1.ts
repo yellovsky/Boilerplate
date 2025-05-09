@@ -4,6 +4,7 @@ import { ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestj
 import { Controller, Get, Inject, Param, Query } from '@nestjs/common';
 
 import { ApiCommonErrorResponses } from 'src/shared/utils/api-common-response';
+import { Public } from 'src/shared/application/decorators/public';
 import { ZodValidationPipe } from 'src/shared/utils/zod-validation-pipe';
 
 import { GetOneWorkoutBySlugOrIdUseCase } from './application/use-cases/get-one-workout-by-slug-or-id.use-case';
@@ -18,6 +19,7 @@ export class WorkoutsControllerV1 {
   ) {}
 
   @Get(':slugOrId')
+  @Public()
   @ApiOperation({
     description: 'Returns one workout by slug or ID',
     operationId: 'Get one workout',

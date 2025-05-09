@@ -10,7 +10,6 @@ import errorRu from './translations/ru/error.json';
 export class I18nServiceImpl implements I18nService {
   async init() {
     await i18next.init({
-      debug: true,
       defaultNS: 'common',
       fallbackLng: 'en',
       ns: ['error', 'common'],
