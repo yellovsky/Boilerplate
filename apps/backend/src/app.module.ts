@@ -5,10 +5,13 @@ import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { utilities as nestWinstonModuleUtilities, WinstonModule } from 'nest-winston';
 
 import { AppConfigModule } from 'src/modules/app-config';
+import { CasbinModule } from 'src/modules/casbin';
 import { I18nModule } from 'src/modules/i18n';
 import { PrismaModule } from 'src/modules/prisma';
 import { WorkoutsModule } from 'src/modules/workouts';
 import { AuthModule, JwtGuard, JwtStrategy } from 'src/modules/auth';
+
+import { PermissionPoliciesModule } from './modules/permission-policies';
 
 import { RequestLoggerMiddleware } from './request-logger.middleware';
 
@@ -34,6 +37,8 @@ import { RequestLoggerMiddleware } from './request-logger.middleware';
     I18nModule,
     PrismaModule,
     AuthModule,
+    CasbinModule,
+    PermissionPoliciesModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: JwtGuard }, JwtStrategy],
 })

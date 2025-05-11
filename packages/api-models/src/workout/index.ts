@@ -1,3 +1,3 @@
-export * from './workout.dto';
-export * from './get-many-workouts.dto';
-export * from './get-one-workout.dto';
+export * from './workout';
+export * from './get-many-workouts';
+export * from './get-one-workout';

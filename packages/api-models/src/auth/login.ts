@@ -1,6 +1,6 @@
 import * as zod from 'zod';
 
-import { statusSuccessResponseSchema } from '../common/success-response.dto';
+import { statusSuccessResponseSchema } from '../common/success-response';
 
 export const loginWithEmailBodySchema = zod.object({
   email: zod.string().email(),

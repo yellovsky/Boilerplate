@@ -1,0 +1,17 @@
+model CasbinRule {
+    id    String  @id @default(uuid()) @map("id")
+    note  String? @map("note")
+    ptype String  @map("ptype")
+    v0    String? @map("v0")
+    v1    String? @map("v1")
+    v2    String? @map("v2")
+    v3    String? @map("v3")
+    v4    String? @map("v4")
+    v5    String? @map("v5")
+
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+    // IMPORTANT! This table name is required by https://github.com/node-casbin/prisma-adapter    
+    @@map("casbin_rule")
+}

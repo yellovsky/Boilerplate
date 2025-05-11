@@ -1,4 +1,4 @@
-import { PrismaClient } from '@generated/prisma';
+import type { PrismaClient } from '@generated/prisma';
 
 const seedTestWorkout = async (tx: PrismaClient) =>
   tx.workout.create({
@@ -29,7 +29,9 @@ const seedTestWorkout = async (tx: PrismaClient) =>
     },
   });
 
-export const seedWorkouts = async (tx: PrismaClient) => {
-  await tx.workout.deleteMany();
-  await seedTestWorkout(tx);
+export const workoutsSeeder = {
+  clear: (tx: PrismaClient) => tx.workout.deleteMany(),
+  seed: async (tx: PrismaClient) => {
+    await seedTestWorkout(tx);
+  },
 };

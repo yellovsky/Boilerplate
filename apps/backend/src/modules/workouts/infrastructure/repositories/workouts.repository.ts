@@ -1,4 +1,4 @@
-import { Prisma } from '@generated/prisma';
+import type { Prisma } from '@generated/prisma';
 import { validate } from 'uuid';
 import { Inject, Injectable } from '@nestjs/common';
 

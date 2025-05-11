@@ -1,6 +1,6 @@
 import * as zod from 'zod';
 
-import { getSuccessResponseSchema } from '../common/success-response.dto';
+import { getSuccessResponseSchema } from '../common/success-response';
 
 export const isAuthorizedResponseSchema = getSuccessResponseSchema(
   zod.object({ isAuthorized: zod.boolean() }),

@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import i18next, { TFunction } from 'i18next';
 
+import { FALLBACK_LNG, SUPPORTED_LNGS } from 'src/shared/application/config/i18n';
+
 import { I18nService } from './i18n.types';
 
 import errorEn from './translations/en/error.json';
@@ -11,9 +13,9 @@ export class I18nServiceImpl implements I18nService {
   async init() {
     await i18next.init({
       defaultNS: 'common',
-      fallbackLng: 'en',
+      fallbackLng: FALLBACK_LNG,
       ns: ['error', 'common'],
-      supportedLngs: ['ru', 'en'],
+      supportedLngs: SUPPORTED_LNGS,
 
       resources: {
         en: { error: errorEn },

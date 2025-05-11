@@ -13,6 +13,7 @@ export type SuccessResponse<TData> = ReturnType<
 >;
 
 export const responsePaginationSchema = zod.object({
+  count: zod.number(),
   limit: zod.number(),
   offset: zod.number(),
   total: zod.number(),
@@ -25,6 +26,9 @@ export const getItemsWithPaginationSchema = <TItem>(itemSchema: zod.ZodType<TIte
     items: itemSchema.array(),
     pagination: responsePaginationSchema,
   });
+export type ItemsWithPagination<TItem> = ReturnType<
+  typeof getSuccessResponseSchema<zod.ZodType<TItem>>
+>;
 
 export const statusSuccessResponseSchema = getSuccessResponseSchema(zod.null());
 export type StatusSuccessResponse = zod.infer<typeof statusSuccessResponseSchema>;

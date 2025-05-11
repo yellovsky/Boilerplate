@@ -3,9 +3,9 @@ import type { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Inject, Injectable } from '@nestjs/common';
 
-import { AccountEntity } from 'src/modules/acount';
 import { APP_CONFIG_SRV } from 'src/modules/app-config';
 import { IdentifierOf } from 'src/shared/utils/injectable-identifier';
+import { ProfileEntity } from 'src/modules/acount';
 
 import { ACCESS_TOKEN_COOKIE_KEY } from '../../config/constants';
 import { AUTH_SRV } from '../../domain/interfaces/auth.service.interface';
@@ -35,7 +35,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: JWTTokenPayload): Promise<AccountEntity> {
-    return this.authSrv.validateAccountByJWTTokenPayload(payload);
+  async validate(payload: JWTTokenPayload): Promise<ProfileEntity> {
+    return this.authSrv.validateProfileByJWTTokenPayload(payload);
   }
 }

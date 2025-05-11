@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 
 import { IdentifierOf } from 'src/shared/utils/injectable-identifier';
-import { AccountEntity, ACCOUNTS_SRV, AUTH_PROVIDERS_SRV } from 'src/modules/acount';
+import { ACCOUNTS_SRV, AUTH_PROVIDERS_SRV, ProfileEntity } from 'src/modules/acount';
 
 import { AuthInvalidPwdError } from '../../domain/errors/auth-invalid-pwd.error';
 import { AuthNotFoundError } from '../../domain/errors/auth-not-found.error';
@@ -23,7 +23,7 @@ export class AuthServiceImpl implements AuthService {
     private readonly bcryptSrv: IdentifierOf<typeof BCRYPT_SRV>,
   ) {}
 
-  async validateAccountByEmail(email: string, password: string): Promise<AccountEntity> {
+  async validateProfileByEmail(email: string, password: string): Promise<ProfileEntity> {
     const emailAuthProvider = await this.authProvidersSrv.getAuthProviderByEmail(email);
     if (!emailAuthProvider) throw new AuthNotFoundError();
 
@@ -33,15 +33,25 @@ export class AuthServiceImpl implements AuthService {
     const pwdValid = await this.bcryptSrv.compare(password, passwordHash);
     if (!pwdValid) throw new AuthInvalidPwdError();
 
+    // TODO Get profile directly
     const accountEntity = await this.accountSrv.getAccountById(emailAuthProvider.accountId);
     if (!accountEntity) throw new Error(`Account entity not foud for ${email} email`);
 
-    return accountEntity;
+    const profile = accountEntity.profiles.find(p => p.isRoot);
+    if (!profile) throw new Error(`Account with ${email} email has no root profile`);
+
+    return profile;
   }
 
-  async validateAccountByJWTTokenPayload(payload: JWTTokenPayload): Promise<AccountEntity> {
+  async validateProfileByJWTTokenPayload(payload: JWTTokenPayload): Promise<ProfileEntity> {
+    // TODO Get profile directly
     const accountEntity = await this.accountSrv.getAccountById(payload.accountId);
     if (!accountEntity) throw new AuthNotFoundError();
-    return accountEntity;
+
+    const profile = accountEntity.profiles.find(p => payload.profileId === p.id);
+    if (!profile)
+      throw new Error(`Account ${payload.accountId} has no ${payload.profileId} profile`);
+
+    return profile;
   }
 }

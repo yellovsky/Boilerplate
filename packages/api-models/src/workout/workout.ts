@@ -11,5 +11,4 @@ export const workoutSchema = zod.object({
   seo: seoSchema,
   slug: zod.string().min(1),
 });
-
 export type Workout = zod.infer<typeof workoutSchema>;

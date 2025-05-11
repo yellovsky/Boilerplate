@@ -1,16 +1,24 @@
+import * as R from 'ramda';
 import { PrismaClient } from '@generated/prisma';
 
-import { seedAccounts } from './account.seed';
-import { seedLanguages } from './languages.seed';
-import { seedWorkouts } from './workouts.seed';
+import { accountsSeeder } from './account.seed';
+import { cabinRulesSeeder } from './casbin-rule.seed';
+import { languagesSeeder } from './languages.seed';
+import { workoutsSeeder } from './workouts.seed';
+
+const seeders = [languagesSeeder, cabinRulesSeeder, accountsSeeder, workoutsSeeder];
 
 const main = async () => {
   const prisma = new PrismaClient();
 
   try {
-    await seedLanguages(prisma);
-    await seedWorkouts(prisma);
-    await seedAccounts(prisma);
+    for (const seeder of R.reverse(seeders)) {
+      await seeder.clear(prisma);
+    }
+
+    for (const seeder of seeders) {
+      await seeder.seed(prisma);
+    }
   } catch (e) {
     console.error(e);
     process.exit(1);

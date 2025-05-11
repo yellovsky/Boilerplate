@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcrypt';
-import { PrismaClient } from '@generated/prisma';
+import type { PrismaClient } from '@generated/prisma';
 
 const ROUNDS_OF_HASHING = 10;
 
@@ -21,7 +21,10 @@ const seedTestUser = async (tx: PrismaClient) =>
     },
   });
 
-export const seedAccounts = async (tx: PrismaClient) => {
-  await tx.account.deleteMany();
-  await seedTestUser(tx);
+export const accountsSeeder = {
+  clear: (tx: PrismaClient) => tx.account.deleteMany(),
+
+  seed: async (tx: PrismaClient) => {
+    await seedTestUser(tx);
+  },
 };

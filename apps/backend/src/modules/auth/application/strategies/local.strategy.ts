@@ -2,8 +2,8 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
 import { Inject, Injectable } from '@nestjs/common';
 
-import { AccountEntity } from 'src/modules/acount';
 import { IdentifierOf } from 'src/shared/utils/injectable-identifier';
+import { ProfileEntity } from 'src/modules/acount';
 
 import { AUTH_SRV } from '../../domain/interfaces/auth.service.interface';
 
@@ -16,7 +16,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     super({ usernameField: 'email' });
   }
 
-  async validate(email: string, password: string): Promise<AccountEntity> {
-    return this.authSrv.validateAccountByEmail(email, password);
+  async validate(email: string, password: string): Promise<ProfileEntity> {
+    return this.authSrv.validateProfileByEmail(email, password);
   }
 }

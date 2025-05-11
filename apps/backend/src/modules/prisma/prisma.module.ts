@@ -1,9 +1,14 @@
 import { Module } from '@nestjs/common';
-import { PrismaClient } from '@generated/prisma';
+import type { PrismaClient } from '@generated/prisma';
 
 import { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
 
 import { PrismaServiceImpl } from './prisma.service';
+
+export type PrismaTransaction = Omit<
+  PrismaClient,
+  '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
+>;
 
 export const PRISMA_SRV = 'PRISMA_SRV' as InjectableIdentifier<PrismaClient>;
 

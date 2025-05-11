@@ -1,9 +1,9 @@
 import * as zod from 'zod';
 
-import { getSuccessResponseSchema } from '../common/success-response.dto';
+import { getSuccessResponseSchema } from '../common/success-response';
 import { localeSchema } from '../common/locale';
 
-import { workoutSchema } from './workout.dto';
+import { workoutSchema } from './workout';
 
 export const getOneWorkoutQuerySchema = zod.object({
   locale: localeSchema.min(1),
