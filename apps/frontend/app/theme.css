@@ -1,0 +1,9 @@
+@theme static {
+  --spacing: 0.25rem;
+
+  --color-bg: #272b34;
+
+  --color-header-bg: #1a1e24;
+
+  --spacing-header: calc(var(--spacing) * 10);
+}

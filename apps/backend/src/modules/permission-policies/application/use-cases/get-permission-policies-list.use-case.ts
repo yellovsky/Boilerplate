@@ -1,11 +1,10 @@
+import Either from 'effect/Either';
 import { GetManyPermissionPoliciesQuery } from '@repo/api-models';
 import { ForbiddenException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { CASBIN_SRV } from 'src/modules/casbin';
 import { IdentifierOf } from 'src/shared/utils/injectable-identifier';
-import { PermissionPolicyEntity } from 'src/modules/casbin/domain/entities/permission-policy.entity';
 import { RequestContext } from 'src/shared/utils/request-context';
-import { LoadResult, SkippedReason } from 'src/shared/utils/load-result';
 
 import { PERMISSION_POLICY_ACCESS_CONTROL_SRV } from '../../domain/interfaces/permission-policies-access.service.interface';
 import { PermissionPolicyDto } from '../../domain/dto/permission-policy.dto';
@@ -34,29 +33,23 @@ export class GetPermissionPoliciesListUseCase {
 
     const accessCheckedItems = await Promise.all(
       items.map(loaded =>
-        loaded.type === 'ok'
-          ? this.policyAControlSrv
-              .filterCanReadPermissionPololicy(reqCtx, loaded.data)
-              .then(
-                (data): LoadResult<PermissionPolicyEntity> =>
-                  data
-                    ? { data, type: 'ok' }
-                    : { reason: SkippedReason.ACCESS_DENIED, type: 'skipped' },
-              )
+        Either.isRight(loaded)
+          ? this.policyAControlSrv.filterCanReadPermissionPololicy(reqCtx, loaded.right)
           : loaded,
       ),
     );
 
     return PermissionPolicyListResponseDto.from({
       items: accessCheckedItems
-        .filter(i => i.type === 'ok')
-        .map(i => i.data)
-        .map(i => PermissionPolicyDto.fromEntity(i)),
+        .filter(Either.isRight)
+        .map(i => PermissionPolicyDto.fromEntity(i.right)),
 
       pagination: {
-        count: items.filter(i => i.type === 'ok').length,
         limit: query.page.limit,
         offset: query.page.offset,
+        skipped: accessCheckedItems
+          .map((val, index) => (Either.isLeft(val) ? index : null))
+          .filter(val => val !== null),
         total: total,
       },
     });

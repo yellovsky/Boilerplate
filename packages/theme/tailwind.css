@@ -1,0 +1,95 @@
+@import 'tailwindcss';
+
+@theme static {
+  /* Fonts */
+  --font-body: Inter Variable, var(--font-sans);
+  --font-heading: Geologica Variable, var(--font-sans);
+  --font-mono: Roboto Mono Variable, var(--font-mono);
+
+  /* Foreground */
+  --color-fg: #d4d4d4; /* Main text (high contrast) */
+  --color-fg-sec: #a1a1a1; /* Secondary text (muted, passive) */
+  --color-fg-ter: #717171; /* Tertiary text (low contrast, hints) */
+
+  /* Background */
+  --color-bg: #282c34; /* Main background */
+  --color-bg-sec: #292b30; /* Secondary (panels, sidebars) */
+  --color-bg-ter: #292b30; /* Tertiary (less prominent areas) */
+
+  /* Primary */
+  --color-primary: oklch(59.461% 0.13981 250.3);
+  --color-primary-50: oklch(88.402% 0.03808 245.79);
+  --color-primary-100: oklch(85.123% 0.04893 246.49);
+  --color-primary-200: oklch(78.553% 0.0728 247.52);
+  --color-primary-300: oklch(72.015% 0.09581 247.93);
+  --color-primary-400: oklch(65.614% 0.11847 248.76);
+  --color-primary-500: oklch(59.461% 0.13981 250.3);
+  --color-primary-600: oklch(49.682% 0.11531 250.45);
+  --color-primary-700: oklch(39.586% 0.08695 249.26);
+  --color-primary-800: oklch(28.644% 0.05818 249.8);
+  --color-primary-900: oklch(16.8% 0.02461 245.58);
+  --color-primary-950: oklch(6.3276% 0.01316 233.51);
+
+  /* Accent */
+  --color-fg-accent: var(--color-primary-50); /* Primary accent text/icon */
+  --color-fg-accent-sec: var(--color-primary-100); /* Slightly muted for contrast */
+  --color-fg-accent-ter: var(--color-primary-200); /* Softest for subtle usage */
+  --color-bg-accent: var(--color-primary-500); /* Primary accent background */
+  --color-bg-accent-sec: var(--color-primary-600); /* Slightly darker for secondary use */
+  --color-bg-accent-ter: var(--color-primary-700); /* Darkest accent background */
+
+  --color-accent: var(--color-bg-accent); /* Primary accent text/icon */
+  --color-accent-hover: var(--color-bg-accent-sec); /* Primary accent text/icon */
+  --color-accent-active: var(--color-bg-accent-ter); /* Primary accent text/icon */
+
+  --color-invalid: var(--color-red-500);
+  --color-success: var(--color-green-500);
+  --color-warning: var(--color-orange-500);
+
+  /* Neutral */
+  --color-fg-neutral: var(--color-neutral-300); /* Primary neutral text */
+  --color-fg-neutral-sec: var(--color-neutral-400); /* Secondary neutral text */
+  --color-fg-neutral-ter: var(--color-neutral-500); /* Tertiary neutral text */
+  --color-bg-neutral: var(--color-neutral-800); /* Primary neutral background */
+  --color-bg-neutral-sec: var(--color-neutral-600); /* Secondary neutral */
+  --color-bg-neutral-ter: var(--color-neutral-600); /* Tertiary neutral */
+
+  /* Disabled */
+  --color-bg-disabled: #2e2e2e; /* Primary disabled background */
+  --color-bg-disabled-sec: #252525; /* Slightly darker secondary */
+  --color-bg-disabled-ter: #1e1e1e; /* Darkest tertiary */
+  --color-fg-disabled: #6b6b6b; /* Primary disabled text/icon */
+  --color-fg-disabled-sec: #595959; /* Secondary disabled text */
+  --color-fg-disabled-ter: #454545; /* Tertiary disabled (less important) */
+
+  /* Pending */
+  /* Foreground colors (text) for pending states */
+  --color-fg-pending: #b0b0b0; /* Neutral gray, primary pending text */
+  --color-fg-pending-sec: #969696; /* Slightly darker gray */
+  --color-fg-pending-ter: #7d7d7d; /* More muted gray */
+
+  /* Background colors for pending states */
+  --color-bg-pending: #3a3a3a; /* Dark neutral gray */
+  --color-bg-pending-sec: #2f2f2f; /* Slightly darker gray */
+  --color-bg-pending-ter: #252525; /* Deep, subtle background */
+
+  /* input */
+  --color-focus-outline: var(--color-primary-400);
+  --color-border: var(--color-white-alpha-300);
+
+  /* shadows */
+  --shadow-modal:
+    rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.2) 0px 5px 10px,
+    rgba(0, 0, 0, 0.4) 0px 15px 40px;
+
+  /* breakpoints */
+  --breakpoint-tablet: 48rem;
+  --breakpoint-desktop: 64rem;
+}
+
+@utility focus-outline {
+  outline-color: var(--color-focus-outline);
+  outline-style: solid;
+  outline-width: 2px;
+  outline-offset: 2px;
+}

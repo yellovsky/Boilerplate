@@ -29,9 +29,39 @@ const seedTestWorkout = async (tx: PrismaClient) =>
     },
   });
 
+const seedTest2Workout = async (tx: PrismaClient) =>
+  tx.workout.create({
+    data: {
+      publishedAt: new Date(),
+      slug: 'test-2',
+      translations: {
+        createMany: {
+          data: [
+            {
+              languageCode: 'en',
+              name: 'Test 2 tile [en]',
+              publishedAt: new Date(),
+              seoDescription: 'tst 2 seo_description [en]',
+              seoKeywords: 'tst 2 seo_keywords [en]',
+              seoTitle: 'tst 2 seo_title [en]',
+            },
+            {
+              languageCode: 'ru',
+              name: 'Test 2 tile [ru]',
+              seoDescription: 'tst 2 seo_description [ru]',
+              seoKeywords: 'tst 2 seo_keywords [ru]',
+              seoTitle: 'tst 2 seo_title [ru]',
+            },
+          ],
+        },
+      },
+    },
+  });
+
 export const workoutsSeeder = {
   clear: (tx: PrismaClient) => tx.workout.deleteMany(),
   seed: async (tx: PrismaClient) => {
     await seedTestWorkout(tx);
+    await seedTest2Workout(tx);
   },
 };

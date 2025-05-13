@@ -1,9 +1,11 @@
+import Either from 'effect/Either';
 import { Inject, Injectable } from '@nestjs/common';
 
 import { AuthRequestContext } from 'src/shared/utils/request-context';
 import { CASBIN_SRV } from 'src/modules/casbin';
 import { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 import { PermissionPolicyEntity } from 'src/modules/casbin/domain/entities/permission-policy.entity';
+import { SkippedReason, SkippedResult } from 'src/shared/utils/load-result';
 
 import { PermissionPoliciesAccessControlService } from '../../domain/interfaces/permission-policies-access.service.interface';
 
@@ -24,14 +26,14 @@ export class PermissionPoliciesAccessControlServiceImpl
   async filterCanReadPermissionPololicy(
     reqCtx: AuthRequestContext,
     entity: PermissionPolicyEntity,
-  ): Promise<PermissionPolicyEntity | null> {
-    const canRead = this.casbinSrv.checkRequestPermission(
+  ): Promise<Either.Either<PermissionPolicyEntity, SkippedResult>> {
+    const canRead = await this.casbinSrv.checkRequestPermission(
       reqCtx,
       'read',
       'permission_policy',
       entity,
     );
 
-    return !canRead ? null : entity;
+    return canRead ? Either.right(entity) : Either.left({ reason: SkippedReason.ACCESS_DENIED });
   }
 }

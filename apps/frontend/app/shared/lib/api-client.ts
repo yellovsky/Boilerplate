@@ -1,0 +1,104 @@
+import { useState } from 'react';
+import axios, { type AxiosInstance, type AxiosRequestConfig, isAxiosError } from 'axios';
+import { type FailedResponse, failedResponseSchema } from '@repo/api-models';
+
+const unknownFailedResponse: FailedResponse = {
+  status: 'error',
+
+  error: {
+    code: 'unknown_error',
+    httpCode: 500,
+    message: 'Unknown error',
+    timestamp: new Date().toISOString(),
+  },
+} as const;
+
+export interface ApiClient {
+  axios: AxiosInstance;
+
+  get<T = unknown>(url: string, config?: AxiosRequestConfig<unknown>): Promise<T>;
+  delete<T = unknown>(url: string, config?: AxiosRequestConfig<unknown>): Promise<T>;
+  post<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig<unknown>): Promise<T>;
+  put<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig<unknown>): Promise<T>;
+}
+
+class ApiClientImpl implements ApiClient {
+  axios: AxiosInstance;
+
+  constructor() {
+    this.axios = axios.create({ baseURL: `${process.env.REMIX_PUBLIC_API_HOST}/api` });
+  }
+
+  async get<T = unknown>(url: string, config?: AxiosRequestConfig<unknown>): Promise<T> {
+    try {
+      const axiosResponse = await this.axios.get<T>(url, config);
+      return axiosResponse.data;
+    } catch (error) {
+      const parsed = isAxiosError(error)
+        ? failedResponseSchema.safeParse(error.response?.data)
+        : undefined;
+
+      const failedResponse: FailedResponse = parsed?.data || unknownFailedResponse;
+      throw failedResponse;
+    }
+  }
+
+  async post<T = unknown>(
+    url: string,
+    data?: unknown,
+    config?: AxiosRequestConfig<unknown>,
+  ): Promise<T> {
+    try {
+      const axiosResponse = await this.axios.post<T>(url, data, config);
+      return axiosResponse.data;
+    } catch (error) {
+      const parsed = isAxiosError(error)
+        ? failedResponseSchema.safeParse(error.response?.data)
+        : undefined;
+
+      const failedResponse: FailedResponse = parsed?.data || unknownFailedResponse;
+      throw failedResponse;
+    }
+  }
+
+  async put<T = unknown>(
+    url: string,
+    data?: unknown,
+    config?: AxiosRequestConfig<unknown>,
+  ): Promise<T> {
+    try {
+      const axiosResponse = await this.axios.put<T>(url, data, config);
+      return axiosResponse.data;
+    } catch (error) {
+      const parsed = isAxiosError(error)
+        ? failedResponseSchema.safeParse(error.response?.data)
+        : undefined;
+
+      const failedResponse: FailedResponse = parsed?.data || unknownFailedResponse;
+      throw failedResponse;
+    }
+  }
+
+  async delete<T = unknown>(url: string, config?: AxiosRequestConfig<unknown>): Promise<T> {
+    try {
+      const axiosResponse = await this.axios.delete<T>(url, config);
+      return axiosResponse.data;
+    } catch (error) {
+      const parsed = isAxiosError(error)
+        ? failedResponseSchema.safeParse(error.response?.data)
+        : undefined;
+
+      const failedResponse: FailedResponse = parsed?.data || unknownFailedResponse;
+      throw failedResponse;
+    }
+  }
+}
+
+let cached: ApiClient | undefined;
+export const getApiClient = (): ApiClient => {
+  if (typeof window === 'undefined') return new ApiClientImpl();
+  if (!cached) cached = new ApiClientImpl();
+  return cached;
+};
+
+export const useApiClient = () => useState(() => getApiClient())[0];

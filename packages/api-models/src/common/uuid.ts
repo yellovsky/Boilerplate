@@ -1,6 +1,5 @@
 import * as zod from 'zod';
-import { randomUUID } from 'crypto';
-
+import { v4 } from 'uuid';
 export class UniqueEntityID {
   private constructor(private readonly value: string) {}
 
@@ -10,7 +9,7 @@ export class UniqueEntityID {
   }
 
   static createRandom(): UniqueEntityID {
-    return new UniqueEntityID(randomUUID());
+    return new UniqueEntityID(v4());
   }
 
   static isValidUUID(value: string): boolean {

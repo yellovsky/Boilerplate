@@ -11,7 +11,7 @@ export interface PermissionPolicyEntityData {
   objectType: CasbinObjectType;
   subject: CasbinSubject;
   action: CasbinAction;
-  condition: string;
+  condition: string | null;
   note: string | null;
   createdAt: Date;
   updatedAt: Date;
@@ -36,7 +36,7 @@ export class PermissionPolicyEntity {
     public readonly objectType: CasbinObjectType,
     public readonly subject: CasbinSubject,
     public readonly action: CasbinAction,
-    public readonly condition: string,
+    public readonly condition: string | null,
     public readonly note: string | null = null,
     public readonly createdAt: ISODate,
     public readonly updatedAt: ISODate,

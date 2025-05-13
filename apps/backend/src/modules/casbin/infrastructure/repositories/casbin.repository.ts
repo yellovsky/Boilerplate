@@ -1,3 +1,4 @@
+import Either from 'effect/Either';
 import { CasbinRule, Prisma } from '@generated/prisma';
 import { Inject, Injectable } from '@nestjs/common';
 
@@ -17,27 +18,28 @@ import {
 
 export const makeCasbinRuleEntity = (rule: CasbinRule): LoadResult<PermissionPolicyEntity> => {
   if (rule.ptype !== 'p') {
-    return { message: 'ptype must equals p', reason: SkippedReason.WRONG_INPUT, type: 'skipped' };
+    return Either.left({
+      message: 'ptype must equals p',
+      reason: SkippedReason.WRONG_INPUT,
+    });
   }
 
   if (!isCasbinAction(rule.v1)) {
-    return {
+    return Either.left({
       message: 'rule.v1 is not a CasbinAction',
       reason: SkippedReason.INVALID_DATA,
-      type: 'skipped',
-    };
+    });
   }
 
-  if (!rule.v0 || !rule.v3 || !rule.v2) {
-    return {
+  if (!rule.v0 || !rule.v2) {
+    return Either.left({
       message: 'rule.v0, rule.v2 and rule.v3 must be not empty',
       reason: SkippedReason.INSUFFICIENT_DATA,
-      type: 'skipped',
-    };
+    });
   }
 
-  return {
-    data: PermissionPolicyEntity.from({
+  return Either.right(
+    PermissionPolicyEntity.from({
       action: rule.v1,
       condition: rule.v3,
       createdAt: rule.createdAt,
@@ -47,8 +49,7 @@ export const makeCasbinRuleEntity = (rule: CasbinRule): LoadResult<PermissionPol
       subject: rule.v0,
       updatedAt: rule.updatedAt,
     }),
-    type: 'ok',
-  };
+  );
 };
 
 @Injectable()

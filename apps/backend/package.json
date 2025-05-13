@@ -19,7 +19,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/jest/bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "seed": "npx ts-node -r tsconfig-paths/register ./scripts/seed/index.ts"
+    "seed": "npx ts-node -r tsconfig-paths/register ./scripts/seed/index.ts",
+    "postinstall": "prisma generate"
   },
   "jest": {
     "coveragePathIgnorePatterns": [
@@ -66,6 +67,7 @@
     "class-validator": "^0.14.1",
     "cookie-parser": "^1.4.7",
     "date-fns": "^4.1.0",
+    "effect": "^3.15.0",
     "i18next": "^25.0.2",
     "i18next-fs-backend": "^2.6.0",
     "nest-winston": "^1.10.2",
@@ -83,7 +85,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.7.0",
-    "@golevelup/ts-jest": "^0.6.2",
+    "@golevelup/ts-jest": "^0.7.0",
     "@nestjs/cli": "^11.0.6",
     "@nestjs/schematics": "^11.0.4",
     "@nestjs/testing": "^11.0.13",

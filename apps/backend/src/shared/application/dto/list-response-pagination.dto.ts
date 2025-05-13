@@ -3,7 +3,7 @@ import { ResponsePagination } from '@repo/api-models';
 
 export class ListResponsePaginationDto implements ResponsePagination {
   @ApiProperty({ description: 'Number of items in response' })
-  count: number;
+  skipped: number[];
 
   @ApiProperty({ description: 'Number of requested items' })
   limit: number;
@@ -15,11 +15,11 @@ export class ListResponsePaginationDto implements ResponsePagination {
   total: number;
 
   static from(data: ResponsePagination): ListResponsePaginationDto {
-    return new ListResponsePaginationDto(data.count, data.limit, data.offset, data.total);
+    return new ListResponsePaginationDto(data.skipped, data.limit, data.offset, data.total);
   }
 
-  constructor(count: number, limit: number, offset: number, total: number) {
-    this.count = count;
+  constructor(skipped: number[], limit: number, offset: number, total: number) {
+    this.skipped = skipped;
     this.limit = limit;
     this.offset = offset;
     this.total = total;

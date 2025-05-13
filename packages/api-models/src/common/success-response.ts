@@ -13,9 +13,9 @@ export type SuccessResponse<TData> = ReturnType<
 >;
 
 export const responsePaginationSchema = zod.object({
-  count: zod.number(),
   limit: zod.number(),
   offset: zod.number(),
+  skipped: zod.number().int().nonnegative().array(),
   total: zod.number(),
 });
 

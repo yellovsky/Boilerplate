@@ -1,3 +1,5 @@
+import { Either } from 'effect/Either';
+
 export enum SkippedReason {
   WRONG_INPUT,
   INSUFFICIENT_DATA,
@@ -5,7 +7,9 @@ export enum SkippedReason {
   ACCESS_DENIED,
 }
 
-// TODO It looks like Either monad
-export type LoadResult<T> =
-  | { type: 'ok'; data: T }
-  | { type: 'skipped'; reason: SkippedReason; message?: string };
+export interface SkippedResult {
+  reason: SkippedReason;
+  message?: string;
+}
+
+export type LoadResult<T> = Either<T, SkippedResult>;

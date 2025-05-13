@@ -55,8 +55,8 @@ describe('AuthService', () => {
         );
         bcryptSrv.compare.mockResolvedValue(true);
 
-        const accountEntity = await service.validateAccountByEmail('email', 'password');
-        expect(accountEntity).toBe(expectedAccountEntity);
+        const profileEntity = await service.validateProfileByEmail('email', 'password');
+        expect(profileEntity).toBe(expectedAccountEntity.authProviders.at(0));
       });
     });
 
@@ -64,7 +64,7 @@ describe('AuthService', () => {
       it('should throw AuthNotFoundError', async () => {
         authProvidersSrv.getAuthProviderByEmail.mockResolvedValue(null);
         const fn = async () => {
-          await service.validateAccountByEmail('email', 'password');
+          await service.validateProfileByEmail('email', 'password');
         };
 
         expect(fn()).rejects.toThrow(AuthNotFoundError);
@@ -78,7 +78,7 @@ describe('AuthService', () => {
         );
 
         const fn = async () => {
-          await service.validateAccountByEmail('email', 'password');
+          await service.validateProfileByEmail('email', 'password');
         };
 
         expect(fn()).rejects.toThrow(AuthPwdIsNotSetError);
@@ -97,7 +97,7 @@ describe('AuthService', () => {
         bcryptSrv.compare.mockResolvedValue(false);
 
         const fn = async () => {
-          await service.validateAccountByEmail('email', 'password');
+          await service.validateProfileByEmail('email', 'password');
         };
 
         expect(fn()).rejects.toThrow(AuthInvalidPwdError);
