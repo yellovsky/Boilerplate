@@ -9,7 +9,7 @@ import { AuthInvalidTokenError } from '../../domain/errors/auth-invalid-token.er
 import type { AccessTokenService } from '../../domain/interfaces/access-token.service.interface';
 import type { JWTTokenPayload } from '../../domain/interfaces/jwt-token';
 
-export const isJWTTokenPayload = (payload: unknown): payload is JWTTokenPayload =>
+const isJWTTokenPayload = (payload: unknown): payload is JWTTokenPayload =>
   !!payload && typeof payload === 'object' && 'accountId' in payload && typeof payload.accountId === 'string';
 
 @Injectable()

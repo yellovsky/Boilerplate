@@ -16,7 +16,7 @@ import type {
 } from '../../domain/interfaces/casbin.repository.interace';
 import { isCasbinAction } from '../../domain/interfaces/casbin-rule.interfaces';
 
-export const makeCasbinRuleEntity = (rule: CasbinRule): LoadResult<PermissionPolicyEntity> => {
+const makeCasbinRuleEntity = (rule: CasbinRule): LoadResult<PermissionPolicyEntity> => {
   if (rule.ptype !== 'p') {
     return Either.left({
       message: 'ptype must equals p',

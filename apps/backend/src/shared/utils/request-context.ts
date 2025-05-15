@@ -12,7 +12,7 @@ export type TxRequestContext = {
   withTx(tx: PrismaTransaction): RequestContext;
 };
 
-export type LocalizationRequestContext = {
+type LocalizationRequestContext = {
   locale: string;
 };
 

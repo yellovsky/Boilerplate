@@ -1,6 +1,6 @@
 declare const __brand: unique symbol;
 type Brand<B> = { [__brand]: B };
-export type Branded<T, B> = T & Brand<B>;
+type Branded<T, B> = T & Brand<B>;
 
 declare const __association: unique symbol;
 type BrandAssociation<B, A> = Branded<{ [__association]: A }, B>;

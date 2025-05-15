@@ -1,0 +1,24 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": ["scripts/*.{ts,js}", "src/main.ts", "src/modules/*/index.ts"],
+  "remix": true,
+  "lefthook": true,
+  "project": ["**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}"],
+  "ignore": [],
+  "ignoreBinaries": ["knip", "biome", "tsc", "prisma", "nest", "jest", "ts-node"],
+  "ignoreDependencies": [
+    "@biomejs/biome",
+    "@nestjs/mapped-types",
+    "@prisma/client",
+    "@generated/prisma",
+    "reflect-metadata",
+    "passport",
+    "@nestjs/cli",
+    "@jest/globals",
+    "jest",
+    "jest-mock-extended",
+    "prisma",
+    "@repo/api-models",
+    "class-validator"
+  ]
+}
