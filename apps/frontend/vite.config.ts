@@ -1,33 +1,50 @@
+import babel from 'vite-plugin-babel';
 import { defineConfig } from 'vite';
-import { installGlobals } from '@remix-run/node';
-import { vitePlugin as remix } from '@remix-run/dev';
+import { reactRouter } from '@react-router/dev/vite';
+import { reactRouterDevTools } from 'react-router-devtools';
+import { reactRouterHonoServer } from 'react-router-hono-server/dev';
 import { resolve } from 'path';
 import tailwindcss from '@tailwindcss/vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
-
-installGlobals();
-
-declare module '@remix-run/node' {
-  interface Future {
-    v3_singleFetch: true;
-  }
-}
 
 export default defineConfig({
   plugins: [
     tailwindcss(),
 
-    remix({
-      future: {
-        v3_fetcherPersist: true,
-        v3_lazyRouteDiscovery: true,
-        v3_relativeSplatPath: true,
-        v3_singleFetch: true,
-        v3_throwAbortReason: true,
+    {
+      ...babel({
+        filter: /\.tsx?$/,
+
+        babelConfig: {
+          plugins: ['babel-plugin-react-compiler'],
+          presets: ['@babel/preset-typescript'],
+        },
+      }),
+      apply: 'build',
+    },
+
+    reactRouterDevTools({ client: { position: 'middle-right' } }),
+
+    reactRouter(),
+
+    reactRouterHonoServer({
+      dev: {
+        exclude: [/^\/(resources)\/.+/],
       },
     }),
     tsconfigPaths(),
   ],
+
+  ssr: {
+    noExternal: [
+      // these pachkages are internal monorepo packages
+      '@repo/ui',
+      '@repo/api-models',
+
+      // this packages are cjs and must be compiled to be used with esm
+      'jotai-tanstack-query',
+    ],
+  },
 
   resolve: {
     alias: {

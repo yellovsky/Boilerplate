@@ -25,8 +25,8 @@ export interface ApiClient {
 class ApiClientImpl implements ApiClient {
   axios: AxiosInstance;
 
-  constructor() {
-    this.axios = axios.create({ baseURL: `${process.env.REMIX_PUBLIC_API_HOST}/api` });
+  constructor(readonly apiHost: string) {
+    this.axios = axios.create({ baseURL: `${apiHost}/api` });
   }
 
   async get<T = unknown>(url: string, config?: AxiosRequestConfig<unknown>): Promise<T> {
@@ -94,10 +94,11 @@ class ApiClientImpl implements ApiClient {
   }
 }
 
+export const getLoaderApiClient = (apiHost: string): ApiClient => new ApiClientImpl(apiHost);
+
 let cached: ApiClient | undefined;
 export const getApiClient = (): ApiClient => {
-  if (typeof window === 'undefined') return new ApiClientImpl();
-  if (!cached) cached = new ApiClientImpl();
+  if (!cached) cached = new ApiClientImpl(window.env.REMIX_PUBLIC_API_HOST);
   return cached;
 };
 

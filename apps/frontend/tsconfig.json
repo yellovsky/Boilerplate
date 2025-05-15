@@ -1,22 +1,21 @@
 {
   "include": [
+    "env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "**/.server/**/*.ts",
-    "**/.server/**/*.tsx",
-    "**/.client/**/*.ts",
-    "**/.client/**/*.tsx"
+    "**/**/.server/**/*.ts",
+    ".react-router/types/**/*"
   ],
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "types": ["@remix-run/node", "vite/client"],
+    "types": ["vitest/globals", "@vitest/browser/providers/playwright"],
+    "lib": ["DOM", "DOM.Iterable", "ES2023"],
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
-    "target": "ES2022",
+    "target": "ES2023",
     "strict": true,
     "allowJs": true,
     "skipLibCheck": true,
@@ -30,7 +29,8 @@
       "@shared/*": ["./app/shared/*"],
       "@widgets/*": ["./app/widgets/*"]
     },
-
+    "rootDirs": [".", "./.react-router/types"],
+    "plugins": [{ "name": "@react-router/dev" }],
     // Vite takes care of building everything, not tsc.
     "noEmit": true
   }
