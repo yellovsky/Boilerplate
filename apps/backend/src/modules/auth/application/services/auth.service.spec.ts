@@ -54,7 +54,7 @@ describe('AuthService', () => {
         bcryptSrv.compare.mockResolvedValue(true);
 
         const profileEntity = await service.validateProfileByEmail('email', 'password');
-        expect(profileEntity).toBe(expectedAccountEntity.authProviders.at(0));
+        expect(profileEntity).toBe(expectedAccountEntity.profiles.at(0));
       });
     });
 

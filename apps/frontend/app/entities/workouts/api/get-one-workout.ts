@@ -13,7 +13,7 @@ const makeGetOneWorkoutQKey = (variables: GetOneWorkoutVariables): GetOneWorkout
   variables,
 ];
 
-export const getOneWorkout =
+const getOneWorkout =
   (apiClient: ApiClient): QueryFunction<GetOneWorkoutResponse, GetOneWorkoutQKey> =>
   ({ queryKey, signal }) => {
     const { slugOrId, ...params } = queryKey[1];
@@ -24,7 +24,7 @@ export const getOneWorkout =
     });
   };
 
-export const getWorkoutQueryResult = (
+const getWorkoutQueryResult = (
   queryClient: QueryClient,
   variables: GetOneWorkoutVariables
 ): GetOneWorkoutResponse | null => {

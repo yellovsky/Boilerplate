@@ -1,3 +1,4 @@
+// FIXME Make it work
 import fsd from '@feature-sliced/steiger-plugin';
 import { defineConfig } from 'steiger';
 

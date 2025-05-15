@@ -10,6 +10,8 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
+    "test": {},
+    "check:unused": {},
     "check-types": {
       "dependsOn": ["^check-types"]
     },

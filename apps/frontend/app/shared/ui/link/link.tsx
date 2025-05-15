@@ -4,7 +4,7 @@ import type { Locale } from '@shared/config/locale';
 
 import { useEnhancedTo } from './use-enhanced-to';
 
-export interface LinkProps extends ReactRouterLinkProps {
+interface LinkProps extends ReactRouterLinkProps {
   language?: Locale;
 }
 

@@ -1,3 +1,4 @@
+// FIXME Move to domain folder
 import { type HttpException, HttpStatus } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import type { TFunction } from 'i18next';

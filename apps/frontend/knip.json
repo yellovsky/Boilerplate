@@ -1,0 +1,20 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": ["scripts/*.{ts,js}", "app/routes.ts", "app/server/*.ts", "app/library/icon/Icon.tsx", "steiger.config.js"],
+  "remix": true,
+  "lefthook": true,
+  "project": ["**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}"],
+  "ignore": ["app/library/icon/icons/types.ts", "react-router.config.ts"],
+  "ignoreBinaries": ["react-router", "biome", "tsc", "vitest", "react-router-serve"],
+  "ignoreDependencies": [
+    "tailwindcss",
+    "pretty-cache-header",
+    "@babel/core",
+    "@biomejs/biome",
+    "@testing-library/dom",
+    "@vitest/ui",
+    "autoprefixer",
+    "playwright",
+    "@react-router/serve"
+  ]
+}

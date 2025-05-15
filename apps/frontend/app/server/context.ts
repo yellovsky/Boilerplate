@@ -1,7 +1,7 @@
 import type { Context } from 'hono';
 import { i18next } from 'remix-hono/i18next';
 
-import { getClientEnv, getServerEnv } from '~/env.server';
+import { getClientEnv, getServerEnv } from '../env.server';
 
 export const getLoadContext = async (c: Context) => {
   // get the locale from the context
