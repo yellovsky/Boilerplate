@@ -1,0 +1,34 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "commitlint": true,
+  "ignoreDependencies": ["postcss", "@biomejs/biome", "@commitlint/cli"],
+  "workspaces": {
+    "apps/backend": {
+      "nest": true,
+      "prisma": true,
+      "jest": true,
+      "vitest": true,
+      "ignoreDependencies": [
+        "@prisma/client",
+        "@generated/prisma",
+        "jest-mock-extended",
+        "@jest/globals",
+        "@nestjs/mapped-types"
+      ]
+    },
+    "apps/frontend": {
+      "entry": ["app/server/index.ts", "steiger.config.js"],
+      "remix": true,
+      "tailwind": true,
+      "ignoreDependencies": ["tailwindcss", "autoprefixer"]
+    },
+    "packages/theme": {
+      "tailwind": true,
+      "ignoreDependencies": ["tailwindcss"]
+    },
+    "packages/ui": {
+      "tailwind": true,
+      "ignoreDependencies": ["tailwindcss", "@repo/theme"]
+    }
+  }
+}

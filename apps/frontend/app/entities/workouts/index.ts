@@ -1,5 +1,5 @@
 export {
   type GetOneWorkoutVariables,
-  prefetchBlogPostQuery,
+  prefetchOneWorkoutQuery,
   useWorkoutQuery,
 } from './api/get-one-workout';

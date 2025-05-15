@@ -18,8 +18,7 @@
     "test:cov": "jest --coverage",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "seed": "npx ts-node -r tsconfig-paths/register ./scripts/seed/index.ts",
-    "postinstall": "prisma generate",
-    "check:unused": "knip --max-issues 1"
+    "postinstall": "prisma generate"
   },
   "jest": {
     "coveragePathIgnorePatterns": [
@@ -98,9 +97,9 @@
     "@types/ramda": "0.30.2",
     "jest": "29.7.0",
     "jest-mock-extended": "4.0.0-beta1",
-    "knip": "5.56.0",
     "prisma": "6.8.0",
     "ts-jest": "29.3.3",
+    "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
     "typescript": "5.8.3"
   }

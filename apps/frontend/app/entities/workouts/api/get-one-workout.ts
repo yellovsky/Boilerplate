@@ -32,7 +32,7 @@ const getWorkoutQueryResult = (
   return result || null;
 };
 
-export const prefetchBlogPostQuery = async (
+export const prefetchOneWorkoutQuery = async (
   apiClient: ApiClient,
   queryClient: QueryClient,
   variables: GetOneWorkoutVariables
