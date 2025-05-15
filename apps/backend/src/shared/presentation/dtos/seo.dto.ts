@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Seo } from '@repo/api-models';
 
-import { JSONLike } from 'src/shared/utils/json-like';
+import type { Seo } from '@repo/api-models';
+
+import type { JSONLike } from 'src/shared/utils/json-like';
 
 export class SeoDto implements JSONLike<Seo> {
   @ApiProperty({ example: 'Seo description', nullable: true, type: String })
@@ -17,11 +18,7 @@ export class SeoDto implements JSONLike<Seo> {
     return new SeoDto(seoData.title, seoData.description, seoData.keywords);
   }
 
-  constructor(
-    title: JSONLike<string | null>,
-    description: JSONLike<string | null>,
-    keywords: JSONLike<string | null>,
-  ) {
+  constructor(title: JSONLike<string | null>, description: JSONLike<string | null>, keywords: JSONLike<string | null>) {
     this.title = title;
     this.description = description;
     this.keywords = keywords;

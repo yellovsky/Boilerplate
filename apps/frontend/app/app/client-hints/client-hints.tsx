@@ -1,17 +1,9 @@
 import { getHintUtils } from '@epic-web/client-hints';
+import { clientHint as colorSchemeHint, subscribeToSchemeChange } from '@epic-web/client-hints/color-scheme';
+import { clientHint as reducedMotionHint, subscribeToMotionChange } from '@epic-web/client-hints/reduced-motion';
 import { clientHint as timeZoneHint } from '@epic-web/client-hints/time-zone';
 import { useEffect } from 'react';
 import { useRevalidator, useRouteLoaderData } from 'react-router';
-
-import {
-  clientHint as colorSchemeHint,
-  subscribeToSchemeChange,
-} from '@epic-web/client-hints/color-scheme';
-
-import {
-  clientHint as reducedMotionHint,
-  subscribeToMotionChange,
-} from '@epic-web/client-hints/reduced-motion';
 
 import type { Route } from '../../+types/root';
 
@@ -34,5 +26,6 @@ export function ClientHintCheck({ nonce }: { nonce?: string }) {
   useEffect(() => subscribeToSchemeChange(() => revalidate()), [revalidate]);
   useEffect(() => subscribeToMotionChange(() => revalidate()), [revalidate]);
 
+  // biome-ignore lint/security/noDangerouslySetInnerHtml: according to library guides
   return <script dangerouslySetInnerHTML={{ __html: getClientHintCheckScript() }} nonce={nonce} />;
 }

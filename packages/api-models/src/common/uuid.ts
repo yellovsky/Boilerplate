@@ -1,5 +1,5 @@
-import * as zod from 'zod';
 import { v4 } from 'uuid';
+import * as zod from 'zod';
 export class UniqueEntityID {
   private constructor(private readonly value: string) {}
 
@@ -37,4 +37,4 @@ export class UniqueEntityID {
 export const uuidSchema = zod
   .string()
   .uuid()
-  .refine(val => UniqueEntityID.isValidUUID(val), { message: 'Invalid uuid' });
+  .refine((val) => UniqueEntityID.isValidUUID(val), { message: 'Invalid uuid' });

@@ -1,11 +1,14 @@
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Injectable } from '@nestjs/common';
 
-import { AppConfigService } from './app-config.types';
+import type { AppConfigService } from './app-config.types';
 
 @Injectable()
 export class AppConfigServiceImpl implements AppConfigService {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    @Inject(ConfigService)
+    private readonly configService: ConfigService
+  ) {}
 
   get jwtSecret(): string {
     return this.configService.getOrThrow<string>('JWT_SECRET');

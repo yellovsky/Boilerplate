@@ -1,4 +1,4 @@
-import { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
+import type { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
 
 export interface BcryptService {
   hash(pwd: string, roundsOfHashing?: number): Promise<string>;

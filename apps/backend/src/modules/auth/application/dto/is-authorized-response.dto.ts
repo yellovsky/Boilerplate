@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsAuthorizedResponse } from '@repo/api-models';
+
+import type { IsAuthorizedResponse } from '@repo/api-models';
 
 import { SuccessResponseDto } from 'src/shared/application/dto/success-response.dto';
 

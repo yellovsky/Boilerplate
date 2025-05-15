@@ -1,6 +1,6 @@
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 
-import { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
+import type { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
 
 export interface I18nService {
   getFixedT(locale: string): TFunction;

@@ -1,10 +1,4 @@
-import {
-  addLocaleLocaleToTo,
-  getAnyLocaleFromTo,
-  getLocaleFromTo,
-  parseLocale,
-  removeLocaleFromTo,
-} from './locale';
+import { addLocaleLocaleToTo, getAnyLocaleFromTo, getLocaleFromTo, parseLocale, removeLocaleFromTo } from './locale';
 
 describe('parseLocale', () => {
   it('returns locale for valid BCP47', () => {

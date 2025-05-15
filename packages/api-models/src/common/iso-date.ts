@@ -25,7 +25,7 @@ export class ISODate {
 
   static isValidISO(value: string): boolean {
     const d = new Date(value);
-    return !isNaN(d.getTime()) && d.toISOString() === value;
+    return !Number.isNaN(d.getTime()) && d.toISOString() === value;
   }
 
   static transformApiProperty({ value }: { value: unknown }) {
@@ -45,6 +45,6 @@ export class ISODate {
   }
 }
 
-export const isoDateSchema = zod.string().refine(val => ISODate.isValidISO(val), {
+export const isoDateSchema = zod.string().refine((val) => ISODate.isValidISO(val), {
   message: 'Invalid ISO 8601 date',
 });

@@ -1,10 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { GetManyPermissionPoliciesResponse, ResponsePagination } from '@repo/api-models';
 
-import { JSONLike } from 'src/shared/utils/json-like';
+import type { GetManyPermissionPoliciesResponse, ResponsePagination } from '@repo/api-models';
+
 import { ListResponsePaginationDto } from 'src/shared/application/dto/list-response-pagination.dto';
-import { PermissionPolicyEntity } from 'src/modules/casbin/domain/entities/permission-policy.entity';
 import { SuccessResponseDto } from 'src/shared/application/dto/success-response.dto';
+import type { JSONLike } from 'src/shared/utils/json-like';
+
+import type { PermissionPolicyEntity } from 'src/modules/casbin/domain/entities/permission-policy.entity';
 
 import { PermissionPolicyDto } from './permission-policy.dto';
 
@@ -32,16 +34,12 @@ class PermissionPolicyListResponseDataDto {
 
   constructor(
     items: Array<PermissionPolicyDto | PermissionPolicyEntity>,
-    pagination: ResponsePagination | ListResponsePaginationDto,
+    pagination: ResponsePagination | ListResponsePaginationDto
   ) {
-    this.items = items.map(i =>
-      i instanceof PermissionPolicyDto ? i : PermissionPolicyDto.fromEntity(i),
-    );
+    this.items = items.map((i) => (i instanceof PermissionPolicyDto ? i : PermissionPolicyDto.fromEntity(i)));
 
     this.pagination =
-      pagination instanceof ListResponsePaginationDto
-        ? pagination
-        : ListResponsePaginationDto.from(pagination);
+      pagination instanceof ListResponsePaginationDto ? pagination : ListResponsePaginationDto.from(pagination);
   }
 }
 
@@ -61,7 +59,7 @@ export class PermissionPolicyListResponseDto
 
   constructor(
     items: Array<PermissionPolicyDto | PermissionPolicyEntity>,
-    pagination: ResponsePagination | ListResponsePaginationDto,
+    pagination: ResponsePagination | ListResponsePaginationDto
   ) {
     super();
 

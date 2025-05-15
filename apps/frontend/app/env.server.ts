@@ -4,18 +4,10 @@ const envSchema = zod.object({
   APP_ENV: zod
     .enum(['development', 'staging', 'production'])
     .default('development')
-    .describe(
-      'Application environment. Turn some debug info on or add debug panels when turned on',
-    ),
-  NODE_ENV: zod
-    .enum(['development', 'production', 'test'])
-    .default('development')
-    .describe('Just a useful NODE_ENV'),
+    .describe('Application environment. Turn some debug info on or add debug panels when turned on'),
+  NODE_ENV: zod.enum(['development', 'production', 'test']).default('development').describe('Just a useful NODE_ENV'),
   REMIX_PUBLIC_API_HOST: zod.string().url().describe('API address'),
-  REMIX_PUBLIC_CLIENT_HOST: zod
-    .string()
-    .url()
-    .describe('Client address to build meta tags like canonicals'),
+  REMIX_PUBLIC_CLIENT_HOST: zod.string().url().describe('Client address to build meta tags like canonicals'),
 });
 
 type ServerEnv = zod.infer<typeof envSchema>;
@@ -26,6 +18,7 @@ let env: ServerEnv;
  * @returns Initialized env vars
  */
 function initEnv() {
+  // biome-ignore lint/style/noProcessEnv: parse server process env
   const envData = envSchema.safeParse(process.env);
 
   if (!envData.success) {
@@ -38,7 +31,7 @@ function initEnv() {
 
   // Do not log the message when running tests
   if (env.NODE_ENV !== 'test') {
-    // eslint-disable-next-line no-console
+    // biome-ignore lint/suspicious/noConsole: noConsole
     console.log('✅ Environment variables loaded successfully');
   }
   return env;

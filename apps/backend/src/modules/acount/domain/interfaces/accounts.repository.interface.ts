@@ -1,6 +1,6 @@
-import { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
+import type { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
 
-import { AccountEntity } from '../entities/account.entity';
+import type { AccountEntity } from '../entities/account.entity';
 
 export interface AccountsRepository {
   findAccountById(id: string): Promise<AccountEntity | null>;

@@ -1,20 +1,20 @@
-import Either from 'effect/Either';
-import { CasbinRule, Prisma } from '@generated/prisma';
+import type { CasbinRule, Prisma } from '@generated/prisma';
 import { Inject, Injectable } from '@nestjs/common';
+import Either from 'effect/Either';
 
-import { IdentifierOf } from 'src/shared/utils/injectable-identifier';
+import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
+import { type LoadResult, SkippedReason } from 'src/shared/utils/load-result';
+import type { TxRequestContext } from 'src/shared/utils/request-context';
+
 import { PRISMA_SRV } from 'src/modules/prisma';
-import { TxRequestContext } from 'src/shared/utils/request-context';
-import { LoadResult, SkippedReason } from 'src/shared/utils/load-result';
 
-import { isCasbinAction } from '../../domain/interfaces/casbin-rule.interfaces';
 import { PermissionPolicyEntity } from '../../domain/entities/permission-policy.entity';
-
-import {
+import type {
   CasbinRepository,
   CreatePolicyData,
   FindManyPoliciesParams,
 } from '../../domain/interfaces/casbin.repository.interace';
+import { isCasbinAction } from '../../domain/interfaces/casbin-rule.interfaces';
 
 export const makeCasbinRuleEntity = (rule: CasbinRule): LoadResult<PermissionPolicyEntity> => {
   if (rule.ptype !== 'p') {
@@ -48,7 +48,7 @@ export const makeCasbinRuleEntity = (rule: CasbinRule): LoadResult<PermissionPol
       objectType: rule.v2,
       subject: rule.v0,
       updatedAt: rule.updatedAt,
-    }),
+    })
   );
 };
 
@@ -56,7 +56,7 @@ export const makeCasbinRuleEntity = (rule: CasbinRule): LoadResult<PermissionPol
 export class CasbinRepositoryImpl implements CasbinRepository {
   constructor(
     @Inject(PRISMA_SRV)
-    private readonly prismaSrv: IdentifierOf<typeof PRISMA_SRV>,
+    private readonly prismaSrv: IdentifierOf<typeof PRISMA_SRV>
   ) {}
 
   async getTotal(txCtx: TxRequestContext, params: FindManyPoliciesParams): Promise<number> {
@@ -67,7 +67,7 @@ export class CasbinRepositoryImpl implements CasbinRepository {
 
   async findManyPolicies(
     txCtx: TxRequestContext,
-    params: FindManyPoliciesParams,
+    params: FindManyPoliciesParams
   ): Promise<LoadResult<PermissionPolicyEntity>[]> {
     const dbRules = await (txCtx.tx || this.prismaSrv).casbinRule.findMany({
       skip: params.page.offset,
@@ -78,10 +78,7 @@ export class CasbinRepositoryImpl implements CasbinRepository {
     return dbRules.map(makeCasbinRuleEntity);
   }
 
-  async createPolicy(
-    _txCtx: TxRequestContext,
-    _data: CreatePolicyData,
-  ): Promise<PermissionPolicyEntity> {
+  async createPolicy(_txCtx: TxRequestContext, _data: CreatePolicyData): Promise<PermissionPolicyEntity> {
     throw new Error('To be implemented');
   }
 

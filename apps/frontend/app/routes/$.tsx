@@ -1,12 +1,13 @@
+import { URL } from 'node:url';
+
 import { redirect } from 'react-router';
 
-import { addLocaleLocaleToTo, getAnyLocaleFromTo } from '@shared/lib/locale';
 import { FALLBACK_LOCALE, isLocale } from '@shared/config/locale';
+import { addLocaleLocaleToTo, getAnyLocaleFromTo } from '@shared/lib/locale';
 
 import i18next from '@app/localization/i18n.server';
 
-import { Route } from './+types/$';
-import { URL } from 'url';
+import type { Route } from './+types/$';
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);

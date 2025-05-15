@@ -1,4 +1,4 @@
-import { LogoutResponse } from '@repo/api-models';
+import type { LogoutResponse } from '@repo/api-models';
 
 import { StatusSuccessResponseDto } from 'src/shared/application/dto/status-success-response.dto';
 

@@ -1,16 +1,17 @@
-import { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 import { Inject, Injectable } from '@nestjs/common';
+
+import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 
 import { PRISMA_SRV } from 'src/modules/prisma';
 
-import { AuthProvidersRepository } from '../../domain/interfaces/auth-providers.repository.interface';
 import { EmailAuthProviderEntity } from '../../domain/entities/auth-provider.entity';
+import type { AuthProvidersRepository } from '../../domain/interfaces/auth-providers.repository.interface';
 
 @Injectable()
 export class AuthProvidersRepositoryImpl implements AuthProvidersRepository {
   constructor(
     @Inject(PRISMA_SRV)
-    private readonly prismaSrv: IdentifierOf<typeof PRISMA_SRV>,
+    private readonly prismaSrv: IdentifierOf<typeof PRISMA_SRV>
   ) {}
 
   async findAuthProviderByEmail(email: string): Promise<EmailAuthProviderEntity | null> {

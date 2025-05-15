@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
 
+import { AccountEntity, type AccountEntityData } from './account.entity';
 import { createMockEmailAuthProviderEntity } from './auth-provider.entity.mock';
 import { createMockProfileEntity } from './profile.entity.mok';
-import { AccountEntity, AccountEntityData } from './account.entity';
 
 export const createMockAccountEntity = (overrides?: Partial<AccountEntityData>): AccountEntity => {
   const accountId = overrides?.id || faker.string.uuid();

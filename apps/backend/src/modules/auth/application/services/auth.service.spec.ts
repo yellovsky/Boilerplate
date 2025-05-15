@@ -1,17 +1,17 @@
-import { createMock, DeepMocked } from '@golevelup/ts-jest';
-import { Test, TestingModule } from '@nestjs/testing';
+import { createMock, type DeepMocked } from '@golevelup/ts-jest';
+import { Test, type TestingModule } from '@nestjs/testing';
 
+import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
+
+import { ACCOUNTS_SRV, AUTH_PROVIDERS_SRV } from 'src/modules/acount';
 import { createMockAccountEntity } from 'src/modules/acount/domain/entities/account.entity.mock';
 import { createMockEmailAuthProviderEntity } from 'src/modules/acount/domain/entities/auth-provider.entity.mock';
-import { IdentifierOf } from 'src/shared/utils/injectable-identifier';
-import { ACCOUNTS_SRV, AUTH_PROVIDERS_SRV } from 'src/modules/acount';
 
 import { AuthInvalidPwdError } from '../../domain/errors/auth-invalid-pwd.error';
 import { AuthNotFoundError } from '../../domain/errors/auth-not-found.error';
 import { AuthPwdIsNotSetError } from '../../domain/errors/auth-pwd-is-not-set.error';
+import { AUTH_SRV, type AuthService } from '../../domain/interfaces/auth.service.interface';
 import { BCRYPT_SRV } from '../../domain/interfaces/bcrypt.service.interface';
-import { AUTH_SRV, AuthService } from '../../domain/interfaces/auth.service.interface';
-
 import { AuthServiceImpl } from './auth.service';
 
 describe('AuthService', () => {
@@ -50,9 +50,7 @@ describe('AuthService', () => {
 
         accountSrv.getAccountById.mockResolvedValue(expectedAccountEntity);
 
-        authProvidersSrv.getAuthProviderByEmail.mockResolvedValue(
-          expectedAccountEntity.authProviders.at(0) || null,
-        );
+        authProvidersSrv.getAuthProviderByEmail.mockResolvedValue(expectedAccountEntity.authProviders.at(0) || null);
         bcryptSrv.compare.mockResolvedValue(true);
 
         const profileEntity = await service.validateProfileByEmail('email', 'password');
@@ -74,7 +72,7 @@ describe('AuthService', () => {
     describe('when auth provider does not have password hash', () => {
       it('should throw AuthPwdIsNotSetError', async () => {
         authProvidersSrv.getAuthProviderByEmail.mockResolvedValue(
-          createMockEmailAuthProviderEntity({ passwordHash: null }),
+          createMockEmailAuthProviderEntity({ passwordHash: null })
         );
 
         const fn = async () => {
@@ -91,9 +89,7 @@ describe('AuthService', () => {
 
         accountSrv.getAccountById.mockResolvedValue(expectedAccountEntity);
 
-        authProvidersSrv.getAuthProviderByEmail.mockResolvedValue(
-          expectedAccountEntity.authProviders.at(0) || null,
-        );
+        authProvidersSrv.getAuthProviderByEmail.mockResolvedValue(expectedAccountEntity.authProviders.at(0) || null);
         bcryptSrv.compare.mockResolvedValue(false);
 
         const fn = async () => {

@@ -1,10 +1,6 @@
 import { ISODate } from '@repo/api-models';
 
-import {
-  CasbinAction,
-  CasbinObjectType,
-  CasbinSubject,
-} from '../interfaces/casbin-rule.interfaces';
+import type { CasbinAction, CasbinObjectType, CasbinSubject } from '../interfaces/casbin-rule.interfaces';
 
 export interface PermissionPolicyEntityData {
   id: string;
@@ -25,9 +21,9 @@ export class PermissionPolicyEntity {
       data.subject,
       data.action,
       data.condition,
-      data.note,
       ISODate.fromDate(data.createdAt),
       ISODate.fromDate(data.updatedAt),
+      data.note
     );
   }
 
@@ -37,8 +33,8 @@ export class PermissionPolicyEntity {
     public readonly subject: CasbinSubject,
     public readonly action: CasbinAction,
     public readonly condition: string | null,
-    public readonly note: string | null = null,
     public readonly createdAt: ISODate,
     public readonly updatedAt: ISODate,
+    public readonly note: string | null = null
   ) {}
 }

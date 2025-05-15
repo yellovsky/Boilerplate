@@ -1,5 +1,5 @@
-import * as R from 'ramda';
 import { PrismaClient } from '@generated/prisma';
+import * as R from 'ramda';
 
 import { accountsSeeder } from './account.seed';
 import { cabinRulesSeeder } from './casbin-rule.seed';

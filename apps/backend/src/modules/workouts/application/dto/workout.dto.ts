@@ -1,11 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ISODate, Workout } from '@repo/api-models';
 
-import { GetTranslationsStrategy } from 'src/shared/utils/translation-strategy';
-import { JSONLike } from 'src/shared/utils/json-like';
+import { ISODate, type Workout } from '@repo/api-models';
+
 import { SeoDto } from 'src/shared/presentation/dtos/seo.dto';
+import type { JSONLike } from 'src/shared/utils/json-like';
+import type { GetTranslationsStrategy } from 'src/shared/utils/translation-strategy';
 
-import { WorkoutEntity } from '../../domain/entites/workout.entity';
+import type { WorkoutEntity } from '../../domain/entites/workout.entity';
 
 export class WorkoutDto implements JSONLike<Workout> {
   @ApiProperty({
@@ -34,10 +35,7 @@ export class WorkoutDto implements JSONLike<Workout> {
   @ApiProperty({ type: String })
   languageCode: string;
 
-  static fromEntity(
-    strategy: GetTranslationsStrategy,
-    workoutEntity: WorkoutEntity,
-  ): WorkoutDto | null {
+  static fromEntity(strategy: GetTranslationsStrategy, workoutEntity: WorkoutEntity): WorkoutDto | null {
     const translations = workoutEntity.getTranslations(strategy);
 
     if (!translations) return null;
@@ -50,7 +48,7 @@ export class WorkoutDto implements JSONLike<Workout> {
       translations.languageCode,
       translations.seoTitle,
       translations.seoDescription,
-      translations.seoKeywords,
+      translations.seoKeywords
     );
   }
 
@@ -62,7 +60,7 @@ export class WorkoutDto implements JSONLike<Workout> {
     languageCode: string,
     seoTitle: string | null,
     seoDescription: string | null,
-    seoKeywords: string | null,
+    seoKeywords: string | null
   ) {
     this.id = id;
     this.slug = slug;

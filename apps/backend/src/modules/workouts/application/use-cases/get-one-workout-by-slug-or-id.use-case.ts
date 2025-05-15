@@ -1,13 +1,10 @@
-import { GetOneWorkoutQuery } from '@repo/api-models';
 import { ForbiddenException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 
-import { IdentifierOf } from 'src/shared/utils/injectable-identifier';
+import type { GetOneWorkoutQuery } from '@repo/api-models';
 
-import {
-  WORKOUTS_ACCESS_SRV,
-  WORKOUTS_SRV,
-} from '../../domain/interfaces/workouts.service.interface';
+import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 
+import { WORKOUTS_ACCESS_SRV, WORKOUTS_SRV } from '../../domain/interfaces/workouts.service.interface';
 import { GetOneWorkoutResponseDto } from '../dto/get-one-workout-response.dto';
 
 @Injectable()
@@ -17,7 +14,7 @@ export class GetOneWorkoutBySlugOrIdUseCase {
     private readonly workoutsSrv: IdentifierOf<typeof WORKOUTS_SRV>,
 
     @Inject(WORKOUTS_ACCESS_SRV)
-    private readonly workoutsAccessSrv: IdentifierOf<typeof WORKOUTS_ACCESS_SRV>,
+    private readonly workoutsAccessSrv: IdentifierOf<typeof WORKOUTS_ACCESS_SRV>
   ) {}
 
   async execute(id: string, query: GetOneWorkoutQuery): Promise<GetOneWorkoutResponseDto> {
@@ -32,7 +29,7 @@ export class GetOneWorkoutBySlugOrIdUseCase {
     const responseDto = GetOneWorkoutResponseDto.fromEntity(
       // TODO: move to constant
       { fallbackFirstDefined: true, fallbackLocale: 'en', locale: query.locale },
-      publishedWorkoutEntity,
+      publishedWorkoutEntity
     );
 
     if (!responseDto) throw new NotFoundException();

@@ -1,10 +1,11 @@
-import { JwtModule } from '@nestjs/jwt';
 import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
+
+import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 
 import { AccountsModule } from 'src/modules/acount';
-import { IdentifierOf } from 'src/shared/utils/injectable-identifier';
-import { PrismaModule } from 'src/modules/prisma';
 import { APP_CONFIG_SRV, AppConfigModule } from 'src/modules/app-config';
+import { PrismaModule } from 'src/modules/prisma';
 
 import { ACCESS_TOKEN_SRV } from './domain/interfaces/access-token.service.interface';
 import { AUTH_SRV } from './domain/interfaces/auth.service.interface';
@@ -13,12 +14,12 @@ import { BCRYPT_SRV } from './domain/interfaces/bcrypt.service.interface';
 import { AccessTokenServiceImpl } from './application/services/access-token.service';
 import { AuthServiceImpl } from './application/services/auth.service';
 import { BcryptServiceImpl } from './application/services/bcrypt.service';
+import { LocalStrategy } from './application/strategies/local.strategy';
 import { IsAuthorizedUseCase } from './application/use-cases/is-authorized.use-case';
 import { LoginWithEmailUseCase } from './application/use-cases/login-with-email.use-case';
 import { LogoutUseCase } from './application/use-cases/logout.use-case';
 
 import { AuthControllerV1 } from './auth.controller-v1';
-import { LocalStrategy } from './application/strategies/local.strategy';
 
 @Module({
   controllers: [AuthControllerV1],

@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker';
 
-import { EmailAuthProviderEntity, EmailAuthProviderEntityData } from './auth-provider.entity';
+import { EmailAuthProviderEntity, type EmailAuthProviderEntityData } from './auth-provider.entity';
 
 export const createMockEmailAuthProviderEntity = (
-  overrides?: Partial<EmailAuthProviderEntityData>,
+  overrides?: Partial<EmailAuthProviderEntityData>
 ): EmailAuthProviderEntity =>
   EmailAuthProviderEntity.from({
     accountId: faker.string.uuid(),

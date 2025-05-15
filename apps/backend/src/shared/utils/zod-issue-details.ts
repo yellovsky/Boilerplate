@@ -1,17 +1,13 @@
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 import type { ZodIssue } from 'zod';
 
 type TranslateIssue = (t: TFunction, issue: ZodIssue) => string | undefined;
 
 const getUnknownMessage = (issue: ZodIssue) => issue.message;
 const getRequiredMessage: TranslateIssue = (t, issue) => {
-  const isUndefined =
-    issue.code === 'invalid_type' &&
-    issue.expected !== 'undefined' &&
-    issue.received === 'undefined';
+  const isUndefined = issue.code === 'invalid_type' && issue.expected !== 'undefined' && issue.received === 'undefined';
 
-  const isMinimalString =
-    issue.code === 'too_small' && issue.type === 'string' && issue.minimum === 1;
+  const isMinimalString = issue.code === 'too_small' && issue.type === 'string' && issue.minimum === 1;
 
   if (isUndefined || isMinimalString) return t('Field is required', { ns: 'error' });
 };

@@ -1,4 +1,4 @@
-import { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
+import type { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
 
 export interface AppConfigService {
   readonly jwtSecret: string;

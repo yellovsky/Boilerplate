@@ -6,14 +6,13 @@
   "private": true,
   "scripts": {
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "eslint": "eslint",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint && yarn typecheck",
+    "biome": "biome check",
+    "lint": "biome check && yarn typecheck",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
@@ -84,6 +83,7 @@
     "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.0.0-beta.4",
     "@faker-js/faker": "^9.8.0",
     "@golevelup/ts-jest": "^0.7.0",
     "@nestjs/cli": "^11.0.6",

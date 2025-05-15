@@ -1,5 +1,5 @@
-import { TFunction } from 'i18next';
-import { ZodIssue } from 'zod';
+import type { TFunction } from 'i18next';
+import type { ZodIssue } from 'zod';
 
 import { getZodIssueDetails } from './zod-issue-details';
 

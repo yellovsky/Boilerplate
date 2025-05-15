@@ -3,7 +3,7 @@ import { QueryClient } from '@tanstack/query-core';
 const MINUTE = 60 * 1000;
 
 const SERVER_STALE_TIME = MINUTE;
-const CLIENT_STALE_TIME = Infinity;
+const CLIENT_STALE_TIME = Number.POSITIVE_INFINITY;
 
 const SERVER_GC_TIME = 5 * MINUTE;
 const CLIENT_GC_TIME = 30 * MINUTE;
@@ -12,7 +12,7 @@ export const getQueryClient = () =>
   new QueryClient({
     defaultOptions: {
       mutations: {
-        onError: error => console.error('Query Error:', error),
+        onError: (error) => console.error('Query Error:', error),
         retry: false,
       },
       queries: {

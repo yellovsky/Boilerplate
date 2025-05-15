@@ -19,7 +19,7 @@ export class WorkoutTranslationEntity {
       data.updatedAt,
       data.seoTitle,
       data.seoKeywords,
-      data.seoDescription,
+      data.seoDescription
     );
   }
 
@@ -31,7 +31,7 @@ export class WorkoutTranslationEntity {
     public readonly updatedAt: Date,
     public readonly seoTitle: string | null,
     public readonly seoKeywords: string | null,
-    public readonly seoDescription: string | null,
+    public readonly seoDescription: string | null
   ) {}
 
   filterPublished(): WorkoutTranslationEntity | null {

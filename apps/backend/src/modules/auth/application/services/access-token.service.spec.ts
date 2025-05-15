@@ -1,12 +1,12 @@
-import { INestApplication } from '@nestjs/common';
+import type { INestApplication } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test, type TestingModule } from '@nestjs/testing';
 
-import { IdentifierOf } from 'src/shared/utils/injectable-identifier';
+import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
+
 import { APP_CONFIG_SRV, AppConfigModule } from 'src/modules/app-config';
 
 import { ACCESS_TOKEN_SRV } from '../../domain/interfaces/access-token.service.interface';
-
 import { AccessTokenServiceImpl } from './access-token.service';
 
 describe('AccessTokenService', () => {

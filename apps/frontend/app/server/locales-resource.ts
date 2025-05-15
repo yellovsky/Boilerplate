@@ -8,7 +8,5 @@ export const localesResourceHandler = async (c: Context) => {
   if (!lng || !ns) return new Response('Not found', { status: 404 });
 
   const resource = await getLocalesResource(lng, ns);
-  return resource
-    ? new Response(JSON.stringify(resource))
-    : new Response('Not found', { status: 404 });
+  return resource ? new Response(JSON.stringify(resource)) : new Response('Not found', { status: 404 });
 };

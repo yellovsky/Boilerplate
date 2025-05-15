@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { GetOneWorkoutResponse } from '@repo/api-models';
 
-import { GetTranslationsStrategy } from 'src/shared/utils/translation-strategy';
-import { JSONLike } from 'src/shared/utils/json-like';
+import type { GetOneWorkoutResponse } from '@repo/api-models';
 
-import { WorkoutEntity } from '../../domain/entites/workout.entity';
+import type { JSONLike } from 'src/shared/utils/json-like';
+import type { GetTranslationsStrategy } from 'src/shared/utils/translation-strategy';
 
+import type { WorkoutEntity } from '../../domain/entites/workout.entity';
 import { WorkoutDto } from './workout.dto';
 
 export class GetOneWorkoutResponseDto implements JSONLike<GetOneWorkoutResponse> {
@@ -15,10 +15,7 @@ export class GetOneWorkoutResponseDto implements JSONLike<GetOneWorkoutResponse>
   @ApiProperty({ type: WorkoutDto })
   data: WorkoutDto;
 
-  static fromEntity(
-    strategy: GetTranslationsStrategy,
-    workoutEntity: WorkoutEntity,
-  ): GetOneWorkoutResponseDto | null {
+  static fromEntity(strategy: GetTranslationsStrategy, workoutEntity: WorkoutEntity): GetOneWorkoutResponseDto | null {
     const workoutDto = WorkoutDto.fromEntity(strategy, workoutEntity);
     if (!workoutDto) return null;
 

@@ -1,11 +1,12 @@
-import * as zod from 'zod';
-import { getManyPermissionPoliciesQuerySchema } from '@repo/api-models';
-import { ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Controller, Get, Inject, Query } from '@nestjs/common';
+import { ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import type * as zod from 'zod';
+
+import { getManyPermissionPoliciesQuerySchema } from '@repo/api-models';
 
 import { ApiCommonErrorResponses } from 'src/shared/utils/api-common-response';
+import { ReqCtx, type RequestContext } from 'src/shared/utils/request-context';
 import { ZodValidationPipe } from 'src/shared/utils/zod-validation-pipe';
-import { ReqCtx, RequestContext } from 'src/shared/utils/request-context';
 
 import { PermissionPolicyListResponseDto } from './domain/dto/permission-policy-list-response.dto';
 
@@ -15,8 +16,8 @@ import { GetPermissionPoliciesListUseCase } from './application/use-cases/get-pe
 @Controller({ path: 'permission-policies', version: '1' })
 export class PermissionPoliciesControllerV1 {
   constructor(
-    @Inject()
-    private readonlygetPermissionPoliciesListUseCase: GetPermissionPoliciesListUseCase,
+    @Inject(GetPermissionPoliciesListUseCase)
+    private readonlygetPermissionPoliciesListUseCase: GetPermissionPoliciesListUseCase
   ) {}
 
   @Get()
@@ -31,7 +32,7 @@ export class PermissionPoliciesControllerV1 {
   async getPermissionPoliciesList(
     @Query(new ZodValidationPipe(getManyPermissionPoliciesQuerySchema))
     query: zod.infer<typeof getManyPermissionPoliciesQuerySchema>,
-    @ReqCtx() reqCtx: RequestContext,
+    @ReqCtx() reqCtx: RequestContext
   ): Promise<PermissionPolicyListResponseDto> {
     return this.readonlygetPermissionPoliciesListUseCase.execute(reqCtx, query);
   }

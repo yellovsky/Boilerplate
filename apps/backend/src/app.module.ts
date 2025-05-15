@@ -1,18 +1,17 @@
-import * as winston from 'winston';
+import { type MiddlewareConsumer, Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { PassportModule } from '@nestjs/passport';
-import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { utilities as nestWinstonModuleUtilities, WinstonModule } from 'nest-winston';
+import * as winston from 'winston';
 
 import { AppConfigModule } from 'src/modules/app-config';
+import { AuthModule, JwtGuard, JwtStrategy } from 'src/modules/auth';
 import { CasbinModule } from 'src/modules/casbin';
 import { I18nModule } from 'src/modules/i18n';
 import { PrismaModule } from 'src/modules/prisma';
 import { WorkoutsModule } from 'src/modules/workouts';
-import { AuthModule, JwtGuard, JwtStrategy } from 'src/modules/auth';
 
 import { PermissionPoliciesModule } from './modules/permission-policies';
-
 import { RequestLoggerMiddleware } from './request-logger.middleware';
 
 @Module({
@@ -26,7 +25,7 @@ import { RequestLoggerMiddleware } from './request-logger.middleware';
             nestWinstonModuleUtilities.format.nestLike('api', {
               appName: false,
               processId: false,
-            }),
+            })
           ),
         }),
       ],

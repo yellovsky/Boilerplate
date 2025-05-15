@@ -1,4 +1,3 @@
-/* eslint-disable sort-keys */
 import type { PrismaClient } from '@generated/prisma';
 
 const accountPolicies = [
@@ -8,7 +7,7 @@ const accountPolicies = [
   { sub: 'admin', act: 'create', cond: 'true' },
   { sub: 'admin', act: 'delete', cond: 'true' },
   { sub: 'member', act: 'delete', cond: 'obj.id == sub' },
-].map(obj => ({ ...obj, objType: 'account' }));
+].map((obj) => ({ ...obj, objType: 'account' }));
 
 const permissionPolicyPolicies = [
   { sub: 'admin', act: 'view', cond: 'true' },
@@ -17,7 +16,7 @@ const permissionPolicyPolicies = [
   { sub: 'admin', act: 'update', cond: 'true' },
   { sub: 'admin', act: 'create', cond: 'true' },
   { sub: 'admin', act: 'delete', cond: 'true' },
-].map(obj => ({ ...obj, objType: 'permission_policy' }));
+].map((obj) => ({ ...obj, objType: 'permission_policy' }));
 
 const policies: Array<{
   ptype: string;
@@ -26,12 +25,12 @@ const policies: Array<{
   act: string;
   cond: string;
   note?: string;
-}> = [...accountPolicies, ...permissionPolicyPolicies].map(obj => ({
+}> = [...accountPolicies, ...permissionPolicyPolicies].map((obj) => ({
   ...obj,
   ptype: 'p',
 }));
 
-const casbinRules = [...policies].map(inp => ({
+const casbinRules = [...policies].map((inp) => ({
   note: inp.note,
   ptype: inp.ptype,
   v0: inp.sub,

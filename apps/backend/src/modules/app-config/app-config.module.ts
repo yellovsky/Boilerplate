@@ -1,8 +1,8 @@
-import { ConfigModule } from '@nestjs/config';
 import { Global, Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 
-import { APP_CONFIG_SRV } from './app-config.types';
 import { AppConfigServiceImpl } from './app-config.service';
+import { APP_CONFIG_SRV } from './app-config.types';
 
 @Global()
 @Module({

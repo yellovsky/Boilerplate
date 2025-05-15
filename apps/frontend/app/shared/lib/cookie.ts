@@ -18,18 +18,8 @@ export interface SetCookieOptions {
   secure?: boolean;
 }
 
-export const makeSetCookieHeader = (
-  name: string,
-  value: string,
-  options: SetCookieOptions = {},
-) => {
-  const {
-    daysToExpire = 7,
-    path = '/',
-    httpOnly = false,
-    secure = false,
-    sameSite = 'Lax',
-  } = options;
+export const makeSetCookieHeader = (name: string, value: string, options: SetCookieOptions = {}) => {
+  const { daysToExpire = 7, path = '/', httpOnly = false, secure = false, sameSite = 'Lax' } = options;
 
   const expiresDate = new Date();
   expiresDate.setTime(expiresDate.getTime() + daysToExpire * 24 * 60 * 60 * 1000);

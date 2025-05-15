@@ -1,15 +1,16 @@
+import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import type { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { Inject, Injectable } from '@nestjs/common';
 
+import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
+
+import type { ProfileEntity } from 'src/modules/acount';
 import { APP_CONFIG_SRV } from 'src/modules/app-config';
-import { IdentifierOf } from 'src/shared/utils/injectable-identifier';
-import { ProfileEntity } from 'src/modules/acount';
 
 import { ACCESS_TOKEN_COOKIE_KEY } from '../../config/constants';
 import { AUTH_SRV } from '../../domain/interfaces/auth.service.interface';
-import { JWTTokenPayload } from '../../domain/interfaces/jwt-token';
+import type { JWTTokenPayload } from '../../domain/interfaces/jwt-token';
 
 const ExtractJwtFromCookies = (req: Request): string | null => {
   const access_token = req.cookies?.[ACCESS_TOKEN_COOKIE_KEY];
@@ -23,14 +24,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     private readonly authSrv: IdentifierOf<typeof AUTH_SRV>,
 
     @Inject(APP_CONFIG_SRV)
-    readonly appConfigSrv: IdentifierOf<typeof APP_CONFIG_SRV>,
+    readonly appConfigSrv: IdentifierOf<typeof APP_CONFIG_SRV>
   ) {
     super({
       ignoreExpiration: false,
-      jwtFromRequest: ExtractJwt.fromExtractors([
-        ExtractJwtFromCookies,
-        ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ]),
+      jwtFromRequest: ExtractJwt.fromExtractors([ExtractJwtFromCookies, ExtractJwt.fromAuthHeaderAsBearerToken()]),
       secretOrKey: appConfigSrv.jwtSecret,
     });
   }

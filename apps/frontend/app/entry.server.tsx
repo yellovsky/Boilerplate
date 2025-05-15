@@ -1,13 +1,14 @@
-import { createInstance } from 'i18next';
-import { createReadableStreamFromReadable } from '@react-router/node';
-import { isbot } from 'isbot';
 import { PassThrough } from 'node:stream';
-import { renderToPipeableStream } from 'react-dom/server';
-import { type AppLoadContext, type EntryContext, ServerRouter } from 'react-router';
-import { I18nextProvider, initReactI18next } from 'react-i18next';
 
-import i18next from '@app/localization/i18n.server';
+import { createReadableStreamFromReadable } from '@react-router/node';
+import { createInstance } from 'i18next';
+import { isbot } from 'isbot';
+import { renderToPipeableStream } from 'react-dom/server';
+import { I18nextProvider, initReactI18next } from 'react-i18next';
+import { type AppLoadContext, type EntryContext, ServerRouter } from 'react-router';
+
 import { i18n, resources } from '@app/localization';
+import i18next from '@app/localization/i18n.server';
 
 // Reject all pending promises from handler functions after 10 seconds
 export const streamTimeout = 10000;
@@ -17,7 +18,7 @@ export default async function handleRequest(
   responseStatusCode: number,
   responseHeaders: Headers,
   context: EntryContext,
-  appContext: AppLoadContext,
+  appContext: AppLoadContext
 ) {
   const callbackName = isbot(request.headers.get('user-agent')) ? 'onAllReady' : 'onShellReady';
 
@@ -45,7 +46,7 @@ export default async function handleRequest(
             new Response(stream, {
               headers: responseHeaders,
               status: responseStatusCode,
-            }),
+            })
           );
 
           pipe(body);
@@ -60,7 +61,7 @@ export default async function handleRequest(
             console.error(error);
           }
         },
-      },
+      }
     );
 
     // Abort the streaming render pass after 11 seconds so to allow the rejected

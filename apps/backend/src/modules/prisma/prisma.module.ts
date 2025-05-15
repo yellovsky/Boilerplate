@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common';
 import type { PrismaClient } from '@generated/prisma';
+import { Module } from '@nestjs/common';
 
-import { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
+import type { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
 
 import { PrismaServiceImpl } from './prisma.service';
 

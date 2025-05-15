@@ -1,18 +1,19 @@
 import type { Prisma } from '@generated/prisma';
-import { validate } from 'uuid';
 import { Inject, Injectable } from '@nestjs/common';
+import { validate } from 'uuid';
 
-import { IdentifierOf } from 'src/shared/utils/injectable-identifier';
+import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
+
 import { PRISMA_SRV } from 'src/modules/prisma';
 
 import { WorkoutEntity } from '../../domain/entites/workout.entity';
-import { WorkoutsRepository } from '../../domain/interfaces/workouts.repository.interface';
+import type { WorkoutsRepository } from '../../domain/interfaces/workouts.repository.interface';
 
 @Injectable()
 export class WorkoutsRepositoryImpl implements WorkoutsRepository {
   constructor(
     @Inject(PRISMA_SRV)
-    private readonly prismaSrv: IdentifierOf<typeof PRISMA_SRV>,
+    private readonly prismaSrv: IdentifierOf<typeof PRISMA_SRV>
   ) {}
 
   async createOne(_data: { name: string }): Promise<WorkoutEntity> {
@@ -20,9 +21,7 @@ export class WorkoutsRepositoryImpl implements WorkoutsRepository {
   }
 
   async findOneBySlugOrId(slugOrId: string): Promise<WorkoutEntity | null> {
-    const where: Prisma.WorkoutWhereUniqueInput = validate(slugOrId)
-      ? { id: slugOrId }
-      : { slug: slugOrId };
+    const where: Prisma.WorkoutWhereUniqueInput = validate(slugOrId) ? { id: slugOrId } : { slug: slugOrId };
 
     const dbWorkout = await this.prismaSrv.workout.findUnique({
       include: { translations: true },
@@ -37,7 +36,7 @@ export class WorkoutsRepositoryImpl implements WorkoutsRepository {
       slug: dbWorkout.slug,
       updatedAt: dbWorkout.updatedAt,
 
-      translations: dbWorkout.translations.map(translations => ({
+      translations: dbWorkout.translations.map((translations) => ({
         createdAt: translations.createdAt,
         languageCode: translations.languageCode,
         name: translations.name,

@@ -1,12 +1,13 @@
+import { type ArgumentsHost, Catch, type ExceptionFilter, HttpException } from '@nestjs/common';
 import * as parser from 'accept-language-parser';
-import { TFunction } from 'i18next';
+import type { Request, Response } from 'express';
+import type { TFunction } from 'i18next';
 import { ZodError } from 'zod';
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common';
-import { Request, Response } from 'express';
 
 import { DomainError } from 'src/shared/domain/errors/domain-error';
 import { FailedResponseDto } from 'src/shared/presentation/dtos/failure-response.dto';
-import { I18nService } from 'src/modules/i18n';
+
+import type { I18nService } from 'src/modules/i18n';
 
 @Catch(Error)
 export class HttpExceptionFilter implements ExceptionFilter {

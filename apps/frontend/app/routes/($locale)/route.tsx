@@ -17,7 +17,7 @@ export default function Index() {
           <span>Loading...</span>
         ) : status === 'success' ? (
           isAuthorized ? (
-            <button>logout</button>
+            <button type="button">logout</button>
           ) : (
             <Link to="/sign-in">sign in</Link>
           )

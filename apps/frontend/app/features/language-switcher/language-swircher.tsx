@@ -1,8 +1,9 @@
-import { FC } from 'react';
-import { useLocation } from 'react-router';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router';
 
 import { Link } from '@shared/ui/link';
+
 import { i18n as localizationI18n } from '@app/localization';
 
 export const LanguageSwitcher: FC = () => {
@@ -11,7 +12,7 @@ export const LanguageSwitcher: FC = () => {
 
   return (
     <div className="fixed top-0 right-0 z-10 flex w-min gap-2 p-2">
-      {localizationI18n.supportedLngs.map(language => (
+      {localizationI18n.supportedLngs.map((language) => (
         <Link
           className="text-blue-500 transition-all hover:underline dark:text-white"
           key={language}

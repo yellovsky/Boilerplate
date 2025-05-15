@@ -1,9 +1,6 @@
-import { GetTranslationsStrategy, Translatable } from 'src/shared/utils/translation-strategy';
+import type { GetTranslationsStrategy, Translatable } from 'src/shared/utils/translation-strategy';
 
-import {
-  WorkoutTranslationEntity,
-  WorkoutTranslationsEntityData,
-} from './workout-translation.entity';
+import { WorkoutTranslationEntity, type WorkoutTranslationsEntityData } from './workout-translation.entity';
 
 interface WorkoutEntityData {
   id: string;
@@ -22,7 +19,7 @@ export class WorkoutEntity implements Translatable<WorkoutTranslationEntity> {
       data.createdAt,
       data.updatedAt,
       data.publishedAt,
-      data.translations.map(WorkoutTranslationEntity.from),
+      data.translations.map(WorkoutTranslationEntity.from)
     );
   }
 
@@ -32,17 +29,15 @@ export class WorkoutEntity implements Translatable<WorkoutTranslationEntity> {
     public readonly createdAt: Date,
     public readonly updatedAt: Date,
     public readonly publishedAt: Date | null,
-    public readonly translations: WorkoutTranslationEntity[],
+    public readonly translations: WorkoutTranslationEntity[]
   ) {}
 
   getTranslations(strategy: GetTranslationsStrategy): WorkoutTranslationEntity | null {
-    const byLocale = this.translations.find(t => t.languageCode === strategy.locale);
+    const byLocale = this.translations.find((t) => t.languageCode === strategy.locale);
     if (byLocale) return byLocale;
 
     if (strategy.fallbackLocale) {
-      const byFallbackLocale = this.translations.find(
-        t => t.languageCode === strategy.fallbackLocale,
-      );
+      const byFallbackLocale = this.translations.find((t) => t.languageCode === strategy.fallbackLocale);
       if (byFallbackLocale) return byFallbackLocale;
     }
 
@@ -53,9 +48,7 @@ export class WorkoutEntity implements Translatable<WorkoutTranslationEntity> {
   filterPublished(): WorkoutEntity | null {
     if (!this.publishedAt) return null;
 
-    const publishedTranslations = this.translations
-      .map(t => t.filterPublished())
-      .filter(val => !!val);
+    const publishedTranslations = this.translations.map((t) => t.filterPublished()).filter((val) => !!val);
     if (!publishedTranslations.length) return null;
 
     return WorkoutEntity.from({

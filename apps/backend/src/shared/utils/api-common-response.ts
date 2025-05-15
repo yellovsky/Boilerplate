@@ -1,6 +1,4 @@
 import { applyDecorators } from '@nestjs/common';
-import type { FailedResponse } from '@repo/api-models';
-
 import {
   ApiBadRequestResponse,
   ApiForbiddenResponse,
@@ -8,6 +6,8 @@ import {
   ApiNotFoundResponse,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+
+import type { FailedResponse } from '@repo/api-models';
 
 import { FailedResponseDto } from '../presentation/dtos/failure-response.dto';
 
@@ -93,6 +93,6 @@ export const ApiCommonErrorResponses = (
         } satisfies FailedResponse,
         type: FailedResponseDto,
       }),
-    ].filter(r => r !== null),
+    ].filter((r) => r !== null)
   );
 };

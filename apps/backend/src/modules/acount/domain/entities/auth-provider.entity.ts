@@ -17,7 +17,7 @@ export class EmailAuthProviderEntity {
       data.email,
       data.passwordHash,
       data.createdAt,
-      data.updatedAt,
+      data.updatedAt
     );
   }
 
@@ -28,7 +28,7 @@ export class EmailAuthProviderEntity {
     public readonly email: string,
     private readonly _passwordHash: string | null,
     public readonly createdAt: Date,
-    public readonly updatedAt: Date,
+    public readonly updatedAt: Date
   ) {}
 
   getPasswordHash(): string | null {
@@ -74,6 +74,6 @@ export class AuthProviderEntity {
     public readonly email: string | null,
     public readonly passwordHash: string | null,
     public readonly createdAt: Date,
-    public readonly updatedAt: Date,
+    public readonly updatedAt: Date
   ) {}
 }

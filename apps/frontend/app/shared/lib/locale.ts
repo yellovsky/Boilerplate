@@ -1,6 +1,6 @@
-import { To } from 'react-router';
+import type { To } from 'react-router';
 
-import { isLocale, Locale } from '../config/locale';
+import { isLocale, type Locale } from '../config/locale';
 
 const isValidBCP47Locale = (locale: string): boolean => {
   const bcp47Regex =
@@ -35,7 +35,7 @@ const removeLocaleFromPathname = (pathname: string): string => {
 
   const [, maybeLocale, ...parts] = pathname.split('/');
   const parsedLocale = parseLocale(maybeLocale);
-  return !parsedLocale ? pathname : '/' + parts.join('/');
+  return !parsedLocale ? pathname : `/${parts.join('/')}`;
 };
 
 export function removeLocaleFromTo(to: string): string;

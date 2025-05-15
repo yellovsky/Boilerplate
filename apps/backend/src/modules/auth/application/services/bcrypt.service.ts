@@ -1,8 +1,8 @@
-import * as bcrypt from 'bcrypt';
 import { Injectable } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 
-import { BcryptService } from '../../domain/interfaces/bcrypt.service.interface';
 import { ROUNDS_OF_HASHING } from '../../config/constants';
+import type { BcryptService } from '../../domain/interfaces/bcrypt.service.interface';
 
 @Injectable()
 export class BcryptServiceImpl implements BcryptService {

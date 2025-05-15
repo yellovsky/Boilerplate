@@ -9,14 +9,7 @@ export interface ProfileEntityData {
 
 export class ProfileEntity {
   static from(data: ProfileEntityData): ProfileEntity {
-    return new ProfileEntity(
-      data.id,
-      data.accountId,
-      data.name,
-      data.isRoot,
-      data.createdAt,
-      data.updatedAt,
-    );
+    return new ProfileEntity(data.id, data.accountId, data.name, data.isRoot, data.createdAt, data.updatedAt);
   }
 
   constructor(
@@ -25,6 +18,6 @@ export class ProfileEntity {
     public readonly name: string,
     public readonly isRoot: boolean,
     public readonly createdAt: Date,
-    public readonly updatedAt: Date,
+    public readonly updatedAt: Date
   ) {}
 }

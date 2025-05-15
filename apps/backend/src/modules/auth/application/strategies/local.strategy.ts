@@ -1,9 +1,10 @@
+import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
-import { Inject, Injectable } from '@nestjs/common';
 
-import { IdentifierOf } from 'src/shared/utils/injectable-identifier';
-import { ProfileEntity } from 'src/modules/acount';
+import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
+
+import type { ProfileEntity } from 'src/modules/acount';
 
 import { AUTH_SRV } from '../../domain/interfaces/auth.service.interface';
 
@@ -11,7 +12,7 @@ import { AUTH_SRV } from '../../domain/interfaces/auth.service.interface';
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(
     @Inject(AUTH_SRV)
-    private readonly authSrv: IdentifierOf<typeof AUTH_SRV>,
+    private readonly authSrv: IdentifierOf<typeof AUTH_SRV>
   ) {
     super({ usernameField: 'email' });
   }

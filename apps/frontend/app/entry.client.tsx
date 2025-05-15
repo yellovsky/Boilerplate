@@ -1,11 +1,11 @@
-import Backend from 'i18next-http-backend';
-import { getInitialNamespaces } from 'remix-i18next/client';
-import { HydratedRouter } from 'react-router/dom';
-import { hydrateRoot } from 'react-dom/client';
 import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import Backend from 'i18next-http-backend';
+import { StrictMode, startTransition } from 'react';
+import { hydrateRoot } from 'react-dom/client';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
-import { startTransition, StrictMode } from 'react';
+import { HydratedRouter } from 'react-router/dom';
+import { getInitialNamespaces } from 'remix-i18next/client';
 
 import { i18n } from '@app/localization';
 
@@ -40,7 +40,7 @@ async function hydrate() {
         <StrictMode>
           <HydratedRouter />
         </StrictMode>
-      </I18nextProvider>,
+      </I18nextProvider>
     );
   });
 }

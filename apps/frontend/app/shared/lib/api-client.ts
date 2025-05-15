@@ -1,5 +1,6 @@
-import { useState } from 'react';
 import axios, { type AxiosInstance, type AxiosRequestConfig, isAxiosError } from 'axios';
+import { useState } from 'react';
+
 import { type FailedResponse, failedResponseSchema } from '@repo/api-models';
 
 const unknownFailedResponse: FailedResponse = {
@@ -34,45 +35,31 @@ class ApiClientImpl implements ApiClient {
       const axiosResponse = await this.axios.get<T>(url, config);
       return axiosResponse.data;
     } catch (error) {
-      const parsed = isAxiosError(error)
-        ? failedResponseSchema.safeParse(error.response?.data)
-        : undefined;
+      const parsed = isAxiosError(error) ? failedResponseSchema.safeParse(error.response?.data) : undefined;
 
       const failedResponse: FailedResponse = parsed?.data || unknownFailedResponse;
       throw failedResponse;
     }
   }
 
-  async post<T = unknown>(
-    url: string,
-    data?: unknown,
-    config?: AxiosRequestConfig<unknown>,
-  ): Promise<T> {
+  async post<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig<unknown>): Promise<T> {
     try {
       const axiosResponse = await this.axios.post<T>(url, data, config);
       return axiosResponse.data;
     } catch (error) {
-      const parsed = isAxiosError(error)
-        ? failedResponseSchema.safeParse(error.response?.data)
-        : undefined;
+      const parsed = isAxiosError(error) ? failedResponseSchema.safeParse(error.response?.data) : undefined;
 
       const failedResponse: FailedResponse = parsed?.data || unknownFailedResponse;
       throw failedResponse;
     }
   }
 
-  async put<T = unknown>(
-    url: string,
-    data?: unknown,
-    config?: AxiosRequestConfig<unknown>,
-  ): Promise<T> {
+  async put<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig<unknown>): Promise<T> {
     try {
       const axiosResponse = await this.axios.put<T>(url, data, config);
       return axiosResponse.data;
     } catch (error) {
-      const parsed = isAxiosError(error)
-        ? failedResponseSchema.safeParse(error.response?.data)
-        : undefined;
+      const parsed = isAxiosError(error) ? failedResponseSchema.safeParse(error.response?.data) : undefined;
 
       const failedResponse: FailedResponse = parsed?.data || unknownFailedResponse;
       throw failedResponse;
@@ -84,9 +71,7 @@ class ApiClientImpl implements ApiClient {
       const axiosResponse = await this.axios.delete<T>(url, config);
       return axiosResponse.data;
     } catch (error) {
-      const parsed = isAxiosError(error)
-        ? failedResponseSchema.safeParse(error.response?.data)
-        : undefined;
+      const parsed = isAxiosError(error) ? failedResponseSchema.safeParse(error.response?.data) : undefined;
 
       const failedResponse: FailedResponse = parsed?.data || unknownFailedResponse;
       throw failedResponse;

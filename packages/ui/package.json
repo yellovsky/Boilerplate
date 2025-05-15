@@ -9,18 +9,18 @@
     "dist"
   ],
   "scripts": {
-    "eslint": "eslint",
+    "biome": "biome check",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint & yarn typecheck"
+    "lint": "yarn biome & yarn typecheck"
   },
   "devDependencies": {
     "@repo/typescript-config": "*",
     "@types/react": "^19.1.4",
     "@types/react-dom": "^19.1.5",
-    "eslint": "^9.26.0",
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@biomejs/biome": "^2.0.0-beta.4",
     "@repo/theme": "*",
     "class-variance-authority": "^0.7.1",
     "react": "^19.1.0",

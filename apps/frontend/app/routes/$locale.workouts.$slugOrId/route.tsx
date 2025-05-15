@@ -1,12 +1,12 @@
-import { useLoaderData } from 'react-router';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { useLoaderData } from 'react-router';
 
 import { getLoaderApiClient } from '@shared/lib/api-client';
 import { getQueryClient } from '@shared/lib/query-client';
 
-import { GetOneWorkoutVariables, prefetchBlogPostQuery } from '@entities/workouts';
+import { type GetOneWorkoutVariables, prefetchBlogPostQuery } from '@entities/workouts';
 
-import { Route } from './+types/route';
+import type { Route } from './+types/route';
 import { WorkoutPage } from './page';
 
 export async function loader({ context, params }: Route.LoaderArgs) {

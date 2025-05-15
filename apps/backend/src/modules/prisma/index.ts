@@ -1,1 +1,1 @@
-export { PrismaModule, PRISMA_SRV, type PrismaTransaction } from './prisma.module';
+export { PRISMA_SRV, PrismaModule, type PrismaTransaction } from './prisma.module';

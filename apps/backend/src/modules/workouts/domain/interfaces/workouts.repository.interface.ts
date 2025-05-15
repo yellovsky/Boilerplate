@@ -1,6 +1,6 @@
-import { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
+import type { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
 
-import { WorkoutEntity } from '../entites/workout.entity';
+import type { WorkoutEntity } from '../entites/workout.entity';
 
 export interface WorkoutsRepository {
   findOneBySlugOrId(slugOrId: string): Promise<WorkoutEntity | null>;

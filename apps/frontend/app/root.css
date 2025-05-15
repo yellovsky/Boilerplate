@@ -1,7 +1,7 @@
-@import '@repo/theme/tailwind.css';
-@import '@repo/ui/src/theme.css';
+@import "@repo/theme/tailwind.css";
+@import "@repo/ui/src/theme.css";
 
-@import './theme.css';
+@import "./theme.css";
 
 body {
   @apply text-text bg-bg relative flex h-dvh w-full flex-col;

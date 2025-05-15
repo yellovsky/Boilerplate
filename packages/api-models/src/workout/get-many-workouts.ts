@@ -2,7 +2,6 @@ import * as zod from 'zod';
 
 import { localeSchema } from '../common/locale';
 import { getItemsWithPaginationSchema, getSuccessResponseSchema } from '../common/success-response';
-
 import { workoutSchema } from './workout';
 
 export const getManyWorkoutsQuerySchema = zod.object({
@@ -10,7 +9,5 @@ export const getManyWorkoutsQuerySchema = zod.object({
 });
 export type GetManyWorkoutsQuery = zod.infer<typeof getManyWorkoutsQuerySchema>;
 
-export const getManyWorkoutsResponseSchema = getSuccessResponseSchema(
-  getItemsWithPaginationSchema(workoutSchema),
-);
+export const getManyWorkoutsResponseSchema = getSuccessResponseSchema(getItemsWithPaginationSchema(workoutSchema));
 export type GetManyWorkoutsResponse = zod.infer<typeof getManyWorkoutsResponseSchema>;

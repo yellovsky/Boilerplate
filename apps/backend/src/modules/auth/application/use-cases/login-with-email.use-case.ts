@@ -1,15 +1,15 @@
-import { addDays } from 'date-fns';
-import { LoginWithEmailBody } from '@repo/api-models';
 import { Inject, Injectable } from '@nestjs/common';
+import { addDays } from 'date-fns';
 import type { Request, Response } from 'express';
 
-import { IdentifierOf } from 'src/shared/utils/injectable-identifier';
+import type { LoginWithEmailBody } from '@repo/api-models';
+
+import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
+
 import { ACCOUNTS_SRV, AUTH_PROVIDERS_SRV } from 'src/modules/acount';
 
 import { ACCESS_TOKEN_COOKIE_KEY } from '../../config/constants';
-
 import { ACCESS_TOKEN_SRV } from '../../domain/interfaces/access-token.service.interface';
-
 import { LoginWithEmailResponseDto } from '../dto/login-with-email-response.dto';
 
 @Injectable()
@@ -22,14 +22,10 @@ export class LoginWithEmailUseCase {
     private readonly accountSrv: IdentifierOf<typeof ACCOUNTS_SRV>,
 
     @Inject(AUTH_PROVIDERS_SRV)
-    private readonly authProviderSrv: IdentifierOf<typeof AUTH_PROVIDERS_SRV>,
+    private readonly authProviderSrv: IdentifierOf<typeof AUTH_PROVIDERS_SRV>
   ) {}
 
-  async execute(
-    body: LoginWithEmailBody,
-    req: Request,
-    res: Response,
-  ): Promise<LoginWithEmailResponseDto> {
+  async execute(body: LoginWithEmailBody, req: Request, res: Response): Promise<LoginWithEmailResponseDto> {
     const authProvider = await this.authProviderSrv.getAuthProviderByEmail(body.email);
 
     if (!authProvider) throw new Error(`Auth provider with ${body.email} email not found`);

@@ -1,16 +1,12 @@
 import * as zod from 'zod';
 
-export const getSuccessResponseSchema = <TValueSchema extends zod.ZodType>(
-  dataSchema: TValueSchema,
-) =>
+export const getSuccessResponseSchema = <TValueSchema extends zod.ZodType>(dataSchema: TValueSchema) =>
   zod.object({
     data: dataSchema,
     status: zod.literal('success'),
   });
 
-export type SuccessResponse<TData> = ReturnType<
-  typeof getSuccessResponseSchema<zod.ZodType<TData>>
->;
+export type SuccessResponse<TData> = ReturnType<typeof getSuccessResponseSchema<zod.ZodType<TData>>>;
 
 export const responsePaginationSchema = zod.object({
   limit: zod.number(),
@@ -26,9 +22,7 @@ export const getItemsWithPaginationSchema = <TItem>(itemSchema: zod.ZodType<TIte
     items: itemSchema.array(),
     pagination: responsePaginationSchema,
   });
-export type ItemsWithPagination<TItem> = ReturnType<
-  typeof getSuccessResponseSchema<zod.ZodType<TItem>>
->;
+export type ItemsWithPagination<TItem> = ReturnType<typeof getSuccessResponseSchema<zod.ZodType<TItem>>>;
 
 export const statusSuccessResponseSchema = getSuccessResponseSchema(zod.null());
 export type StatusSuccessResponse = zod.infer<typeof statusSuccessResponseSchema>;

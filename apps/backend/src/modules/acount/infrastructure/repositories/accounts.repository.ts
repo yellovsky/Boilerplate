@@ -1,16 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { IdentifierOf } from 'src/shared/utils/injectable-identifier';
+import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
+
 import { PRISMA_SRV } from 'src/modules/prisma';
 
 import { AccountEntity } from '../../domain/entities/account.entity';
-import { AccountsRepository } from '../../domain/interfaces/accounts.repository.interface';
+import type { AccountsRepository } from '../../domain/interfaces/accounts.repository.interface';
 
 @Injectable()
 export class AccountsRepositoryImpl implements AccountsRepository {
   constructor(
     @Inject(PRISMA_SRV)
-    private readonly prismaSrv: IdentifierOf<typeof PRISMA_SRV>,
+    private readonly prismaSrv: IdentifierOf<typeof PRISMA_SRV>
   ) {}
 
   async findAccountById(id: string): Promise<AccountEntity | null> {

@@ -1,39 +1,39 @@
-import * as zod from 'zod';
-import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Body, Controller, Get, Inject, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { Request, Response } from 'express';
+import type * as zod from 'zod';
 
 import {
-  IsAuthorizedResponse,
+  type IsAuthorizedResponse,
+  type LoginWithEmailResponse,
+  type LogoutResponse,
   loginWithEmailBodySchema,
-  LoginWithEmailResponse,
-  LogoutResponse,
 } from '@repo/api-models';
 
-import { ApiCommonErrorResponses } from 'src/shared/utils/api-common-response';
 import { Public } from 'src/shared/application/decorators/public';
+import { ApiCommonErrorResponses } from 'src/shared/utils/api-common-response';
 import { ZodValidationPipe } from 'src/shared/utils/zod-validation-pipe';
 
 import { IsAuthorizedResponseDto } from './application/dto/is-authorized-response.dto';
-import { IsAuthorizedUseCase } from './application/use-cases/is-authorized.use-case';
-import { LocalGuard } from './application/guards/local.guard';
 import { LoginWithEmailResponseDto } from './application/dto/login-with-email-response.dto';
-import { LoginWithEmailUseCase } from './application/use-cases/login-with-email.use-case';
 import { LogoutResponseDto } from './application/dto/logout-response.dto';
+import { LocalGuard } from './application/guards/local.guard';
+import { IsAuthorizedUseCase } from './application/use-cases/is-authorized.use-case';
+import { LoginWithEmailUseCase } from './application/use-cases/login-with-email.use-case';
 import { LogoutUseCase } from './application/use-cases/logout.use-case';
 
 @ApiTags('Auth')
 @Controller({ path: 'auth', version: '1' })
 export class AuthControllerV1 {
   constructor(
-    @Inject()
+    @Inject(LoginWithEmailUseCase)
     private readonly loginWithEmailUseCase: LoginWithEmailUseCase,
 
-    @Inject()
+    @Inject(IsAuthorizedUseCase)
     private readonly isAuthorizedUseCase: IsAuthorizedUseCase,
 
-    @Inject()
-    private readonly logoutUseCase: LogoutUseCase,
+    @Inject(LogoutUseCase)
+    private readonly logoutUseCase: LogoutUseCase
   ) {}
 
   @Post('login')
@@ -61,7 +61,7 @@ export class AuthControllerV1 {
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
     @Body(new ZodValidationPipe(loginWithEmailBodySchema))
-    body: zod.infer<typeof loginWithEmailBodySchema>,
+    body: zod.infer<typeof loginWithEmailBodySchema>
   ): Promise<LoginWithEmailResponse> {
     return this.loginWithEmailUseCase.execute(body, req, res);
   }

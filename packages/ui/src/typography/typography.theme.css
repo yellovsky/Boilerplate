@@ -172,19 +172,19 @@
   }
 
   :is(
-    h1,
-    .typography-h1,
-    h2,
-    .typography-h2,
-    h3,
-    .typography-h3,
-    h4,
-    .typography-h4,
-    h5,
-    .typography-h5,
-    h6,
-    .typography-h6
-  ),
+      h1,
+      .typography-h1,
+      h2,
+      .typography-h2,
+      h3,
+      .typography-h3,
+      h4,
+      .typography-h4,
+      h5,
+      .typography-h5,
+      h6,
+      .typography-h6
+    ),
   &:is(
       h1,
       .typography-h1,

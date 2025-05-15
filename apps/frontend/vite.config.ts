@@ -1,10 +1,11 @@
-import babel from 'vite-plugin-babel';
-import { defineConfig } from 'vite';
+import { resolve } from 'node:path';
+
 import { reactRouter } from '@react-router/dev/vite';
+import tailwindcss from '@tailwindcss/vite';
 import { reactRouterDevTools } from 'react-router-devtools';
 import { reactRouterHonoServer } from 'react-router-hono-server/dev';
-import { resolve } from 'path';
-import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from 'vite';
+import babel from 'vite-plugin-babel';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({

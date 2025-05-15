@@ -1,6 +1,6 @@
 import type { To } from 'react-router';
 
-import { Locale } from '@shared/config/locale';
+import type { Locale } from '@shared/config/locale';
 import { useLocale } from '@shared/lib/use-locale';
 
 import { i18n } from '@app/localization';

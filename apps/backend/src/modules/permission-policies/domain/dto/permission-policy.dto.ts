@@ -3,13 +3,14 @@ import { Transform } from 'class-transformer';
 
 import {
   ISODate,
-  PermissionPolicy,
-  PermissionPolicyAction,
+  type PermissionPolicy,
+  type PermissionPolicyAction,
   permissionPolicyActionSchema,
 } from '@repo/api-models';
 
-import { JSONLike } from 'src/shared/utils/json-like';
-import { PermissionPolicyEntity } from 'src/modules/casbin/domain/entities/permission-policy.entity';
+import type { JSONLike } from 'src/shared/utils/json-like';
+
+import type { PermissionPolicyEntity } from 'src/modules/casbin/domain/entities/permission-policy.entity';
 
 export class PermissionPolicyDto implements JSONLike<PermissionPolicy> {
   @ApiProperty({
@@ -21,7 +22,7 @@ export class PermissionPolicyDto implements JSONLike<PermissionPolicy> {
 
   @ApiProperty({
     description: 'Prmission policy action (what is allowed to subject to do with object type)',
-    enum: permissionPolicyActionSchema._def.options.map(o => o._def.value),
+    enum: permissionPolicyActionSchema._def.options.map((o) => o._def.value),
   })
   action: PermissionPolicyAction;
 
@@ -81,7 +82,7 @@ export class PermissionPolicyDto implements JSONLike<PermissionPolicy> {
       entity.objectType,
       entity.subject,
       entity.createdAt,
-      entity.updatedAt,
+      entity.updatedAt
     );
   }
 
@@ -93,7 +94,7 @@ export class PermissionPolicyDto implements JSONLike<PermissionPolicy> {
     objectType: string,
     subject: string,
     createdAt: ISODate,
-    updatedAt: ISODate,
+    updatedAt: ISODate
   ) {
     this.id = id;
     this.action = action;

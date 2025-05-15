@@ -1,14 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { IdentifierOf } from 'src/shared/utils/injectable-identifier';
-import { ACCOUNTS_SRV, AUTH_PROVIDERS_SRV, ProfileEntity } from 'src/modules/acount';
+import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
+
+import { ACCOUNTS_SRV, AUTH_PROVIDERS_SRV, type ProfileEntity } from 'src/modules/acount';
 
 import { AuthInvalidPwdError } from '../../domain/errors/auth-invalid-pwd.error';
 import { AuthNotFoundError } from '../../domain/errors/auth-not-found.error';
 import { AuthPwdIsNotSetError } from '../../domain/errors/auth-pwd-is-not-set.error';
-import { AuthService } from '../../domain/interfaces/auth.service.interface';
+import type { AuthService } from '../../domain/interfaces/auth.service.interface';
 import { BCRYPT_SRV } from '../../domain/interfaces/bcrypt.service.interface';
-import { JWTTokenPayload } from '../../domain/interfaces/jwt-token';
+import type { JWTTokenPayload } from '../../domain/interfaces/jwt-token';
 
 @Injectable()
 export class AuthServiceImpl implements AuthService {
@@ -20,7 +21,7 @@ export class AuthServiceImpl implements AuthService {
     private readonly authProvidersSrv: IdentifierOf<typeof AUTH_PROVIDERS_SRV>,
 
     @Inject(BCRYPT_SRV)
-    private readonly bcryptSrv: IdentifierOf<typeof BCRYPT_SRV>,
+    private readonly bcryptSrv: IdentifierOf<typeof BCRYPT_SRV>
   ) {}
 
   async validateProfileByEmail(email: string, password: string): Promise<ProfileEntity> {
@@ -37,7 +38,7 @@ export class AuthServiceImpl implements AuthService {
     const accountEntity = await this.accountSrv.getAccountById(emailAuthProvider.accountId);
     if (!accountEntity) throw new Error(`Account entity not foud for ${email} email`);
 
-    const profile = accountEntity.profiles.find(p => p.isRoot);
+    const profile = accountEntity.profiles.find((p) => p.isRoot);
     if (!profile) throw new Error(`Account with ${email} email has no root profile`);
 
     return profile;
@@ -48,9 +49,8 @@ export class AuthServiceImpl implements AuthService {
     const accountEntity = await this.accountSrv.getAccountById(payload.accountId);
     if (!accountEntity) throw new AuthNotFoundError();
 
-    const profile = accountEntity.profiles.find(p => payload.profileId === p.id);
-    if (!profile)
-      throw new Error(`Account ${payload.accountId} has no ${payload.profileId} profile`);
+    const profile = accountEntity.profiles.find((p) => payload.profileId === p.id);
+    if (!profile) throw new Error(`Account ${payload.accountId} has no ${payload.profileId} profile`);
 
     return profile;
   }

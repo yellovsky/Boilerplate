@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ResponsePagination } from '@repo/api-models';
+
+import type { ResponsePagination } from '@repo/api-models';
 
 export class ListResponsePaginationDto implements ResponsePagination {
   @ApiProperty({ description: 'Number of items in response' })

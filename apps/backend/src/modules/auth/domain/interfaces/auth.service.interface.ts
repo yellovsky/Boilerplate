@@ -1,7 +1,8 @@
-import { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
-import { ProfileEntity } from 'src/modules/acount';
+import type { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
 
-import { JWTTokenPayload } from './jwt-token';
+import type { ProfileEntity } from 'src/modules/acount';
+
+import type { JWTTokenPayload } from './jwt-token';
 
 export interface AuthService {
   validateProfileByEmail(email: string, password: string): Promise<ProfileEntity>;

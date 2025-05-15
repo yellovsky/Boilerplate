@@ -1,11 +1,11 @@
+import { createParamDecorator, type ExecutionContext } from '@nestjs/common';
 import * as parser from 'accept-language-parser';
-import { Request } from 'express';
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import type { Request } from 'express';
 
 import { FALLBACK_LNG, SUPPORTED_LNGS } from 'src/shared/application/config/i18n';
 
-import { PrismaTransaction } from 'src/modules/prisma';
 import { ProfileEntity } from 'src/modules/acount';
+import type { PrismaTransaction } from 'src/modules/prisma';
 
 export type TxRequestContext = {
   tx: PrismaTransaction | null;
@@ -39,18 +39,14 @@ class RequestContextImpl implements RequestContext {
   static fromRequest(req: Request): RequestContext {
     const profile = req.user instanceof ProfileEntity ? req.user : null;
 
-    return new RequestContextImpl(
-      getRequestLocale(req),
-      profile?.accountId || null,
-      profile?.id || null,
-    );
+    return new RequestContextImpl(getRequestLocale(req), profile?.accountId || null, profile?.id || null);
   }
 
   constructor(
     public readonly locale: string,
     public readonly accountId: string | null,
     public readonly profileId: string | null,
-    public readonly tx: PrismaTransaction | null = null,
+    public readonly tx: PrismaTransaction | null = null
   ) {}
 
   withTx(tx: PrismaTransaction): RequestContext {
@@ -62,9 +58,7 @@ class RequestContextImpl implements RequestContext {
   }
 }
 
-export const ReqCtx = createParamDecorator(
-  (_data: unknown, ctx: ExecutionContext): RequestContext => {
-    const request = ctx.switchToHttp().getRequest();
-    return RequestContextImpl.fromRequest(request);
-  },
-);
+export const ReqCtx = createParamDecorator((_data: unknown, ctx: ExecutionContext): RequestContext => {
+  const request = ctx.switchToHttp().getRequest();
+  return RequestContextImpl.fromRequest(request);
+});

@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { ProfileEntity, ProfileEntityData } from './profile.entity';
+import { ProfileEntity, type ProfileEntityData } from './profile.entity';
 
 export const createMockProfileEntity = (overrides?: Partial<ProfileEntityData>): ProfileEntity =>
   ProfileEntity.from({

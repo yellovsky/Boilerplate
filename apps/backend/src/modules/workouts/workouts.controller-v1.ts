@@ -1,21 +1,22 @@
-import type * as zod from 'zod';
-import { getOneWorkoutQuerySchema } from '@repo/api-models';
-import { ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Controller, Get, Inject, Param, Query } from '@nestjs/common';
+import { ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import type * as zod from 'zod';
 
-import { ApiCommonErrorResponses } from 'src/shared/utils/api-common-response';
+import { getOneWorkoutQuerySchema } from '@repo/api-models';
+
 import { Public } from 'src/shared/application/decorators/public';
+import { ApiCommonErrorResponses } from 'src/shared/utils/api-common-response';
 import { ZodValidationPipe } from 'src/shared/utils/zod-validation-pipe';
 
-import { GetOneWorkoutBySlugOrIdUseCase } from './application/use-cases/get-one-workout-by-slug-or-id.use-case';
 import { GetOneWorkoutResponseDto } from './application/dto/get-one-workout-response.dto';
+import { GetOneWorkoutBySlugOrIdUseCase } from './application/use-cases/get-one-workout-by-slug-or-id.use-case';
 
 @ApiTags('Workouts')
 @Controller({ path: 'workouts', version: '1' })
 export class WorkoutsControllerV1 {
   constructor(
-    @Inject()
-    private readonly getOneWorkoutBySlugOrIdUseCase: GetOneWorkoutBySlugOrIdUseCase,
+    @Inject(GetOneWorkoutBySlugOrIdUseCase)
+    private readonly getOneWorkoutBySlugOrIdUseCase: GetOneWorkoutBySlugOrIdUseCase
   ) {}
 
   @Get(':slugOrId')
@@ -38,7 +39,7 @@ export class WorkoutsControllerV1 {
   async findOne(
     @Param('slugOrId') slugOrId: string,
     @Query(new ZodValidationPipe(getOneWorkoutQuerySchema))
-    query: zod.infer<typeof getOneWorkoutQuerySchema>,
+    query: zod.infer<typeof getOneWorkoutQuerySchema>
   ): Promise<GetOneWorkoutResponseDto | null> {
     return this.getOneWorkoutBySlugOrIdUseCase.execute(slugOrId, query);
   }

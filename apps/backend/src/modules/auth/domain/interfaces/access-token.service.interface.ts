@@ -1,6 +1,6 @@
-import { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
+import type { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
 
-import { JWTTokenPayload } from './jwt-token';
+import type { JWTTokenPayload } from './jwt-token';
 
 export interface AccessTokenService {
   generate(payload: JWTTokenPayload): Promise<string>;

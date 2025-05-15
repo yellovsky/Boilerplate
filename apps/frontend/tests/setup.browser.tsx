@@ -1,13 +1,14 @@
-import '~/root.css';
+import '../app/root.css';
 
-import { createInstance } from 'i18next';
-import { render } from 'vitest-browser-react';
 import { renderHook as renderReactHook } from '@testing-library/react';
-import { createRoutesStub, Outlet, type RoutesTestStubProps } from 'react-router';
+import { createInstance } from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
+import { createRoutesStub, Outlet, type RoutesTestStubProps } from 'react-router';
+import { render } from 'vitest-browser-react';
 
-import { Locale } from '@shared/config/locale';
-import { i18n, Namespace, resources } from '@app/localization';
+import type { Locale } from '@shared/config/locale';
+
+import { i18n, type Namespace, resources } from '@app/localization';
 
 export type StubRouteEntry = Parameters<typeof createRoutesStub>[0][0];
 
@@ -69,7 +70,7 @@ declare module 'vitest' {
   }
 }
 // We pass in our custom functions to the test context
-beforeEach(ctx => {
+beforeEach((ctx) => {
   ctx.renderStub = renderStub;
   ctx.renderHook = renderHook;
 });

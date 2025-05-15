@@ -1,5 +1,5 @@
-import { NestExpressApplication } from '@nestjs/platform-express';
-import { Response } from 'express';
+import type { NestExpressApplication } from '@nestjs/platform-express';
+import type { Response } from 'express';
 
 export const setupRedoc = (app: NestExpressApplication) => {
   app.use('/redoc', (_: unknown, res: Response) => {

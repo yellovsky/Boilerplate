@@ -1,5 +1,5 @@
-import * as bcrypt from 'bcrypt';
 import type { PrismaClient } from '@generated/prisma';
+import * as bcrypt from 'bcrypt';
 
 const ROUNDS_OF_HASHING = 10;
 

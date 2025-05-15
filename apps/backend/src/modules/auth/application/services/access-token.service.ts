@@ -1,27 +1,25 @@
-import { JwtService } from '@nestjs/jwt';
 import { Inject, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+
+import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 
 import { APP_CONFIG_SRV } from 'src/modules/app-config';
-import { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 
-import { AccessTokenService } from '../../domain/interfaces/access-token.service.interface';
 import { AuthInvalidTokenError } from '../../domain/errors/auth-invalid-token.error';
-import { JWTTokenPayload } from '../../domain/interfaces/jwt-token';
+import type { AccessTokenService } from '../../domain/interfaces/access-token.service.interface';
+import type { JWTTokenPayload } from '../../domain/interfaces/jwt-token';
 
 export const isJWTTokenPayload = (payload: unknown): payload is JWTTokenPayload =>
-  !!payload &&
-  typeof payload === 'object' &&
-  'accountId' in payload &&
-  typeof payload.accountId === 'string';
+  !!payload && typeof payload === 'object' && 'accountId' in payload && typeof payload.accountId === 'string';
 
 @Injectable()
 export class AccessTokenServiceImpl implements AccessTokenService {
   constructor(
-    @Inject()
+    @Inject(JwtService)
     private readonly jwtSrv: JwtService,
 
     @Inject(APP_CONFIG_SRV)
-    private readonly appConfigSrv: IdentifierOf<typeof APP_CONFIG_SRV>,
+    private readonly appConfigSrv: IdentifierOf<typeof APP_CONFIG_SRV>
   ) {}
 
   async generate(payload: JWTTokenPayload): Promise<string> {

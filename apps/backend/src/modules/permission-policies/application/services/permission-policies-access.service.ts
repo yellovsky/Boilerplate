@@ -1,21 +1,20 @@
-import Either from 'effect/Either';
 import { Inject, Injectable } from '@nestjs/common';
+import Either from 'effect/Either';
 
-import { AuthRequestContext } from 'src/shared/utils/request-context';
+import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
+import { SkippedReason, type SkippedResult } from 'src/shared/utils/load-result';
+import type { AuthRequestContext } from 'src/shared/utils/request-context';
+
 import { CASBIN_SRV } from 'src/modules/casbin';
-import { IdentifierOf } from 'src/shared/utils/injectable-identifier';
-import { PermissionPolicyEntity } from 'src/modules/casbin/domain/entities/permission-policy.entity';
-import { SkippedReason, SkippedResult } from 'src/shared/utils/load-result';
+import type { PermissionPolicyEntity } from 'src/modules/casbin/domain/entities/permission-policy.entity';
 
-import { PermissionPoliciesAccessControlService } from '../../domain/interfaces/permission-policies-access.service.interface';
+import type { PermissionPoliciesAccessControlService } from '../../domain/interfaces/permission-policies-access.service.interface';
 
 @Injectable()
-export class PermissionPoliciesAccessControlServiceImpl
-  implements PermissionPoliciesAccessControlService
-{
+export class PermissionPoliciesAccessControlServiceImpl implements PermissionPoliciesAccessControlService {
   constructor(
     @Inject(CASBIN_SRV)
-    private readonly casbinSrv: IdentifierOf<typeof CASBIN_SRV>,
+    private readonly casbinSrv: IdentifierOf<typeof CASBIN_SRV>
   ) {}
 
   async checkCanViewPermissionPololicy(reqCtx: AuthRequestContext): Promise<boolean> {
@@ -25,14 +24,9 @@ export class PermissionPoliciesAccessControlServiceImpl
 
   async filterCanReadPermissionPololicy(
     reqCtx: AuthRequestContext,
-    entity: PermissionPolicyEntity,
+    entity: PermissionPolicyEntity
   ): Promise<Either.Either<PermissionPolicyEntity, SkippedResult>> {
-    const canRead = await this.casbinSrv.checkRequestPermission(
-      reqCtx,
-      'read',
-      'permission_policy',
-      entity,
-    );
+    const canRead = await this.casbinSrv.checkRequestPermission(reqCtx, 'read', 'permission_policy', entity);
 
     return canRead ? Either.right(entity) : Either.left({ reason: SkippedReason.ACCESS_DENIED });
   }

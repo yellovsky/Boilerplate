@@ -1,23 +1,21 @@
+import { type HttpException, HttpStatus } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 import type { ZodError } from 'zod';
-import { HttpException, HttpStatus } from '@nestjs/common';
 
 import {
   type FailedResponse,
   type FailedResponseError,
   type FailedResponseErrorCode,
-  failedResponseErrorCodeSchema,
   type FailedResponseErrorDetail,
+  failedResponseErrorCodeSchema,
   ISODate,
 } from '@repo/api-models';
 
+import type { JSONLike } from 'src/shared/utils/json-like';
 import { getZodIssueDetails } from 'src/shared/utils/zod-issue-details';
-import { JSONLike } from 'src/shared/utils/json-like';
 
-const getErrorCodeFromHttpException = (
-  exception: HttpException,
-): [HttpStatus, FailedResponseErrorCode] => {
+const getErrorCodeFromHttpException = (exception: HttpException): [HttpStatus, FailedResponseErrorCode] => {
   switch (exception.getStatus()) {
     case HttpStatus.NOT_FOUND:
       return [HttpStatus.NOT_FOUND, 'not_found'];
@@ -60,7 +58,7 @@ interface FailureResponseErrorDtoData extends Omit<FailedResponseError, 'timesta
 class FailureResponseErrorDto implements JSONLike<FailedResponseError> {
   @ApiProperty({
     description: 'Response code',
-    enum: failedResponseErrorCodeSchema.options.map(s => s.value),
+    enum: failedResponseErrorCodeSchema.options.map((s) => s.value),
     type: String,
   })
   code: FailedResponseErrorCode;
@@ -85,13 +83,7 @@ class FailureResponseErrorDto implements JSONLike<FailedResponseError> {
           ? ISODate.fromString(data.timestamp)
           : ISODate.fromDate(new Date(data.timestamp));
 
-    return new FailureResponseErrorDto(
-      data.code,
-      data.httpCode,
-      data.message,
-      timestamp,
-      data.details,
-    );
+    return new FailureResponseErrorDto(data.code, data.httpCode, data.message, timestamp, data.details);
   }
 
   constructor(
@@ -99,7 +91,7 @@ class FailureResponseErrorDto implements JSONLike<FailedResponseError> {
     httpCode: number,
     message: string,
     timestamp: ISODate,
-    details?: Array<{ field: string; message: string }>,
+    details?: Array<{ field: string; message: string }>
   ) {
     this.code = code;
     this.httpCode = httpCode;

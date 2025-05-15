@@ -1,4 +1,4 @@
-import { IsAuthorizedResponse } from '@repo/api-models';
+import type { IsAuthorizedResponse } from '@repo/api-models';
 
 import { getApiClient } from '@shared/lib/api-client';
 

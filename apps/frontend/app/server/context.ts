@@ -23,13 +23,11 @@ export const getLoadContext = async (c: Context) => {
   };
 };
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface LoadContext extends Awaited<ReturnType<typeof getLoadContext>> {}
 
 /**
  * Declare our loaders and actions context type
  */
 declare module 'react-router' {
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   interface AppLoadContext extends Omit<LoadContext, 'body'> {}
 }

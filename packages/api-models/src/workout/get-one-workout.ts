@@ -1,8 +1,7 @@
 import * as zod from 'zod';
 
-import { getSuccessResponseSchema } from '../common/success-response';
 import { localeSchema } from '../common/locale';
-
+import { getSuccessResponseSchema } from '../common/success-response';
 import { workoutSchema } from './workout';
 
 export const getOneWorkoutQuerySchema = zod.object({

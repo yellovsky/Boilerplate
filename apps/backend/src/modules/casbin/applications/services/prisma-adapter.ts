@@ -1,6 +1,6 @@
-import { Helper } from 'casbin';
+import type { CasbinRule, Prisma, PrismaClient } from '@generated/prisma';
 import type { Adapter, Model } from 'casbin';
-import { type CasbinRule, Prisma, PrismaClient } from '@generated/prisma';
+import { Helper } from 'casbin';
 
 export class PrismaAdapter implements Adapter {
   filtered = false;
@@ -28,28 +28,28 @@ export class PrismaAdapter implements Adapter {
    * use an empty string for selecting all values in a certain field.
    */
   async loadFilteredPolicy(model: Model, filter: { [key: string]: string[][] }): Promise<void> {
-    const whereFilter = Object.keys(filter)
-      .map(ptype => {
-        const policyPatterns = filter[ptype];
-        return policyPatterns.map(policyPattern => {
-          return {
-            ptype,
-            ...(policyPattern[0] && { v0: policyPattern[0] }),
-            ...(policyPattern[1] && { v1: policyPattern[1] }),
-            ...(policyPattern[2] && { v2: policyPattern[2] }),
-            ...(policyPattern[3] && { v3: policyPattern[3] }),
-            ...(policyPattern[4] && { v4: policyPattern[4] }),
-            ...(policyPattern[5] && { v5: policyPattern[5] }),
-          };
-        });
-      })
-      .flat();
+    const whereFilter = Object.keys(filter).flatMap((ptype) => {
+      const policyPatterns = filter[ptype];
+      return policyPatterns.map((policyPattern) => {
+        return {
+          ptype,
+          ...(policyPattern[0] && { v0: policyPattern[0] }),
+          ...(policyPattern[1] && { v1: policyPattern[1] }),
+          ...(policyPattern[2] && { v2: policyPattern[2] }),
+          ...(policyPattern[3] && { v3: policyPattern[3] }),
+          ...(policyPattern[4] && { v4: policyPattern[4] }),
+          ...(policyPattern[5] && { v5: policyPattern[5] }),
+        };
+      });
+    });
 
     const lines = await this.prisma.casbinRule.findMany({
       where: { OR: whereFilter },
     });
 
-    lines.forEach(line => this.#loadPolicyLine(line, model));
+    lines.forEach((line) => {
+      this.#loadPolicyLine(line, model);
+    });
     this.enableFiltered(true);
   }
 
@@ -113,12 +113,7 @@ export class PrismaAdapter implements Adapter {
     await Promise.all(processes);
   }
 
-  async removeFilteredPolicy(
-    _sec: string,
-    ptype: string,
-    fieldIndex: number,
-    ...fieldValues: string[]
-  ): Promise<void> {
+  async removeFilteredPolicy(_sec: string, ptype: string, fieldIndex: number, ...fieldValues: string[]): Promise<void> {
     const line: Prisma.CasbinRuleCreateInput = { ptype };
 
     const idx = fieldIndex + fieldValues.length;
@@ -159,10 +154,7 @@ export class PrismaAdapter implements Adapter {
   };
 
   #loadPolicyLine = (line: Prisma.CasbinRuleCreateInput, model: Model): void => {
-    const result =
-      line.ptype +
-      ', ' +
-      [line.v0, line.v1, line.v2, line.v3, line.v4, line.v5].filter(n => n).join(', ');
+    const result = [line.ptype, line.v0, line.v1, line.v2, line.v3, line.v4, line.v5].filter((n) => n).join(', ');
     Helper.loadPolicyLine(result, model);
   };
 
