@@ -17,7 +17,7 @@
       ]
     },
     "apps/frontend": {
-      "entry": ["app/server/index.ts", "steiger.config.js"],
+      "entry": ["app/server/index.ts"],
       "remix": true,
       "tailwind": true,
       "ignoreDependencies": ["tailwindcss", "autoprefixer"]
