@@ -6,7 +6,7 @@ import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { createRoutesStub, Outlet, type RoutesTestStubProps } from 'react-router';
 import { render } from 'vitest-browser-react';
 
-import type { Locale } from '@shared/config/locale';
+import type { Locale } from '@shared/config';
 
 import { i18n, type Namespace, resources } from '@app/localization';
 

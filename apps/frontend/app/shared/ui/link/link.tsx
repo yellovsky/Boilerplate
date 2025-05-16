@@ -1,6 +1,6 @@
 import { Link as ReactRouterLink, type LinkProps as ReactRouterLinkProps } from 'react-router';
 
-import type { Locale } from '@shared/config/locale';
+import type { Locale } from '@shared/config';
 
 import { useEnhancedTo } from './use-enhanced-to';
 

@@ -2,7 +2,7 @@ import { URL } from 'node:url';
 
 import { redirect } from 'react-router';
 
-import { FALLBACK_LOCALE, isLocale } from '@shared/config/locale';
+import { FALLBACK_LOCALE, isLocale } from '@shared/config';
 import { addLocaleLocaleToTo, getAnyLocaleFromTo } from '@shared/lib/locale';
 
 import i18next from '@app/localization/i18n.server';

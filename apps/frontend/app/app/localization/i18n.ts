@@ -1,6 +1,6 @@
 import type { InitOptions, Namespace } from 'i18next';
 
-import { FALLBACK_LOCALE, SUPPORTED_LOCALES } from '@shared/config/locale';
+import { FALLBACK_LOCALE, SUPPORTED_LOCALES } from '@shared/config';
 
 export default {
   // This is the list of languages your application supports

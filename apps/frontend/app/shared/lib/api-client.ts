@@ -79,11 +79,19 @@ class ApiClientImpl implements ApiClient {
   }
 }
 
-export const getLoaderApiClient = (apiHost: string): ApiClient => new ApiClientImpl(apiHost);
-
 let cached: ApiClient | undefined;
+
+// TODO Fiind a better way to resolve apiClient api
 export const getApiClient = (): ApiClient => {
-  if (!cached) cached = new ApiClientImpl(window.env.REMIX_PUBLIC_API_HOST);
+  const apiHost =
+    typeof window === 'undefined'
+      ? // biome-ignore lint/style/noProcessEnv: it's temporary, I hope
+        process.env.REMIX_PUBLIC_API_HOST
+      : window.env.REMIX_PUBLIC_API_HOST;
+
+  if (!apiHost) throw new Error('env.REMIX_PUBLIC_API_HOST is not defined');
+  if (typeof window === 'undefined') return new ApiClientImpl(apiHost);
+  if (!cached) cached = new ApiClientImpl(apiHost);
   return cached;
 };
 

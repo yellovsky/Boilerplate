@@ -1,6 +1,6 @@
 import type { To } from 'react-router';
 
-import { isLocale, type Locale } from '../config/locale';
+import { isLocale, type Locale } from '../config';
 
 const isValidBCP47Locale = (locale: string): boolean => {
   const bcp47Regex =

@@ -1,4 +1,4 @@
-import { isLocale, type Locale, SUPPORTED_LOCALES } from '@shared/config/locale';
+import { isLocale, type Locale, SUPPORTED_LOCALES } from '@shared/config';
 
 import commonEn from './common.en.json';
 import commonRu from './common.ru.json';

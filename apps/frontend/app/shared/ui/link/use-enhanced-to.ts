@@ -1,12 +1,10 @@
 import type { To } from 'react-router';
 
-import type { Locale } from '@shared/config/locale';
+import { type Locale, SUPPORTED_LOCALES } from '@shared/config';
 import { useLocale } from '@shared/lib/use-locale';
 
-import { i18n } from '@app/localization';
-
 const removeLocaleFromPathname = (pathname: string): string =>
-  pathname.replace(new RegExp(`^/(${i18n.supportedLngs.join('|')})`), '');
+  pathname.replace(new RegExp(`^/(${SUPPORTED_LOCALES.join('|')})`), '');
 
 const addLocaleToPathname = (pathname: string, locale: string): string =>
   pathname.startsWith('http') ? pathname : `/${locale}${removeLocaleFromPathname(pathname)}`;

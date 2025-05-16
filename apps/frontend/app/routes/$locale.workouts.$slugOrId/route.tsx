@@ -1,7 +1,7 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { useLoaderData } from 'react-router';
 
-import { getLoaderApiClient } from '@shared/lib/api-client';
+import { getApiClient } from '@shared/lib/api-client';
 import { getQueryClient } from '@shared/lib/query-client';
 
 import { type GetOneWorkoutVariables, prefetchOneWorkoutQuery } from '@entities/workouts';
@@ -9,11 +9,11 @@ import { type GetOneWorkoutVariables, prefetchOneWorkoutQuery } from '@entities/
 import type { Route } from './+types/route';
 import { WorkoutPage } from './page';
 
-export async function loader({ context, params }: Route.LoaderArgs) {
+export async function loader({ params }: Route.LoaderArgs) {
   const { locale, slugOrId } = params;
 
   const queryClient = getQueryClient();
-  const apiClient = getLoaderApiClient(context.clientEnv.REMIX_PUBLIC_API_HOST);
+  const apiClient = getApiClient();
 
   const workoutVariables: GetOneWorkoutVariables = { locale, slugOrId };
   await prefetchOneWorkoutQuery(apiClient, queryClient, workoutVariables);
