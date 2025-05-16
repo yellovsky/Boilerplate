@@ -7,11 +7,32 @@ import { renderToPipeableStream } from 'react-dom/server';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { type AppLoadContext, type EntryContext, ServerRouter } from 'react-router';
 
+import { isLocale, type Locale } from '@shared/config';
+import { getSetCookieHeader } from '@shared/lib/cookie';
+import { getRequestCookieLocale, getRequestLocale, getRequestUrlLocale } from '@shared/lib/locale';
+
 import { i18n, resources } from '@app/localization';
 import i18next from '@app/localization/i18n.server';
 
 // Reject all pending promises from handler functions after 10 seconds
 export const streamTimeout = 10000;
+
+const setResponseCookieLocale = (responseHeaders: Headers, locale: Locale) => {
+  responseHeaders.set(
+    'Set-Cookie',
+    getSetCookieHeader('locale', locale, { daysToExpire: 0, httpOnly: false, secure: false })
+  );
+};
+
+const makeRedirectToUrlWithLocaleRequest = (request: Request, responseHeaders: Headers, locale: Locale) => {
+  const url = new URL(request.url);
+  const redirect = url.pathname === '/' ? `/${locale}${url.search}` : `/${locale}${url.pathname}${url.search}`;
+
+  setResponseCookieLocale(responseHeaders, locale);
+  responseHeaders.set('Location', redirect);
+
+  return new Response(null, { headers: responseHeaders, status: 303 });
+};
 
 export default async function handleRequest(
   request: Request,
@@ -20,12 +41,33 @@ export default async function handleRequest(
   context: EntryContext,
   appContext: AppLoadContext
 ) {
-  const callbackName = isbot(request.headers.get('user-agent')) ? 'onAllReady' : 'onShellReady';
+  const isBotRequest = isbot(request.headers.get('user-agent'));
+  const callbackName = isBotRequest ? 'onAllReady' : 'onShellReady';
 
   const instance = createInstance();
-  const lng = appContext.lang;
+  const locale = appContext.lang;
+
+  /**
+   * Just in case. TS typings (locale is string)
+   */
+  if (!isLocale(locale)) {
+    return makeRedirectToUrlWithLocaleRequest(request, responseHeaders, getRequestLocale(request));
+  }
+
+  /**
+   * Redirect to location with locale in url
+   */
+  if (locale !== getRequestUrlLocale(request)) {
+    return makeRedirectToUrlWithLocaleRequest(request, responseHeaders, locale);
+  }
+
+  /**
+   * For browser requests sync cookie locale
+   */
+  if (!isBotRequest && getRequestCookieLocale(request) !== locale) setResponseCookieLocale(responseHeaders, locale);
+
   const ns = i18next.getRouteNamespaces(context);
-  await instance.use(initReactI18next).init({ ...i18n, lng, ns, resources });
+  await instance.use(initReactI18next).init({ ...i18n, lng: locale, ns, resources });
 
   return new Promise((resolve, reject) => {
     let shellRendered = false;

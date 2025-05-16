@@ -18,7 +18,7 @@ export const ColorSchemeSwitcher: FC = () => {
   };
 
   return (
-    <div className="fixed top-0 right-[100px] z-10 flex w-min gap-2 p-2">
+    <div className="flex w-min gap-2 p-2">
       {COLOR_SCHEME_OPTIONS.map((theme) => (
         <button
           type="button"

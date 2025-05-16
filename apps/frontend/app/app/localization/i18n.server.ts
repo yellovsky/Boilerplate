@@ -1,5 +1,7 @@
 import { RemixI18Next } from 'remix-i18next/server';
 
+import { getRequestLocale } from '@shared/lib/locale';
+
 import i18n from './i18n';
 import { resources } from './resource';
 
@@ -7,6 +9,10 @@ const i18next = new RemixI18Next({
   detection: {
     fallbackLanguage: i18n.fallbackLng,
     supportedLanguages: i18n.supportedLngs,
+
+    async findLocale(request) {
+      return getRequestLocale(request);
+    },
   },
 
   // This is the configuration for i18next used

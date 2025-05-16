@@ -1,3 +1,4 @@
+import { cx } from 'class-variance-authority';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router';
@@ -10,10 +11,10 @@ export const LanguageSwitcher: FC = () => {
   const location = useLocation();
 
   return (
-    <div className="fixed top-0 right-0 z-10 flex w-min gap-2 p-2">
+    <div className="flex w-min gap-2 p-2">
       {SUPPORTED_LOCALES.map((language) => (
         <Link
-          className="text-blue-500 transition-all hover:underline dark:text-white"
+          className={cx(' transition-all hover:underline', language === i18n.language ? 'text-blue-500' : 'text-text')}
           key={language}
           language={language}
           onClick={() => i18n.changeLanguage(language)}

@@ -143,6 +143,14 @@
       }
     }
   },
+  "css": {
+    "formatter": {
+      "enabled": true
+    },
+    "parser": {
+      "cssModules": true
+    }
+  },
   "javascript": {
     "formatter": {
       "semicolons": "always",

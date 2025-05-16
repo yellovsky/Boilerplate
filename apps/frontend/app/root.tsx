@@ -28,12 +28,11 @@ import { getQueryClient } from '@shared/lib/query-client';
 import { AppSuspenseWarning } from '@app/app-suspense-warning';
 import { ClientHintCheck, getHints } from '@app/client-hints';
 
-import { LanguageSwitcher } from '@features/language-switcher';
+import { PageHeader } from '@widgets/page-header';
 
 import type { Route } from './+types/root';
 import {
   type ColorScheme,
-  ColorSchemeSwitcher,
   fallbackColorSchemeAtom,
   getCookieStringColorScheme,
   isColorScheme,
@@ -73,6 +72,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
+      <PageHeader />
       {/** biome-ignore lint/security/noDangerouslySetInnerHtml: just set evn variables */}
       <script dangerouslySetInnerHTML={{ __html: `window.env = ${JSON.stringify(clientEnv)}` }} />
       <Outlet />
@@ -121,8 +121,6 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                 selectedColorScheme={loaderData.selectedColorScheme}
               >
                 {children}
-                <LanguageSwitcher />
-                <ColorSchemeSwitcher />
               </HydrateAtoms>
             </Provider>
             <ReactQueryDevtools />

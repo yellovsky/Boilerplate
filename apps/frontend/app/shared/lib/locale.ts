@@ -1,6 +1,7 @@
+import parser from 'accept-language-parser';
 import type { To } from 'react-router';
 
-import { isLocale, type Locale } from '../config';
+import { FALLBACK_LOCALE, isLocale, type Locale, SUPPORTED_LOCALES } from '../config';
 
 const isValidBCP47Locale = (locale: string): boolean => {
   const bcp47Regex =
@@ -54,3 +55,30 @@ export function addLocaleLocaleToTo(locale: Locale, to: To): string | To {
   if (typeof to === 'string') return addLocaleLocaleToPathname(locale, to);
   return !to.pathname ? to : { ...to, pathname: addLocaleLocaleToPathname(locale, to.pathname) };
 }
+
+export const getRequestUrlLocale = (request: Request): Locale | null => {
+  const url = new URL(request.url);
+  return getLocaleFromTo(url.pathname);
+};
+
+export const getRequestCookieLocale = (request: Request): Locale | null => {
+  const cookieHeader = request.headers.get('Cookie');
+  const localeCookie = cookieHeader
+    ?.split('; ')
+    // TODO magic string
+    .find((row) => row.startsWith('locale='))
+    ?.split('=')[1];
+
+  return isLocale(localeCookie) ? localeCookie : null;
+};
+
+export const getRequestPreferredLocale = (request: Request): Locale | null => {
+  const acceptLanguageHeader = request.headers.get('accept-language');
+  return acceptLanguageHeader ? parser.pick(SUPPORTED_LOCALES, acceptLanguageHeader) : null;
+};
+
+export const getRequestLocale = (request: Request): Locale =>
+  getRequestUrlLocale(request) ||
+  getRequestCookieLocale(request) ||
+  getRequestPreferredLocale(request) ||
+  FALLBACK_LOCALE;
