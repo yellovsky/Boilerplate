@@ -1,5 +1,5 @@
 import type { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
-import type { LoadResult } from 'src/shared/utils/load-result';
+import type { SkippedOr } from 'src/shared/utils/load-result';
 import type { TxRequestContext } from 'src/shared/utils/request-context';
 
 import type { PermissionPolicyEntity, PermissionPolicyEntityData } from '../entities/permission-policy.entity';
@@ -16,7 +16,7 @@ export interface CasbinRepository {
   findManyPolicies(
     txCtx: TxRequestContext,
     params: FindManyPoliciesParams
-  ): Promise<LoadResult<PermissionPolicyEntity>[]>;
+  ): Promise<SkippedOr<PermissionPolicyEntity>[]>;
 
   createPolicy(txCtx: TxRequestContext, data: CreatePolicyData): Promise<PermissionPolicyEntity>;
 }

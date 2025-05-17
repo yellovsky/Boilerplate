@@ -12,7 +12,12 @@ const getRequiredMessage: TranslateIssue = (t, issue) => {
   if (isUndefined || isMinimalString) return t('Field is required', { ns: 'error' });
 };
 
-const checkers = [getRequiredMessage];
+const getInvalidUnionMessage: TranslateIssue = (t, issue) => {
+  const isInvalidUnion = issue.code === 'invalid_union';
+  if (isInvalidUnion) return t('Invalid value', { ns: 'error' });
+};
+
+const checkers = [getRequiredMessage, getInvalidUnionMessage];
 const getZodIssueMessage: TranslateIssue = (locale, issue) => {
   for (const fn of checkers) {
     const msg = fn(locale, issue);

@@ -1,6 +1,10 @@
+import * as Either from 'effect/Either';
+
+import { type SkippedOr, SkippedReason } from 'src/shared/utils/load-result';
 import type { GetTranslationsStrategy, Translatable } from 'src/shared/utils/translation-strategy';
 
-import { WorkoutTranslationEntity, type WorkoutTranslationsEntityData } from './workout-translation.entity';
+import type { ShortWorkoutEntity } from './short-workout.entity';
+import { WorkoutTranslationEntity, type WorkoutTranslationEntityData } from './workout-translation.entity';
 
 interface WorkoutEntityData {
   id: string;
@@ -8,10 +12,10 @@ interface WorkoutEntityData {
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
-  translations: WorkoutTranslationsEntityData[];
+  translations: WorkoutTranslationEntityData[];
 }
 
-export class WorkoutEntity implements Translatable<WorkoutTranslationEntity> {
+export class WorkoutEntity implements Translatable<WorkoutTranslationEntity>, ShortWorkoutEntity {
   static from(data: WorkoutEntityData): WorkoutEntity {
     return new WorkoutEntity(
       data.id,
@@ -45,19 +49,21 @@ export class WorkoutEntity implements Translatable<WorkoutTranslationEntity> {
     return null;
   }
 
-  filterPublished(): WorkoutEntity | null {
-    if (!this.publishedAt) return null;
+  filterPublished(): SkippedOr<WorkoutEntity> {
+    if (!this.publishedAt) return Either.left({ reason: SkippedReason.NOT_PUBLISHED });
 
     const publishedTranslations = this.translations.map((t) => t.filterPublished()).filter((val) => !!val);
-    if (!publishedTranslations.length) return null;
+    if (!publishedTranslations.length) return Either.left({ reason: SkippedReason.NOT_PUBLISHED });
 
-    return WorkoutEntity.from({
-      createdAt: this.createdAt,
-      id: this.id,
-      publishedAt: this.publishedAt,
-      slug: this.slug,
-      translations: publishedTranslations,
-      updatedAt: this.updatedAt,
-    });
+    return Either.right(
+      WorkoutEntity.from({
+        createdAt: this.createdAt,
+        id: this.id,
+        publishedAt: this.publishedAt,
+        slug: this.slug,
+        translations: publishedTranslations,
+        updatedAt: this.updatedAt,
+      })
+    );
   }
 }

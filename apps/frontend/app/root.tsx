@@ -28,8 +28,6 @@ import { getQueryClient } from '@shared/lib/query-client';
 import { AppSuspenseWarning } from '@app/app-suspense-warning';
 import { ClientHintCheck, getHints } from '@app/client-hints';
 
-import { PageHeader } from '@widgets/page-header';
-
 import type { Route } from './+types/root';
 import {
   type ColorScheme,
@@ -72,7 +70,6 @@ export default function App({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-      <PageHeader />
       {/** biome-ignore lint/security/noDangerouslySetInnerHtml: just set evn variables */}
       <script dangerouslySetInnerHTML={{ __html: `window.env = ${JSON.stringify(clientEnv)}` }} />
       <Outlet />

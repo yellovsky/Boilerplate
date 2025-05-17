@@ -1,5 +1,5 @@
 import { ForbiddenException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import Either from 'effect/Either';
+import * as Either from 'effect/Either';
 
 import type { GetManyPermissionPoliciesQuery } from '@repo/api-models';
 

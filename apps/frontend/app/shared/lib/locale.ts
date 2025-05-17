@@ -72,7 +72,7 @@ export const getRequestCookieLocale = (request: Request): Locale | null => {
   return isLocale(localeCookie) ? localeCookie : null;
 };
 
-export const getRequestPreferredLocale = (request: Request): Locale | null => {
+const getRequestPreferredLocale = (request: Request): Locale | null => {
   const acceptLanguageHeader = request.headers.get('accept-language');
   return acceptLanguageHeader ? parser.pick(SUPPORTED_LOCALES, acceptLanguageHeader) : null;
 };

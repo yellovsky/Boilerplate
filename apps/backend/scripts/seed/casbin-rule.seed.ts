@@ -1,5 +1,7 @@
 import type { PrismaClient } from '@generated/prisma';
 
+const workoutPolicies = [{ sub: 'public', act: 'read', cond: 'true' }].map((obj) => ({ ...obj, objType: 'workout' }));
+
 const accountPolicies = [
   { sub: 'admin', act: 'read', cond: 'true' },
   { sub: 'admin', act: 'read_cms', cond: 'true' },
@@ -25,7 +27,7 @@ const policies: Array<{
   act: string;
   cond: string;
   note?: string;
-}> = [...accountPolicies, ...permissionPolicyPolicies].map((obj) => ({
+}> = [...workoutPolicies, ...accountPolicies, ...permissionPolicyPolicies].map((obj) => ({
   ...obj,
   ptype: 'p',
 }));

@@ -1,4 +1,40 @@
+import { faker } from '@faker-js/faker';
 import type { PrismaClient } from '@generated/prisma';
+import * as R from 'ramda';
+
+const seedFakeWorkout = (tx: PrismaClient) =>
+  tx.workout.create({
+    data: {
+      slug: faker.lorem.word(),
+      createdAt: faker.date.past(),
+      publishedAt: faker.date.past(),
+      translations: {
+        createMany: {
+          data: [
+            {
+              languageCode: 'en',
+              name: `${faker.lorem.word()} - [en]`,
+              createdAt: faker.date.past(),
+              publishedAt: faker.date.past(),
+              updatedAt: faker.date.past(),
+              seoDescription: faker.lorem.sentence(),
+              seoKeywords: faker.lorem.words().split(' ').join(', '),
+            },
+            {
+              languageCode: 'ru',
+              name: `${faker.lorem.word()} - [ru]`,
+              createdAt: faker.date.past(),
+              publishedAt: faker.date.past(),
+              updatedAt: faker.date.past(),
+              seoDescription: faker.lorem.sentence(),
+              seoKeywords: faker.lorem.words().split(' ').join(', '),
+            },
+          ],
+        },
+      },
+      updatedAt: faker.date.past(),
+    },
+  });
 
 const seedTestWorkout = async (tx: PrismaClient) =>
   tx.workout.create({
@@ -61,6 +97,8 @@ const seedTest2Workout = async (tx: PrismaClient) =>
 export const workoutsSeeder = {
   clear: (tx: PrismaClient) => tx.workout.deleteMany(),
   seed: async (tx: PrismaClient) => {
+    await Promise.all(R.times(() => seedFakeWorkout(tx), 50));
+
     await seedTestWorkout(tx);
     await seedTest2Workout(tx);
   },

@@ -1,3 +1,4 @@
+import { cx } from 'class-variance-authority';
 import type { FC } from 'react';
 
 import { NavLink } from '@shared/ui/link';
@@ -8,13 +9,18 @@ import { ColorSchemeSwitcher } from '@features/theme';
 import { HeaderAuth } from './header-auth';
 import styles from './page-header.module.css';
 
-export const PageHeader: FC = () => {
+interface PageHeaderProps {
+  className?: string;
+}
+
+export const PageHeader: FC<PageHeaderProps> = ({ className }) => {
   return (
-    <div className={styles.pageHeader}>
+    <div className={cx(className, styles.pageHeader)}>
       <div>logo</div>
       <div className={styles.nav}>
         <NavLink
           end
+          viewTransition={false}
           to="/"
           className={({ isActive, isPending }) => (isPending ? 'text-fg-disabled' : isActive ? 'text-accent' : '')}
         >
@@ -22,6 +28,7 @@ export const PageHeader: FC = () => {
         </NavLink>
 
         <NavLink
+          viewTransition={false}
           to="/workouts"
           className={({ isActive, isPending }) => (isPending ? 'text-fg-disabled' : isActive ? 'text-accent' : '')}
         >

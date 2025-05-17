@@ -13,6 +13,8 @@ interface LinkProps extends ReactRouterLinkProps {
   language?: Locale;
 }
 
+// TODO Do we need prefetch = 'intent' by default?
+// TODO Do we need viewTransition = true by default?
 export const Link = ({ prefetch = 'intent', viewTransition = true, to, language, ...props }: LinkProps) => {
   const enhancedTo = useEnhancedTo({ language, to });
 

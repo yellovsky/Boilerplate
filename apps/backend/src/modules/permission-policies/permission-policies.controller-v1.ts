@@ -30,9 +30,9 @@ export class PermissionPoliciesControllerV1 {
   @ApiOkResponse({ type: PermissionPolicyListResponseDto })
   @ApiCommonErrorResponses('bad_request', 'forbidden', 'unauthorized')
   async getPermissionPoliciesList(
+    @ReqCtx() reqCtx: RequestContext,
     @Query(new ZodValidationPipe(getManyPermissionPoliciesQuerySchema))
-    query: zod.infer<typeof getManyPermissionPoliciesQuerySchema>,
-    @ReqCtx() reqCtx: RequestContext
+    query: zod.infer<typeof getManyPermissionPoliciesQuerySchema>
   ): Promise<PermissionPolicyListResponseDto> {
     return this.readonlygetPermissionPoliciesListUseCase.execute(reqCtx, query);
   }

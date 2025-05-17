@@ -21,7 +21,6 @@ export default defineConfig({
           presets: ['@babel/preset-typescript'],
         },
       }),
-      apply: 'build',
     },
 
     reactRouterDevTools({ client: { position: 'middle-right' } }),

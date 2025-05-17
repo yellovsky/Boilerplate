@@ -1,16 +1,16 @@
-export interface WorkoutTranslationsEntityData {
-  name: string;
-  languageCode: string;
-  publishedAt: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
+import type {
+  ShortWorkoutTranslationEntity,
+  ShortWorkoutTranslationEntityData,
+} from './short-workout-translation.entity';
+
+export interface WorkoutTranslationEntityData extends ShortWorkoutTranslationEntityData {
   seoTitle: string | null;
   seoKeywords: string | null;
   seoDescription: string | null;
 }
 
-export class WorkoutTranslationEntity {
-  static from(data: WorkoutTranslationsEntityData): WorkoutTranslationEntity {
+export class WorkoutTranslationEntity implements ShortWorkoutTranslationEntity {
+  static from(data: WorkoutTranslationEntityData): WorkoutTranslationEntity {
     return new WorkoutTranslationEntity(
       data.name,
       data.languageCode,

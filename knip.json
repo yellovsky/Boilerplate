@@ -20,7 +20,7 @@
       "entry": ["app/server/index.ts"],
       "remix": true,
       "tailwind": true,
-      "ignoreDependencies": ["tailwindcss", "autoprefixer"]
+      "ignoreDependencies": ["tailwindcss", "autoprefixer", "babel-plugin-react-compiler"]
     },
     "packages/theme": {
       "tailwind": true,

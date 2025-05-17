@@ -8,17 +8,35 @@ const CLIENT_STALE_TIME = Number.POSITIVE_INFINITY;
 const SERVER_GC_TIME = 5 * MINUTE;
 const CLIENT_GC_TIME = 30 * MINUTE;
 
-export const getQueryClient = () =>
+const getServerQueryClient = (): QueryClient =>
   new QueryClient({
     defaultOptions: {
-      mutations: {
-        onError: (error) => console.error('Query Error:', error),
-        retry: false,
-      },
       queries: {
-        gcTime: typeof window === 'undefined' ? SERVER_GC_TIME : CLIENT_GC_TIME,
+        gcTime: SERVER_GC_TIME,
         retry: false,
-        staleTime: typeof window === 'undefined' ? SERVER_STALE_TIME : CLIENT_STALE_TIME,
+        staleTime: SERVER_STALE_TIME,
       },
     },
   });
+
+let cached: QueryClient | null = null;
+const getClientQueryClient = (): QueryClient => {
+  if (!cached)
+    cached = new QueryClient({
+      defaultOptions: {
+        mutations: {
+          onError: (error) => console.error('Query Error:', error),
+          retry: false,
+        },
+        queries: {
+          gcTime: CLIENT_GC_TIME,
+          retry: false,
+          staleTime: CLIENT_STALE_TIME,
+        },
+      },
+    });
+
+  return cached;
+};
+
+export const getQueryClient = () => (typeof window === 'undefined' ? getServerQueryClient() : getClientQueryClient());

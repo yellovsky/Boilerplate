@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import Either from 'effect/Either';
+import * as Either from 'effect/Either';
 
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 import { SkippedReason, type SkippedResult } from 'src/shared/utils/load-result';
@@ -27,7 +27,6 @@ export class PermissionPoliciesAccessControlServiceImpl implements PermissionPol
     entity: PermissionPolicyEntity
   ): Promise<Either.Either<PermissionPolicyEntity, SkippedResult>> {
     const canRead = await this.casbinSrv.checkRequestPermission(reqCtx, 'read', 'permission_policy', entity);
-
     return canRead ? Either.right(entity) : Either.left({ reason: SkippedReason.ACCESS_DENIED });
   }
 }

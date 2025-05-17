@@ -1,0 +1,25 @@
+@reference "../../root.css";
+
+.layout {
+  @apply grid min-h-dvh grid-cols-1 overflow-x-hidden;
+
+  grid-template-rows: [header-start] var(--spacing-header) [header-end content-start] 1fr [content-end footer-start] auto;
+  grid-template-areas:
+    "header"
+    "content"
+    "footer";
+}
+
+.header {
+  grid-area: header;
+}
+
+.main {
+  grid-area: content;
+}
+
+.footer {
+  @apply border-t border-t-border text-center min-h-14 flex items-center justify-center;
+
+  grid-area: footer;
+}

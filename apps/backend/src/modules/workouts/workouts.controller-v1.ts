@@ -2,13 +2,16 @@ import { Controller, Get, Inject, Param, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import type * as zod from 'zod';
 
-import { getOneWorkoutQuerySchema } from '@repo/api-models';
+import { getManyWorkoutsQuerySchema, getOneWorkoutQuerySchema } from '@repo/api-models';
 
 import { Public } from 'src/shared/application/decorators/public';
 import { ApiCommonErrorResponses } from 'src/shared/utils/api-common-response';
+import { ReqCtx, type RequestContext } from 'src/shared/utils/request-context';
 import { ZodValidationPipe } from 'src/shared/utils/zod-validation-pipe';
 
+import type { GetManyWorkoutsResponseDto } from './application/dto/get-many-workouts-response.dto';
 import { GetOneWorkoutResponseDto } from './application/dto/get-one-workout-response.dto';
+import { GetManyWorkoutsUseCase } from './application/use-cases/get-many-workouts.use-case';
 import { GetOneWorkoutBySlugOrIdUseCase } from './application/use-cases/get-one-workout-by-slug-or-id.use-case';
 
 @ApiTags('Workouts')
@@ -16,8 +19,22 @@ import { GetOneWorkoutBySlugOrIdUseCase } from './application/use-cases/get-one-
 export class WorkoutsControllerV1 {
   constructor(
     @Inject(GetOneWorkoutBySlugOrIdUseCase)
-    private readonly getOneWorkoutBySlugOrIdUseCase: GetOneWorkoutBySlugOrIdUseCase
+    private readonly getOneWorkoutBySlugOrIdUseCase: GetOneWorkoutBySlugOrIdUseCase,
+
+    @Inject(GetManyWorkoutsUseCase)
+    private readonly getManyWorkoutsUseCase: GetManyWorkoutsUseCase
   ) {}
+
+  @Get()
+  @Public()
+  // TODO add swagger
+  async findMany(
+    @ReqCtx() reqCtx: RequestContext,
+    @Query(new ZodValidationPipe(getManyWorkoutsQuerySchema))
+    query: zod.infer<typeof getManyWorkoutsQuerySchema>
+  ): Promise<GetManyWorkoutsResponseDto | null> {
+    return this.getManyWorkoutsUseCase.execute(reqCtx, query);
+  }
 
   @Get(':slugOrId')
   @Public()
@@ -37,10 +54,11 @@ export class WorkoutsControllerV1 {
   @ApiOkResponse({ type: GetOneWorkoutResponseDto })
   @ApiCommonErrorResponses('not_found', 'bad_request')
   async findOne(
+    @ReqCtx() reqCtx: RequestContext,
     @Param('slugOrId') slugOrId: string,
     @Query(new ZodValidationPipe(getOneWorkoutQuerySchema))
     query: zod.infer<typeof getOneWorkoutQuerySchema>
   ): Promise<GetOneWorkoutResponseDto | null> {
-    return this.getOneWorkoutBySlugOrIdUseCase.execute(slugOrId, query);
+    return this.getOneWorkoutBySlugOrIdUseCase.execute(reqCtx, slugOrId, query);
   }
 }

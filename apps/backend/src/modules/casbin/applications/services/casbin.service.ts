@@ -4,7 +4,7 @@ import { Inject, Injectable, type OnModuleInit } from '@nestjs/common';
 import { type Enforcer, newEnforcer } from 'casbin';
 
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
-import type { LoadResult } from 'src/shared/utils/load-result';
+import type { SkippedOr } from 'src/shared/utils/load-result';
 import type { RequestContext } from 'src/shared/utils/request-context';
 
 import { PRISMA_SRV } from 'src/modules/prisma';
@@ -41,10 +41,7 @@ export class CasbinServiceImpl implements CasbinService, OnModuleInit {
     return this.#enforcer.enforce(sub || 'public', action, objType, obj);
   }
 
-  getManyPolicies(
-    reqCtx: RequestContext,
-    params: GetPoliciesListParams
-  ): Promise<LoadResult<PermissionPolicyEntity>[]> {
+  getManyPolicies(reqCtx: RequestContext, params: GetPoliciesListParams): Promise<SkippedOr<PermissionPolicyEntity>[]> {
     return this.casbinRepo.findManyPolicies(reqCtx, params);
   }
 
@@ -55,7 +52,7 @@ export class CasbinServiceImpl implements CasbinService, OnModuleInit {
   async getManyPoliciesWithTotal(
     reqCtx: RequestContext,
     params: GetPoliciesListParams
-  ): Promise<{ items: LoadResult<PermissionPolicyEntity>[]; total: number }> {
+  ): Promise<{ items: SkippedOr<PermissionPolicyEntity>[]; total: number }> {
     return {
       items: await this.getManyPolicies(reqCtx, params),
       total: await this.getPoliciesTotal(reqCtx, params),

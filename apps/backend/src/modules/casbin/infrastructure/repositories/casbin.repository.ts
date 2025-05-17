@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import Either from 'effect/Either';
 
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
-import { type LoadResult, SkippedReason } from 'src/shared/utils/load-result';
+import { type SkippedOr, SkippedReason } from 'src/shared/utils/load-result';
 import type { TxRequestContext } from 'src/shared/utils/request-context';
 
 import { PRISMA_SRV } from 'src/modules/prisma';
@@ -16,7 +16,7 @@ import type {
 } from '../../domain/interfaces/casbin.repository.interace';
 import { isCasbinAction } from '../../domain/interfaces/casbin-rule.interfaces';
 
-const makeCasbinRuleEntity = (rule: CasbinRule): LoadResult<PermissionPolicyEntity> => {
+const makeCasbinRuleEntity = (rule: CasbinRule): SkippedOr<PermissionPolicyEntity> => {
   if (rule.ptype !== 'p') {
     return Either.left({
       message: 'ptype must equals p',
@@ -68,7 +68,7 @@ export class CasbinRepositoryImpl implements CasbinRepository {
   async findManyPolicies(
     txCtx: TxRequestContext,
     params: FindManyPoliciesParams
-  ): Promise<LoadResult<PermissionPolicyEntity>[]> {
+  ): Promise<SkippedOr<PermissionPolicyEntity>[]> {
     const dbRules = await (txCtx.tx || this.prismaSrv).casbinRule.findMany({
       skip: params.page.offset,
       take: params.page.limit,
