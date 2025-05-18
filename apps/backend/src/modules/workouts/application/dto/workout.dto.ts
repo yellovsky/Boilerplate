@@ -1,7 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Either } from 'effect';
 
 import { ISODate, type Workout } from '@repo/api-models';
 
+import { type ResultOrExcluded, TranslationDataMissingReason } from 'src/shared/excluded';
 import { SeoDto } from 'src/shared/presentation/dtos/seo.dto';
 import type { JSONLike } from 'src/shared/utils/json-like';
 import type { GetTranslationsStrategy } from 'src/shared/utils/translation-strategy';
@@ -35,20 +37,44 @@ export class WorkoutDto implements JSONLike<Workout> {
   @ApiProperty({ type: String })
   languageCode: string;
 
-  static fromEntity(strategy: GetTranslationsStrategy, workoutEntity: WorkoutEntity): WorkoutDto | null {
+  static fromEntity(strategy: GetTranslationsStrategy, workoutEntity: WorkoutEntity): ResultOrExcluded<WorkoutDto> {
     const translations = workoutEntity.getTranslations(strategy);
 
-    if (!translations) return null;
+    if (!translations) return Either.left(new TranslationDataMissingReason());
 
-    return new WorkoutDto(
-      workoutEntity.id,
-      workoutEntity.slug,
-      ISODate.fromDate(workoutEntity.createdAt),
-      translations.name,
-      translations.languageCode,
-      translations.seoTitle,
-      translations.seoDescription,
-      translations.seoKeywords
+    return Either.right(
+      new WorkoutDto(
+        workoutEntity.id,
+        workoutEntity.slug,
+        ISODate.fromDate(workoutEntity.createdAt),
+        translations.name,
+        translations.languageCode,
+        translations.seoTitle,
+        translations.seoDescription,
+        translations.seoKeywords
+      )
+    );
+  }
+
+  static fromEntityEffect(
+    strategy: GetTranslationsStrategy,
+    workoutEntity: WorkoutEntity
+  ): ResultOrExcluded<WorkoutDto> {
+    const translations = workoutEntity.getTranslations(strategy);
+
+    if (!translations) return Either.left(new TranslationDataMissingReason());
+
+    return Either.right(
+      new WorkoutDto(
+        workoutEntity.id,
+        workoutEntity.slug,
+        ISODate.fromDate(workoutEntity.createdAt),
+        translations.name,
+        translations.languageCode,
+        translations.seoTitle,
+        translations.seoDescription,
+        translations.seoKeywords
+      )
     );
   }
 

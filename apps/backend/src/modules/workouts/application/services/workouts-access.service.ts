@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import * as Either from 'effect/Either';
 
+import { AccessDeniedReason, type ResultOrExcluded } from 'src/shared/excluded';
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
-import { type SkippedOr, SkippedReason } from 'src/shared/utils/load-result';
 import type { AuthRequestContext } from 'src/shared/utils/request-context';
 
 import { CASBIN_SRV } from 'src/modules/casbin';
@@ -21,16 +21,23 @@ export class WorkoutsAccessServiceImpl implements WorkoutsAccessService {
   async filterCanReadWorkout(
     authCtx: AuthRequestContext,
     workoutEntity: WorkoutEntity
-  ): Promise<SkippedOr<WorkoutEntity>> {
+  ): Promise<ResultOrExcluded<WorkoutEntity>> {
     const canRead = await this.casbinSrv.checkRequestPermission(authCtx, 'read', 'workout', workoutEntity);
-    return canRead ? Either.right(workoutEntity) : Either.left({ reason: SkippedReason.ACCESS_DENIED });
+    return canRead ? Either.right(workoutEntity) : Either.left(new AccessDeniedReason());
   }
 
   async filterCanReadShortWorkout(
     authCtx: AuthRequestContext,
     workoutEntity: ShortWorkoutEntity
-  ): Promise<SkippedOr<ShortWorkoutEntity>> {
+  ): Promise<ResultOrExcluded<ShortWorkoutEntity>> {
     const canRead = await this.casbinSrv.checkRequestPermission(authCtx, 'read', 'workout', workoutEntity);
-    return canRead ? Either.right(workoutEntity) : Either.left({ reason: SkippedReason.ACCESS_DENIED });
+    return canRead ? Either.right(workoutEntity) : Either.left(new AccessDeniedReason());
+  }
+
+  filterCanReadShortWorkoutsList(
+    authCtx: AuthRequestContext,
+    entities: ShortWorkoutEntity[]
+  ): Promise<ResultOrExcluded<ShortWorkoutEntity>[]> {
+    return Promise.all(entities.map((entity) => this.filterCanReadShortWorkout(authCtx, entity)));
   }
 }

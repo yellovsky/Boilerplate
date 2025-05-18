@@ -135,6 +135,15 @@ export class FailedResponseDto implements JSONLike<FailedResponse> {
     });
   }
 
+  static unknown(): FailedResponseDto {
+    return FailedResponseDto.from({
+      code: 'unknown_error',
+      httpCode: 500,
+      message: 'Unknown error',
+      timestamp: Date.now(),
+    });
+  }
+
   constructor(error: FailureResponseErrorDto) {
     this.error = error;
   }

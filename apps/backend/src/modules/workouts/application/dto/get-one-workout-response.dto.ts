@@ -1,7 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Either } from 'effect';
 
 import type { GetOneWorkoutResponse } from '@repo/api-models';
 
+import type { ResultOrExcluded } from 'src/shared/excluded';
 import type { JSONLike } from 'src/shared/utils/json-like';
 import type { GetTranslationsStrategy } from 'src/shared/utils/translation-strategy';
 
@@ -15,11 +17,23 @@ export class GetOneWorkoutResponseDto implements JSONLike<GetOneWorkoutResponse>
   @ApiProperty({ type: WorkoutDto })
   data: WorkoutDto;
 
-  static fromEntity(strategy: GetTranslationsStrategy, workoutEntity: WorkoutEntity): GetOneWorkoutResponseDto | null {
-    const workoutDto = WorkoutDto.fromEntity(strategy, workoutEntity);
-    if (!workoutDto) return null;
+  static fromEntity(
+    strategy: GetTranslationsStrategy,
+    workoutEntity: WorkoutEntity
+  ): ResultOrExcluded<GetOneWorkoutResponseDto> {
+    return Either.map(
+      WorkoutDto.fromEntity(strategy, workoutEntity),
+      (workoutDto) => new GetOneWorkoutResponseDto(workoutDto)
+    );
+  }
 
-    return new GetOneWorkoutResponseDto(workoutDto);
+  static fromEntityEffect(
+    strategy: GetTranslationsStrategy,
+    workoutEntity: WorkoutEntity
+  ): ResultOrExcluded<GetOneWorkoutResponseDto> {
+    return WorkoutDto.fromEntityEffect(strategy, workoutEntity).pipe(
+      Either.map((workoutDto) => new GetOneWorkoutResponseDto(workoutDto))
+    );
   }
 
   constructor(data: WorkoutDto) {

@@ -3,8 +3,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import * as Either from 'effect/Either';
 import { validate } from 'uuid';
 
+import { NotFoundReason, type ResultOrExcluded } from 'src/shared/excluded';
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
-import { type SkippedOr, SkippedReason } from 'src/shared/utils/load-result';
 import type { TxRequestContext } from 'src/shared/utils/request-context';
 
 import { PRISMA_SRV } from 'src/modules/prisma';
@@ -30,16 +30,17 @@ export class WorkoutsRepositoryImpl implements WorkoutsRepository {
     throw new Error('Not implemented');
   }
 
-  async findOneBySlugOrId(slugOrId: string): Promise<SkippedOr<WorkoutEntity>> {
+  async findOneBySlugOrId(txCtx: TxRequestContext, slugOrId: string): Promise<ResultOrExcluded<WorkoutEntity>> {
+    const prisma = txCtx.tx ?? this.prismaSrv;
     const where: Prisma.WorkoutWhereUniqueInput = validate(slugOrId) ? { id: slugOrId } : { slug: slugOrId };
-    const dbWorkout = await this.prismaSrv.workout.findUnique({ where, select: dbWorkoutSelect });
-    return this.#makeWorkoutEntity(dbWorkout);
+    const dbWorkout = await prisma.workout.findUnique({ where, select: dbWorkoutSelect });
+    return !dbWorkout ? Either.left(new NotFoundReason()) : Either.right(this.#toWorkoutEntity(dbWorkout));
   }
 
   async findManyWorkouts(
     txCtx: TxRequestContext,
     params: FindManyWorkoutsParams
-  ): Promise<SkippedOr<ShortWorkoutEntity>[]> {
+  ): Promise<ResultOrExcluded<ShortWorkoutEntity>[]> {
     const tx = txCtx.tx || this.prismaSrv;
 
     const founded = await tx.workout.findMany({
@@ -49,7 +50,7 @@ export class WorkoutsRepositoryImpl implements WorkoutsRepository {
       skip: params.skip,
     });
 
-    return founded.map(this.#makeShortWorkoutEntity);
+    return founded.map(this.#toShortWorkoutEntity).map(Either.right);
   }
 
   async findManyWorkoutsTotal(txCtx: TxRequestContext, params: FindManyWorkoutsParams): Promise<number> {
@@ -68,8 +69,8 @@ export class WorkoutsRepositoryImpl implements WorkoutsRepository {
     }
   }
 
-  #makeShortWorkoutEntity(dbShortWorkout: DBShortWorkout): SkippedOr<ShortWorkoutEntity> {
-    const entity = ShortWorkoutEntity.from({
+  #toShortWorkoutEntity(dbShortWorkout: DBShortWorkout): ShortWorkoutEntity {
+    return ShortWorkoutEntity.from({
       createdAt: dbShortWorkout.createdAt,
       id: dbShortWorkout.id,
       publishedAt: dbShortWorkout.publishedAt,
@@ -84,14 +85,10 @@ export class WorkoutsRepositoryImpl implements WorkoutsRepository {
         updatedAt: translations.updatedAt,
       })),
     });
-
-    return Either.right(entity);
   }
 
-  #makeWorkoutEntity(dbWorkout: DBWorkout | null): SkippedOr<WorkoutEntity> {
-    if (!dbWorkout) return Either.left({ reason: SkippedReason.NOT_FOUND });
-
-    const entity = WorkoutEntity.from({
+  #toWorkoutEntity(dbWorkout: DBWorkout): WorkoutEntity {
+    return WorkoutEntity.from({
       createdAt: dbWorkout.createdAt,
       id: dbWorkout.id,
       publishedAt: dbWorkout.publishedAt,
@@ -110,7 +107,5 @@ export class WorkoutsRepositoryImpl implements WorkoutsRepository {
         seoTitle: translations.seoTitle,
       })),
     });
-
-    return Either.right(entity);
   }
 }

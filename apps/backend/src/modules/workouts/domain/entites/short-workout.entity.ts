@@ -1,6 +1,6 @@
 import * as Either from 'effect/Either';
 
-import { type SkippedOr, SkippedReason } from 'src/shared/utils/load-result';
+import { NotPublishedReason } from 'src/shared/excluded';
 import type { GetTranslationsStrategy, Translatable } from 'src/shared/utils/translation-strategy';
 
 import {
@@ -53,11 +53,11 @@ export class ShortWorkoutEntity implements Translatable<ShortWorkoutTranslationE
     return null;
   }
 
-  filterPublished(): SkippedOr<ShortWorkoutEntity> {
-    if (!this.publishedAt) return Either.left({ reason: SkippedReason.NOT_PUBLISHED });
+  filterPublished(): Either.Either<ShortWorkoutEntity, NotPublishedReason> {
+    if (!this.publishedAt) return Either.left(new NotPublishedReason());
 
     const publishedTranslations = this.translations.map((t) => t.filterPublished()).filter((val) => !!val);
-    if (!publishedTranslations.length) return Either.left({ reason: SkippedReason.NOT_PUBLISHED });
+    if (!publishedTranslations.length) return Either.left(new NotPublishedReason());
 
     return Either.right(
       ShortWorkoutEntity.from({

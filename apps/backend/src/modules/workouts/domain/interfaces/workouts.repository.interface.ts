@@ -1,5 +1,5 @@
+import type { ResultOrExcluded } from 'src/shared/excluded';
 import type { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
-import type { SkippedOr } from 'src/shared/utils/load-result';
 import type { TxRequestContext } from 'src/shared/utils/request-context';
 
 import type { ShortWorkoutEntity } from '../entites/short-workout.entity';
@@ -13,11 +13,15 @@ export interface FindManyWorkoutsParams {
 }
 
 export interface WorkoutsRepository {
-  // TODO return Load result
-  findOneBySlugOrId(slugOrId: string): Promise<SkippedOr<WorkoutEntity>>;
-  createOne(data: { name: string }): Promise<WorkoutEntity>;
-  findManyWorkouts(txCtx: TxRequestContext, params: FindManyWorkoutsParams): Promise<SkippedOr<ShortWorkoutEntity>[]>;
+  findOneBySlugOrId(txCtx: TxRequestContext, slugOrId: string): Promise<ResultOrExcluded<WorkoutEntity>>;
+
   findManyWorkoutsTotal(txCtx: TxRequestContext, params: FindManyWorkoutsParams): Promise<number>;
+  findManyWorkouts(
+    txCtx: TxRequestContext,
+    params: FindManyWorkoutsParams
+  ): Promise<ResultOrExcluded<ShortWorkoutEntity>[]>;
+
+  createOne(data: { name: string }): Promise<WorkoutEntity>;
 }
 
 export const WORKOUTS_REPO = 'WORKOUTS_REPO' as InjectableIdentifier<WorkoutsRepository>;

@@ -1,7 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
+import * as Either from 'effect/Either';
 
 import { ISODate, type ShortWorkout } from '@repo/api-models';
 
+import { type ResultOrExcluded, TranslationDataMissingReason } from 'src/shared/excluded';
 import type { JSONLike } from 'src/shared/utils/json-like';
 import type { GetTranslationsStrategy } from 'src/shared/utils/translation-strategy';
 
@@ -31,17 +33,21 @@ export class ShortWorkoutDto implements JSONLike<ShortWorkout> {
   @ApiProperty({ type: String })
   languageCode: string;
 
-  static fromEntity(strategy: GetTranslationsStrategy, workoutEntity: ShortWorkoutEntity): ShortWorkoutDto | null {
+  static fromEntity(
+    strategy: GetTranslationsStrategy,
+    workoutEntity: ShortWorkoutEntity
+  ): ResultOrExcluded<ShortWorkoutDto> {
     const translations = workoutEntity.getTranslations(strategy);
+    if (!translations) return Either.left(new TranslationDataMissingReason());
 
-    if (!translations) return null;
-
-    return new ShortWorkoutDto(
-      workoutEntity.id,
-      workoutEntity.slug,
-      ISODate.fromDate(workoutEntity.createdAt),
-      translations.name,
-      translations.languageCode
+    return Either.right(
+      new ShortWorkoutDto(
+        workoutEntity.id,
+        workoutEntity.slug,
+        ISODate.fromDate(workoutEntity.createdAt),
+        translations.name,
+        translations.languageCode
+      )
     );
   }
 

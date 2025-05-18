@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Either } from 'effect/index';
 
 import type { GetManyWorkoutsResponse, ResponsePagination } from '@repo/api-models';
 
@@ -9,38 +10,36 @@ import type { GetTranslationsStrategy } from 'src/shared/utils/translation-strat
 import type { ShortWorkoutEntity } from '../../domain/entites/short-workout.entity';
 import { ShortWorkoutDto } from './short-workout.dto';
 
-interface ManyWorkoutsResponseDataDtoData {
+interface ManyWorkoutsDataInput {
   items: Array<ShortWorkoutEntity | ShortWorkoutDto>;
   pagination: ResponsePagination | ListResponsePaginationDto;
 }
 
 class ManyWorkoutsResponseDataDto {
-  @ApiProperty({
-    description: 'Workouts',
-    type: [ShortWorkoutDto],
-  })
+  @ApiProperty({ description: 'Workouts', type: [ShortWorkoutDto] })
   items: ShortWorkoutDto[];
 
-  @ApiProperty({
-    description: 'List response items pagination',
-    type: ListResponsePaginationDto,
-  })
+  @ApiProperty({ description: 'List response items pagination', type: ListResponsePaginationDto })
   pagination: ListResponsePaginationDto;
 
-  static from(strategy: GetTranslationsStrategy, data: ManyWorkoutsResponseDataDtoData): ManyWorkoutsResponseDataDto {
-    return new ManyWorkoutsResponseDataDto(
-      data.items
-        .map((i) => (i instanceof ShortWorkoutDto ? i : ShortWorkoutDto.fromEntity(strategy, i)))
-        .filter((val) => !!val),
-      data.pagination
-    );
+  constructor(items: ShortWorkoutDto[], pagination: ListResponsePaginationDto) {
+    this.items = items;
+    this.pagination = pagination;
   }
 
-  constructor(items: Array<ShortWorkoutDto>, pagination: ResponsePagination | ListResponsePaginationDto) {
-    this.items = items;
+  static from(strategy: GetTranslationsStrategy, input: ManyWorkoutsDataInput): ManyWorkoutsResponseDataDto {
+    const items: ShortWorkoutDto[] = input.items
+      .map((item) =>
+        item instanceof ShortWorkoutDto ? item : Either.getOrNull(ShortWorkoutDto.fromEntity(strategy, item))
+      )
+      .filter((i): i is ShortWorkoutDto => Boolean(i));
 
-    this.pagination =
-      pagination instanceof ListResponsePaginationDto ? pagination : ListResponsePaginationDto.from(pagination);
+    const pagination =
+      input.pagination instanceof ListResponsePaginationDto
+        ? input.pagination
+        : ListResponsePaginationDto.from(input.pagination);
+
+    return new ManyWorkoutsResponseDataDto(items, pagination);
   }
 }
 
@@ -51,11 +50,11 @@ export class GetManyWorkoutsResponseDto implements JSONLike<GetManyWorkoutsRespo
   @ApiProperty({ type: ManyWorkoutsResponseDataDto })
   data: ManyWorkoutsResponseDataDto;
 
-  static from(strategy: GetTranslationsStrategy, data: ManyWorkoutsResponseDataDtoData): GetManyWorkoutsResponseDto {
-    return new GetManyWorkoutsResponseDto(ManyWorkoutsResponseDataDto.from(strategy, data));
-  }
-
   constructor(data: ManyWorkoutsResponseDataDto) {
     this.data = data;
+  }
+
+  static from(strategy: GetTranslationsStrategy, input: ManyWorkoutsDataInput): GetManyWorkoutsResponseDto {
+    return new GetManyWorkoutsResponseDto(ManyWorkoutsResponseDataDto.from(strategy, input));
   }
 }

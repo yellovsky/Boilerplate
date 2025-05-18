@@ -5,7 +5,7 @@ import { type Enforcer, newEnforcer } from 'casbin';
 
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 import type { SkippedOr } from 'src/shared/utils/load-result';
-import type { RequestContext } from 'src/shared/utils/request-context';
+import type { AuthRequestContext, RequestContext } from 'src/shared/utils/request-context';
 
 import { PRISMA_SRV } from 'src/modules/prisma';
 
@@ -60,7 +60,7 @@ export class CasbinServiceImpl implements CasbinService, OnModuleInit {
   }
 
   checkRequestPermission(
-    reqCtx: RequestContext,
+    reqCtx: AuthRequestContext,
     action: CasbinAction,
     objType: CasbinObjectType,
     obj: object

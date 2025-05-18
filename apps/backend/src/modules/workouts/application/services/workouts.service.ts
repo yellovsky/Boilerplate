@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 
+import type { ResultOrExcluded } from 'src/shared/excluded';
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
-import type { SkippedOr } from 'src/shared/utils/load-result';
 import type { RequestContext } from 'src/shared/utils/request-context';
 
 import type { ShortWorkoutEntity } from '../../domain/entites/short-workout.entity';
@@ -20,11 +20,15 @@ export class WorkoutsServiceImpl implements WorkoutsService {
     private readonly workoutsRepo: IdentifierOf<typeof WORKOUTS_REPO>
   ) {}
 
-  async getWorkoutBySlugOrId(slugOrId: string, _params: GetWorkoutByIdParams): Promise<SkippedOr<WorkoutEntity>> {
-    return this.workoutsRepo.findOneBySlugOrId(slugOrId);
+  async getWorkoutBySlugOrId(
+    reqCtx: RequestContext,
+    slugOrId: string,
+    _params: GetWorkoutByIdParams
+  ): Promise<ResultOrExcluded<WorkoutEntity>> {
+    return this.workoutsRepo.findOneBySlugOrId(reqCtx, slugOrId);
   }
 
-  getWorkouts(reqCtx: RequestContext, params: GetManyWorkoutsParams): Promise<SkippedOr<ShortWorkoutEntity>[]> {
+  getWorkouts(reqCtx: RequestContext, params: GetManyWorkoutsParams): Promise<ResultOrExcluded<ShortWorkoutEntity>[]> {
     return this.workoutsRepo.findManyWorkouts(reqCtx, {
       skip: params.page.offset,
       take: params.page.limit,
@@ -43,7 +47,7 @@ export class WorkoutsServiceImpl implements WorkoutsService {
   async getWorkoutsWithTotal(
     reqCtx: RequestContext,
     params: GetManyWorkoutsParams
-  ): Promise<{ items: SkippedOr<ShortWorkoutEntity>[]; total: number }> {
+  ): Promise<{ items: ResultOrExcluded<ShortWorkoutEntity>[]; total: number }> {
     const [items, total] = await Promise.all([this.getWorkouts(reqCtx, params), this.getWorkoutsTotal(reqCtx, params)]);
     return { items, total };
   }
