@@ -10,17 +10,18 @@ import {
   loginWithEmailBodySchema,
 } from '@repo/api-models';
 
-import { Public } from 'src/shared/application/decorators/public';
+import { Public } from 'src/shared/decorators/public';
 import { ApiCommonErrorResponses } from 'src/shared/utils/api-common-response';
+import { ReqCtx, type RequestContext } from 'src/shared/utils/request-context';
 import { ZodValidationPipe } from 'src/shared/utils/zod-validation-pipe';
 
-import { IsAuthorizedResponseDto } from './application/dto/is-authorized-response.dto';
-import { LoginWithEmailResponseDto } from './application/dto/login-with-email-response.dto';
-import { LogoutResponseDto } from './application/dto/logout-response.dto';
-import { LocalGuard } from './application/guards/local.guard';
-import { IsAuthorizedUseCase } from './application/use-cases/is-authorized.use-case';
-import { LoginWithEmailUseCase } from './application/use-cases/login-with-email.use-case';
-import { LogoutUseCase } from './application/use-cases/logout.use-case';
+import { IsAuthorizedResponseDto } from './dto/is-authorized-response.dto';
+import { LoginWithEmailResponseDto } from './dto/login-with-email-response.dto';
+import { LogoutResponseDto } from './dto/logout-response.dto';
+import { LocalGuard } from './guards/local.guard';
+import { IsAuthorizedUseCase } from './use-cases/is-authorized.use-case';
+import { LoginWithEmailUseCase } from './use-cases/login-with-email.use-case';
+import { LogoutUseCase } from './use-cases/logout.use-case';
 
 @ApiTags('Auth')
 @Controller({ path: 'auth', version: '1' })
@@ -58,12 +59,13 @@ export class AuthControllerV1 {
   // TODO add errors descriptions
   @ApiCommonErrorResponses('unauthorized')
   async loginWithEmail(
+    @ReqCtx() reqCtx: RequestContext,
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
     @Body(new ZodValidationPipe(loginWithEmailBodySchema))
     body: zod.infer<typeof loginWithEmailBodySchema>
   ): Promise<LoginWithEmailResponse> {
-    return this.loginWithEmailUseCase.execute(body, req, res);
+    return this.loginWithEmailUseCase.execute(reqCtx, body, req, res);
   }
 
   @Get('is-authorized')

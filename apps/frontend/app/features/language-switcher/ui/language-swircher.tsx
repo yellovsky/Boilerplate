@@ -17,6 +17,7 @@ export const LanguageSwitcher: FC = () => {
           className={cx(' transition-all hover:underline', language === i18n.language ? 'text-blue-500' : 'text-text')}
           key={language}
           language={language}
+          // TODO check react compiler
           onClick={() => i18n.changeLanguage(language)}
           to={`${location.pathname}`}
         >

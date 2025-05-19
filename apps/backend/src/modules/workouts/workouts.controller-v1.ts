@@ -4,15 +4,15 @@ import type * as zod from 'zod';
 
 import { getManyWorkoutsQuerySchema, getOneWorkoutQuerySchema } from '@repo/api-models';
 
-import { Public } from 'src/shared/application/decorators/public';
+import { Public } from 'src/shared/decorators/public';
 import { ApiCommonErrorResponses } from 'src/shared/utils/api-common-response';
 import { ReqCtx, type RequestContext } from 'src/shared/utils/request-context';
 import { ZodValidationPipe } from 'src/shared/utils/zod-validation-pipe';
 
-import type { GetManyWorkoutsResponseDto } from './application/dto/get-many-workouts-response.dto';
-import { GetOneWorkoutResponseDto } from './application/dto/get-one-workout-response.dto';
-import { GetManyWorkoutsUseCase } from './application/use-cases/get-many-workouts.use-case';
-import { GetOneWorkoutBySlugOrIdUseCase } from './application/use-cases/get-one-workout-by-slug-or-id.use-case';
+import type { GetManyWorkoutsResponseDto } from './dto/get-many-workouts-response.dto';
+import { GetOneWorkoutResponseDto } from './dto/get-one-workout-response.dto';
+import { GetManyWorkoutsUseCase } from './use-cases/get-many-workouts.use-case';
+import { GetOneWorkoutBySlugOrIdUseCase } from './use-cases/get-one-workout-by-slug-or-id.use-case';
 
 @ApiTags('Workouts')
 @Controller({ path: 'workouts', version: '1' })

@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 
 import type { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
 
-import { PrismaServiceImpl } from './prisma.service';
+import { PrismaServiceImpl } from './services/prisma.service';
 
 export type PrismaTransaction = Omit<
   PrismaClient,

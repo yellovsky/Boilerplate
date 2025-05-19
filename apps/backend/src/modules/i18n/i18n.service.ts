@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import i18next, { type TFunction } from 'i18next';
 
-import { FALLBACK_LNG, SUPPORTED_LNGS } from 'src/shared/application/config/i18n';
+import { FALLBACK_LNG, SUPPORTED_LNGS } from 'src/shared/config/i18n';
 
 import type { I18nService } from './i18n.types';
 import errorEn from './translations/en/error.json';

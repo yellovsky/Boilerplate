@@ -2,7 +2,7 @@ import { createParamDecorator, type ExecutionContext } from '@nestjs/common';
 import * as parser from 'accept-language-parser';
 import type { Request } from 'express';
 
-import { FALLBACK_LNG, SUPPORTED_LNGS } from 'src/shared/application/config/i18n';
+import { FALLBACK_LNG, SUPPORTED_LNGS } from 'src/shared/config/i18n';
 
 import { ProfileEntity } from 'src/modules/acount';
 import type { PrismaTransaction } from 'src/modules/prisma';
@@ -35,11 +35,27 @@ const getRequestLocale = (request: Request): string => {
   return FALLBACK_LNG;
 };
 
+interface RequestContextData {
+  locale: string;
+  accountId: string | null;
+  profileId: string | null;
+  tx: PrismaTransaction | null;
+}
+
 class RequestContextImpl implements RequestContext {
   static fromRequest(req: Request): RequestContext {
     const profile = req.user instanceof ProfileEntity ? req.user : null;
 
-    return new RequestContextImpl(getRequestLocale(req), profile?.accountId || null, profile?.id || null);
+    return RequestContextImpl.from({
+      locale: getRequestLocale(req),
+      accountId: profile?.accountId || null,
+      profileId: profile?.id || null,
+      tx: null,
+    });
+  }
+
+  static from(params: RequestContextData): RequestContext {
+    return new RequestContextImpl(params.locale, params.accountId, params.profileId, params.tx);
   }
 
   constructor(
@@ -58,7 +74,18 @@ class RequestContextImpl implements RequestContext {
   }
 }
 
+export const requestContextFromRequest = (request: Request): RequestContext => RequestContextImpl.fromRequest(request);
+
 export const ReqCtx = createParamDecorator((_data: unknown, ctx: ExecutionContext): RequestContext => {
   const request = ctx.switchToHttp().getRequest();
-  return RequestContextImpl.fromRequest(request);
+  return requestContextFromRequest(request);
 });
+
+export const makeMockRequestContext = (params?: RequestContextData): RequestContext =>
+  RequestContextImpl.from({
+    accountId: null,
+    locale: 'en',
+    profileId: null,
+    tx: null,
+    ...params,
+  });

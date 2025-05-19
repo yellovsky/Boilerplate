@@ -8,9 +8,8 @@ import { ApiCommonErrorResponses } from 'src/shared/utils/api-common-response';
 import { ReqCtx, type RequestContext } from 'src/shared/utils/request-context';
 import { ZodValidationPipe } from 'src/shared/utils/zod-validation-pipe';
 
-import { PermissionPolicyListResponseDto } from './domain/dto/permission-policy-list-response.dto';
-
-import { GetPermissionPoliciesListUseCase } from './application/use-cases/get-permission-policies-list.use-case';
+import { PermissionPolicyListResponseDto } from './dto/permission-policy-list-response.dto';
+import { GetPermissionPoliciesListUseCase } from './use-cases/get-permission-policies-list.use-case';
 
 @ApiTags('Permission policies')
 @Controller({ path: 'permission-policies', version: '1' })

@@ -1,6 +1,6 @@
 import { Data, type Either } from 'effect';
 
-import { FailedResponseDto } from '../presentation/dtos/failure-response.dto';
+import { FailedResponseDto } from '../dto/failure-response.dto';
 
 enum ExclusionReasonKind {
   NOT_FOUND = 'NOT_FOUND',

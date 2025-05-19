@@ -3,17 +3,14 @@ import { Module } from '@nestjs/common';
 import { CasbinModule } from 'src/modules/casbin';
 import { PrismaModule } from 'src/modules/prisma';
 
-import { WORKOUTS_REPO } from './domain/interfaces/workouts.repository.interface';
-import { WORKOUTS_SRV } from './domain/interfaces/workouts.service.interface';
-import { WORKOUTS_ACCESS_SRV } from './domain/interfaces/workouts-access.service.interface';
-
-import { WorkoutsServiceImpl } from './application/services/workouts.service';
-import { WorkoutsAccessServiceImpl } from './application/services/workouts-access.service';
-import { GetManyWorkoutsUseCase } from './application/use-cases/get-many-workouts.use-case';
-import { GetOneWorkoutBySlugOrIdUseCase } from './application/use-cases/get-one-workout-by-slug-or-id.use-case';
-
-import { WorkoutsRepositoryImpl } from './infrastructure/repositories/workouts.repository';
-
+import { WORKOUTS_REPO } from './interfaces/workouts.repository.interface';
+import { WORKOUTS_SRV } from './interfaces/workouts.service.interface';
+import { WORKOUTS_ACCESS_SRV } from './interfaces/workouts-access.service.interface';
+import { WorkoutsRepositoryImpl } from './repositories/workouts.repository';
+import { WorkoutsServiceImpl } from './services/workouts.service';
+import { WorkoutsAccessServiceImpl } from './services/workouts-access.service';
+import { GetManyWorkoutsUseCase } from './use-cases/get-many-workouts.use-case';
+import { GetOneWorkoutBySlugOrIdUseCase } from './use-cases/get-one-workout-by-slug-or-id.use-case';
 import { WorkoutsControllerV1 } from './workouts.controller-v1';
 
 @Module({

@@ -4,8 +4,8 @@ import type { Request, Response } from 'express';
 import type { TFunction } from 'i18next';
 import { ZodError } from 'zod';
 
-import { DomainError } from 'src/shared/domain/errors/domain-error';
-import { FailedResponseDto } from 'src/shared/presentation/dtos/failure-response.dto';
+import { FailedResponseDto } from 'src/shared/dto/failure-response.dto';
+import { DomainError } from 'src/shared/errors/domain-error';
 
 import type { I18nService } from 'src/modules/i18n';
 

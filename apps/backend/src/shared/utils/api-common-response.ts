@@ -9,7 +9,7 @@ import {
 
 import type { FailedResponse } from '@repo/api-models';
 
-import { FailedResponseDto } from '../presentation/dtos/failure-response.dto';
+import { FailedResponseDto } from '../dto/failure-response.dto';
 
 export const ApiCommonErrorResponses = (
   ...types: Array<'forbidden' | 'unauthorized' | 'bad_request' | 'not_found'>
