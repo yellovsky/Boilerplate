@@ -1,0 +1,5 @@
+@reference '../tailwind.css';
+
+.theme {
+  color: var(--color-text);
+}

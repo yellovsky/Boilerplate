@@ -3,6 +3,10 @@
 
 @import "./theme.css";
 
+html {
+  @apply overflow-y-auto overflow-x-hidden;
+}
+
 body {
   @apply text-text bg-bg relative flex h-dvh w-full flex-col;
 }

@@ -3,6 +3,7 @@ import { PassThrough } from 'node:stream';
 import { createReadableStreamFromReadable } from '@react-router/node';
 import { createInstance } from 'i18next';
 import { isbot } from 'isbot';
+import { Provider } from 'jotai';
 import { renderToPipeableStream } from 'react-dom/server';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { type AppLoadContext, type EntryContext, ServerRouter } from 'react-router';
@@ -74,7 +75,9 @@ export default async function handleRequest(
 
     const { pipe, abort } = renderToPipeableStream(
       <I18nextProvider i18n={instance}>
-        <ServerRouter context={context} url={request.url} />
+        <Provider>
+          <ServerRouter context={context} url={request.url} />
+        </Provider>
       </I18nextProvider>,
       {
         [callbackName]: () => {

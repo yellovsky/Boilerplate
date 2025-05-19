@@ -1,12 +1,12 @@
 import geologicaCss from '@fontsource-variable/geologica/index.css?url';
 import interCss from '@fontsource-variable/inter/index.css?url';
 import robotoMonoCss from '@fontsource-variable/roboto-mono/index.css?url';
-import { type QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { Provider } from 'jotai';
+import { useAtomValue } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
 import { queryClientAtom } from 'jotai-tanstack-query';
-import { type FC, type PropsWithChildren, Suspense } from 'react';
+import { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { LinkDescriptor, LinksFunction } from 'react-router';
 import {
@@ -22,15 +22,18 @@ import {
 import { useChangeLanguage } from 'remix-i18next/react';
 
 import twCss from '@repo/theme/tailwind.css?url';
+import { theme as themeDark } from '@repo/theme/themes/minimal-dark.module.css';
+import { theme as themeLight } from '@repo/theme/themes/minimal-light.module.css';
 
 import { getQueryClient } from '@shared/lib/query-client';
 
 import { AppSuspenseWarning } from '@app/app-suspense-warning';
 import { ClientHintCheck, getHints } from '@app/client-hints';
 
+import { colorSchemeAtom } from '@features/theme/model/color-scheme-atom';
+
 import type { Route } from './+types/root';
 import {
-  type ColorScheme,
   fallbackColorSchemeAtom,
   getCookieStringColorScheme,
   isColorScheme,
@@ -62,7 +65,6 @@ export const handle = {
   i18n: 'common',
 };
 
-// TODO Think aboun move providers to app
 export default function App({ loaderData }: Route.ComponentProps) {
   const { lang, clientEnv } = loaderData;
 
@@ -77,29 +79,25 @@ export default function App({ loaderData }: Route.ComponentProps) {
   );
 }
 
-interface HydrateAtomsProps extends PropsWithChildren {
-  fallbackColorScheme: ColorScheme;
-  selectedColorScheme: ColorScheme | null;
-  queryClient: QueryClient;
-}
-
-// see: https://jotai.org/docs/extensions/query#example
-const HydrateAtoms: FC<HydrateAtomsProps> = (props) => {
-  useHydrateAtoms([
-    [queryClientAtom, props.queryClient],
-    [fallbackColorSchemeAtom, props.fallbackColorScheme],
-    [selectedColorSchemeAtom, props.selectedColorScheme],
-  ]);
-
-  return props.children;
-};
-
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const { i18n } = useTranslation();
   const loaderData = useLoaderData<typeof loader>();
 
+  useHydrateAtoms([
+    [queryClientAtom, queryClient],
+    [fallbackColorSchemeAtom, loaderData.hints.theme],
+    [selectedColorSchemeAtom, loaderData.selectedColorScheme],
+  ]);
+
+  const colorScheme = useAtomValue(colorSchemeAtom);
+
   return (
-    <html className="overflow-y-auto overflow-x-hidden" dir={i18n.dir()} lang={i18n.language}>
+    <html
+      className={colorScheme === 'dark' ? themeDark : themeLight}
+      style={{ colorScheme }}
+      dir={i18n.dir()}
+      lang={i18n.language}
+    >
       <head>
         <ClientHintCheck />
         <meta charSet="utf-8" />
@@ -111,15 +109,14 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       <body className="h-full w-full">
         <Suspense fallback={<AppSuspenseWarning />}>
           <QueryClientProvider client={queryClient}>
-            <Provider>
-              <HydrateAtoms
-                fallbackColorScheme={loaderData.hints.theme}
-                queryClient={queryClient}
-                selectedColorScheme={loaderData.selectedColorScheme}
-              >
-                {children}
-              </HydrateAtoms>
-            </Provider>
+            {/* <HydrateAtoms
+              fallbackColorScheme={loaderData.hints.theme}
+              queryClient={queryClient}
+              selectedColorScheme={loaderData.selectedColorScheme}
+            > */}
+            {children}
+            {/* </HydrateAtoms> */}
+
             <ReactQueryDevtools />
           </QueryClientProvider>
         </Suspense>
