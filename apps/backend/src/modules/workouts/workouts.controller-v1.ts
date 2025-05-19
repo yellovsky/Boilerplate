@@ -6,9 +6,11 @@ import { getManyWorkoutsQuerySchema, getOneWorkoutQuerySchema } from '@repo/api-
 
 import { Public } from 'src/shared/decorators/public';
 import { ApiCommonErrorResponses } from 'src/shared/utils/api-common-response';
+import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 import { ReqCtx, type RequestContext } from 'src/shared/utils/request-context';
 import { ZodValidationPipe } from 'src/shared/utils/zod-validation-pipe';
 
+import { APP_CACHE_SRV } from '../cache';
 import type { GetManyWorkoutsResponseDto } from './dto/get-many-workouts-response.dto';
 import { GetOneWorkoutResponseDto } from './dto/get-one-workout-response.dto';
 import { GetManyWorkoutsUseCase } from './use-cases/get-many-workouts.use-case';
@@ -18,6 +20,9 @@ import { GetOneWorkoutBySlugOrIdUseCase } from './use-cases/get-one-workout-by-s
 @Controller({ path: 'workouts', version: '1' })
 export class WorkoutsControllerV1 {
   constructor(
+    @Inject(APP_CACHE_SRV)
+    private readonly appCacheSrv: IdentifierOf<typeof APP_CACHE_SRV>,
+
     @Inject(GetOneWorkoutBySlugOrIdUseCase)
     private readonly getOneWorkoutBySlugOrIdUseCase: GetOneWorkoutBySlugOrIdUseCase,
 
@@ -33,7 +38,9 @@ export class WorkoutsControllerV1 {
     @Query(new ZodValidationPipe(getManyWorkoutsQuerySchema))
     query: zod.infer<typeof getManyWorkoutsQuerySchema>
   ): Promise<GetManyWorkoutsResponseDto | null> {
-    return this.getManyWorkoutsUseCase.execute(reqCtx, query);
+    return this.appCacheSrv.wrap(reqCtx, { pathname: '/v1/workouts', workspace: 'workouts', query }, () =>
+      this.getManyWorkoutsUseCase.execute(reqCtx, query)
+    );
   }
 
   @Get(':slugOrId')

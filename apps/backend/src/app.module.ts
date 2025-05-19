@@ -6,6 +6,7 @@ import * as winston from 'winston';
 
 import { AppConfigModule } from 'src/modules/app-config';
 import { AuthModule, JwtGuard, JwtStrategy } from 'src/modules/auth';
+import { AppCacheModule } from 'src/modules/cache';
 import { CasbinModule } from 'src/modules/casbin';
 import { I18nModule } from 'src/modules/i18n';
 import { PrismaModule } from 'src/modules/prisma';
@@ -38,6 +39,7 @@ import { RequestLoggerMiddleware } from './request-logger.middleware';
     AuthModule,
     CasbinModule,
     PermissionPoliciesModule,
+    AppCacheModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: JwtGuard }, JwtStrategy],
 })

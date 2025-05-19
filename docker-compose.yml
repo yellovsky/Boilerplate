@@ -33,6 +33,14 @@ services:
       - 9090:9090
     volumes:
       - ./locals3root:/containers3root
+  redis:
+    image: redis:8-alpine
+    container_name: local-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
 
 volumes:
   postgres-db-volume:
@@ -41,6 +49,7 @@ volumes:
       type: none
       o: bind
       device: ./data
+  redis_data:
 networks:
   postgres-db-network:
     driver: bridge

@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { CasbinModule } from 'src/modules/casbin';
 import { PrismaModule } from 'src/modules/prisma';
 
+import { AppCacheModule } from '../cache';
 import { WORKOUTS_REPO } from './interfaces/workouts.repository.interface';
 import { WORKOUTS_SRV } from './interfaces/workouts.service.interface';
 import { WORKOUTS_ACCESS_SRV } from './interfaces/workouts-access.service.interface';
@@ -15,7 +16,7 @@ import { WorkoutsControllerV1 } from './workouts.controller-v1';
 
 @Module({
   controllers: [WorkoutsControllerV1],
-  imports: [PrismaModule, CasbinModule],
+  imports: [PrismaModule, CasbinModule, AppCacheModule],
   providers: [
     { provide: WORKOUTS_REPO, useClass: WorkoutsRepositoryImpl },
     { provide: WORKOUTS_SRV, useClass: WorkoutsServiceImpl },

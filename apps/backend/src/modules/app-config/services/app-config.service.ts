@@ -17,4 +17,8 @@ export class AppConfigServiceImpl implements AppConfigService {
   get webClientHostname(): string {
     return this.configService.getOrThrow<string>('WEB_CLIENT_HOSTNAME');
   }
+
+  get redisUrl(): string {
+    return this.configService.getOrThrow<string>('REDIS_URL');
+  }
 }
