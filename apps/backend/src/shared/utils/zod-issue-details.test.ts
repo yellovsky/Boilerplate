@@ -4,11 +4,11 @@ import type { ZodIssue } from 'zod';
 import { getZodIssueDetails } from './zod-issue-details';
 
 describe('getZodIssueDetails', () => {
-  const t: TFunction = jest.fn((key: string) => `[translated] ${key}`) as unknown as TFunction;
+  const t: TFunction = vi.fn((key: string) => `[translated] ${key}`) as unknown as TFunction;
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    jest.spyOn(console, 'warn').mockImplementation(() => {});
+    vi.clearAllMocks();
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
   });
 
   it('translates a required field (undefined)', () => {

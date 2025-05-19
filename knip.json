@@ -6,15 +6,8 @@
     "apps/backend": {
       "nest": true,
       "prisma": true,
-      "jest": true,
       "vitest": true,
-      "ignoreDependencies": [
-        "@prisma/client",
-        "@generated/prisma",
-        "jest-mock-extended",
-        "@jest/globals",
-        "@nestjs/mapped-types"
-      ]
+      "ignoreDependencies": ["@prisma/client", "@generated/prisma", "@nestjs/mapped-types"]
     },
     "apps/frontend": {
       "entry": ["app/server/index.ts"],

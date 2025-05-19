@@ -81,7 +81,7 @@ export const ReqCtx = createParamDecorator((_data: unknown, ctx: ExecutionContex
   return requestContextFromRequest(request);
 });
 
-export const makeMockRequestContext = (params?: RequestContextData): RequestContext =>
+export const makeMockRequestContext = (params?: Partial<RequestContextData>): RequestContext =>
   RequestContextImpl.from({
     accountId: null,
     locale: 'en',

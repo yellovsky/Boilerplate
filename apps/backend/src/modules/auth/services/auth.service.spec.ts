@@ -1,4 +1,4 @@
-import { createMock, type DeepMocked } from '@golevelup/ts-jest';
+import { createMock, type DeepMocked } from '@golevelup/ts-vitest';
 import { Test, type TestingModule } from '@nestjs/testing';
 import { Either } from 'effect';
 
@@ -58,7 +58,7 @@ describe('AuthService', () => {
         bcryptSrv.compare.mockResolvedValue(true);
 
         const profileEntity = await service.validateProfileByEmail(makeMockRequestContext(), 'email', 'password');
-        expect(Either.getOrThrow(profileEntity)).toBe(expectedAccountEntity.profiles.at(0));
+        await expect(Either.getOrThrow(profileEntity)).toBe(expectedAccountEntity.profiles.at(0));
       });
     });
 
@@ -69,7 +69,7 @@ describe('AuthService', () => {
           await service.validateProfileByEmail(makeMockRequestContext(), 'email', 'password');
         };
 
-        expect(fn()).rejects.toThrow(AuthNotFoundError);
+        await expect(fn()).rejects.toThrow(AuthNotFoundError);
       });
     });
 
@@ -83,7 +83,7 @@ describe('AuthService', () => {
           await service.validateProfileByEmail(makeMockRequestContext(), 'email', 'password');
         };
 
-        expect(fn()).rejects.toThrow(AuthPwdIsNotSetError);
+        await expect(fn()).rejects.toThrow(AuthPwdIsNotSetError);
       });
     });
 
@@ -100,7 +100,7 @@ describe('AuthService', () => {
           await service.validateProfileByEmail(makeMockRequestContext(), 'email', 'password');
         };
 
-        expect(fn()).rejects.toThrow(AuthInvalidPwdError);
+        await expect(fn()).rejects.toThrow(AuthInvalidPwdError);
       });
     });
   });
