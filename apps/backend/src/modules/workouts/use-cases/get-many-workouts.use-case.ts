@@ -5,7 +5,7 @@ import type { GetManyWorkoutsQuery } from '@repo/api-models';
 
 import { makeDefaultTranslationStrategy } from 'src/shared/config/translation-strategy';
 import type { ResultOrExcluded } from 'src/shared/excluded';
-import { applyPromiseToRights } from 'src/shared/utils/apply-promice-to-rights';
+import { applyPromiseToRights } from 'src/shared/utils/apply-promise-to-rights';
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 import type { RequestContext } from 'src/shared/utils/request-context';
 
