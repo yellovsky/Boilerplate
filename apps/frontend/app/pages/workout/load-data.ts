@@ -21,9 +21,9 @@ export const loadWrkoutRouteData = async ({ params }: Route.LoaderArgs | Route.C
   const workout = workoutResponse.data;
 
   return {
+    dehydratedState: dehydrate(queryClient),
+    getOneWorkoutVars,
     ids: ['test', 'test-2'],
     workout,
-    getOneWorkoutVars,
-    dehydratedState: dehydrate(queryClient),
   };
 };

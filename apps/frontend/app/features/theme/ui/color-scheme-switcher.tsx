@@ -21,7 +21,6 @@ export const ColorSchemeSwitcher: FC = () => {
     <div className="flex w-min gap-2 p-2">
       {COLOR_SCHEME_OPTIONS.map((theme) => (
         <button
-          type="button"
           className={cx(
             'transition-all hover:underline',
             colorScheme === theme ? 'text-blue-500' : 'dark:text-white',
@@ -30,6 +29,7 @@ export const ColorSchemeSwitcher: FC = () => {
           )}
           key={theme}
           onClick={() => changeTheme(theme)}
+          type="button"
         >
           {theme}
         </button>

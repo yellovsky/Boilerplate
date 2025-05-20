@@ -12,14 +12,13 @@ export const getLoadContext = async (c: Context) => {
   const env = getServerEnv();
 
   return {
+    // We do not add this to AppLoadContext type because it's not needed in the loaders, but it's used above to handle requests
+    body: c.body,
     clientEnv: getClientEnv(),
     env,
     isProductionDeployment: env.APP_ENV === 'production',
     lang: locale,
     t,
-
-    // We do not add this to AppLoadContext type because it's not needed in the loaders, but it's used above to handle requests
-    body: c.body,
   };
 };
 

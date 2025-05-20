@@ -1,11 +1,10 @@
 import type { Prisma } from '@generated/prisma';
 
 export const dbShortWorkoutSelect = {
-  id: true,
   createdAt: true,
+  id: true,
   publishedAt: true,
   slug: true,
-  updatedAt: true,
   translations: {
     select: {
       createdAt: true,
@@ -15,6 +14,7 @@ export const dbShortWorkoutSelect = {
       updatedAt: true,
     },
   },
+  updatedAt: true,
 } as const satisfies Prisma.WorkoutSelect;
 
 export type DBShortWorkout = Prisma.WorkoutGetPayload<{ select: typeof dbShortWorkoutSelect }>;

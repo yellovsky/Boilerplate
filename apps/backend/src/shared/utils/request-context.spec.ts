@@ -11,8 +11,8 @@ vi.mock('accept-language-parser');
 describe('RequestContext', () => {
   it('resolves locale from query.locale', () => {
     const req = {
-      query: { locale: 'fr' },
       headers: {},
+      query: { locale: 'fr' },
       user: null,
       // biome-ignore lint/suspicious/noExplicitAny: it's a test
     } as any;
@@ -25,8 +25,8 @@ describe('RequestContext', () => {
     vi.spyOn(parser, 'pick').mockReturnValue('es');
 
     const req = {
-      query: {},
       headers: { 'accept-language': 'es,en;q=0.8' },
+      query: {},
       user: null,
       // biome-ignore lint/suspicious/noExplicitAny: it's a test
     } as any;
@@ -39,8 +39,8 @@ describe('RequestContext', () => {
     vi.spyOn(parser, 'pick').mockReturnValue(null);
 
     const req = {
-      query: {},
       headers: {},
+      query: {},
       user: null,
       // biome-ignore lint/suspicious/noExplicitAny: it's a test
     } as any;
@@ -50,11 +50,11 @@ describe('RequestContext', () => {
   });
 
   it('parses profile correctly if user is ProfileEntity', () => {
-    const user = createMockProfileEntity({ id: 'pid123', accountId: 'acc456' });
+    const user = createMockProfileEntity({ accountId: 'acc456', id: 'pid123' });
 
     const req = {
-      query: {},
       headers: {},
+      query: {},
       user,
       // biome-ignore lint/suspicious/noExplicitAny: it's a test
     } as any;
@@ -66,8 +66,8 @@ describe('RequestContext', () => {
 
   it('ignores user if not a ProfileEntity', () => {
     const req = {
-      query: {},
       headers: {},
+      query: {},
       user: { something: 'else' },
       // biome-ignore lint/suspicious/noExplicitAny: it's a test
     } as any;

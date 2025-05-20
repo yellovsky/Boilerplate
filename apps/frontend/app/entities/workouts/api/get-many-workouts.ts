@@ -5,25 +5,29 @@ import type { FailedResponse, GetManyWorkoutsQuery, GetManyWorkoutsResponse, Pag
 import { type ApiClient, useApiClient } from '@shared/lib/api-client';
 import { getNextPageParam, initialPageParam } from '@shared/lib/page-params';
 
-const WORKOUTS_Q_KEY_TOKEN = 'workouts';
+import { WORKOUTS_ENTITY_QUERY_KEY_TOKEN } from '../config/tokens';
+
+const WORKOUTS_QUERY_KEY_TOKEN = 'workouts';
+
 export type GetManyWorkoutsVariables = Omit<GetManyWorkoutsQuery, 'page'>;
-// TODO make querykey as ['workouts', 'list' | 'single', {params}] to revalidate all at once
-type GetManyWorkoutsQKey = readonly [typeof WORKOUTS_Q_KEY_TOKEN, GetManyWorkoutsVariables];
+type GetManyWorkoutsQKey = readonly [
+  typeof WORKOUTS_ENTITY_QUERY_KEY_TOKEN,
+  typeof WORKOUTS_QUERY_KEY_TOKEN,
+  GetManyWorkoutsVariables,
+];
 
 const makeGetManyWorkoutsQKey = (variables: GetManyWorkoutsVariables): GetManyWorkoutsQKey => [
-  WORKOUTS_Q_KEY_TOKEN,
+  WORKOUTS_ENTITY_QUERY_KEY_TOKEN,
+  WORKOUTS_QUERY_KEY_TOKEN,
   variables,
 ];
 
 const getManyWorkouts =
   (apiClient: ApiClient): QueryFunction<GetManyWorkoutsResponse, GetManyWorkoutsQKey, PageRequest> =>
   async ({ queryKey, pageParam, signal }) => {
-    const params = { ...queryKey[1], page: pageParam };
-
-    return apiClient.get<GetManyWorkoutsResponse>('http://localhost:3001/api/v1/workouts', {
-      params,
-      signal,
-    });
+    const variables: GetManyWorkoutsVariables = queryKey[2];
+    const params = { ...variables, page: pageParam };
+    return apiClient.get<GetManyWorkoutsResponse>('/v1/workouts', { params, signal });
   };
 
 export const prefetchManyWorkoutsQuery = async (
@@ -32,10 +36,10 @@ export const prefetchManyWorkoutsQuery = async (
   variables: GetManyWorkoutsVariables
 ): Promise<void> => {
   await queryClient.prefetchInfiniteQuery({
+    getNextPageParam,
+    initialPageParam,
     queryFn: getManyWorkouts(apiClient),
     queryKey: makeGetManyWorkoutsQKey(variables),
-    initialPageParam,
-    getNextPageParam,
   });
 };
 
@@ -49,10 +53,10 @@ export const useManyWorkoutsQuery = (variables: GetManyWorkoutsVariables) => {
     GetManyWorkoutsQKey,
     PageRequest
   >({
-    queryFn: getManyWorkouts(apiClient),
-    queryKey: makeGetManyWorkoutsQKey(variables),
+    getNextPageParam,
 
     initialPageParam,
-    getNextPageParam,
+    queryFn: getManyWorkouts(apiClient),
+    queryKey: makeGetManyWorkoutsQKey(variables),
   });
 };

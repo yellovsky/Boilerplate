@@ -19,18 +19,18 @@ export const PageHeader: FC<PageHeaderProps> = ({ className }) => {
       <div>logo</div>
       <div className={styles.nav}>
         <NavLink
-          end
-          viewTransition={false}
-          to="/"
           className={({ isActive, isPending }) => (isPending ? 'text-fg-disabled' : isActive ? 'text-accent' : '')}
+          end
+          to="/"
+          viewTransition={false}
         >
           Home
         </NavLink>
 
         <NavLink
-          viewTransition={false}
-          to="/workouts"
           className={({ isActive, isPending }) => (isPending ? 'text-fg-disabled' : isActive ? 'text-accent' : '')}
+          to="/workouts"
+          viewTransition={false}
         >
           Workouts
         </NavLink>

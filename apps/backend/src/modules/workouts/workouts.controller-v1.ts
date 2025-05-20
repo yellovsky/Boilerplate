@@ -38,7 +38,7 @@ export class WorkoutsControllerV1 {
     @Query(new ZodValidationPipe(getManyWorkoutsQuerySchema))
     query: zod.infer<typeof getManyWorkoutsQuerySchema>
   ): Promise<GetManyWorkoutsResponseDto | null> {
-    return this.appCacheSrv.wrap(reqCtx, { pathname: '/v1/workouts', workspace: 'workouts', query }, () =>
+    return this.appCacheSrv.wrap(reqCtx, { pathname: '/v1/workouts', query, workspace: 'workouts' }, () =>
       this.getManyWorkoutsUseCase.execute(reqCtx, query)
     );
   }

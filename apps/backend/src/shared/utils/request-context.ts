@@ -47,8 +47,8 @@ class RequestContextImpl implements RequestContext {
     const profile = req.user instanceof ProfileEntity ? req.user : null;
 
     return RequestContextImpl.from({
-      locale: getRequestLocale(req),
       accountId: profile?.accountId || null,
+      locale: getRequestLocale(req),
       profileId: profile?.id || null,
       tx: null,
     });

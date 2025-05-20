@@ -97,14 +97,14 @@ export default async function handleRequest(
           pipe(body);
         },
 
-        onShellError(error: unknown) {
-          reject(error);
-        },
-
         onError(error: unknown) {
           if (shellRendered) {
             console.error(error);
           }
+        },
+
+        onShellError(error: unknown) {
+          reject(error);
         },
       }
     );

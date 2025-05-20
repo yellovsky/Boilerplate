@@ -8,3 +8,4 @@ export {
   prefetchOneWorkoutQuery,
   useWorkoutQuery,
 } from './api/get-one-workout';
+export { invalidateWorkoutsQuery } from './lib/invalidate-workouts';

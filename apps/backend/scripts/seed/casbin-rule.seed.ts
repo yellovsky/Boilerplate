@@ -1,23 +1,23 @@
 import type { PrismaClient } from '@generated/prisma';
 
-const workoutPolicies = [{ sub: 'public', act: 'read', cond: 'true' }].map((obj) => ({ ...obj, objType: 'workout' }));
+const workoutPolicies = [{ act: 'read', cond: 'true', sub: 'public' }].map((obj) => ({ ...obj, objType: 'workout' }));
 
 const accountPolicies = [
-  { sub: 'admin', act: 'read', cond: 'true' },
-  { sub: 'admin', act: 'read_cms', cond: 'true' },
-  { sub: 'admin', act: 'update', cond: 'true' },
-  { sub: 'admin', act: 'create', cond: 'true' },
-  { sub: 'admin', act: 'delete', cond: 'true' },
-  { sub: 'member', act: 'delete', cond: 'obj.id == sub' },
+  { act: 'read', cond: 'true', sub: 'admin' },
+  { act: 'read_cms', cond: 'true', sub: 'admin' },
+  { act: 'update', cond: 'true', sub: 'admin' },
+  { act: 'create', cond: 'true', sub: 'admin' },
+  { act: 'delete', cond: 'true', sub: 'admin' },
+  { act: 'delete', cond: 'obj.id == sub', sub: 'member' },
 ].map((obj) => ({ ...obj, objType: 'account' }));
 
 const permissionPolicyPolicies = [
-  { sub: 'admin', act: 'view', cond: 'true' },
-  { sub: 'admin', act: 'read', cond: 'true' },
-  { sub: 'admin', act: 'read_cms', cond: 'true' },
-  { sub: 'admin', act: 'update', cond: 'true' },
-  { sub: 'admin', act: 'create', cond: 'true' },
-  { sub: 'admin', act: 'delete', cond: 'true' },
+  { act: 'view', cond: 'true', sub: 'admin' },
+  { act: 'read', cond: 'true', sub: 'admin' },
+  { act: 'read_cms', cond: 'true', sub: 'admin' },
+  { act: 'update', cond: 'true', sub: 'admin' },
+  { act: 'create', cond: 'true', sub: 'admin' },
+  { act: 'delete', cond: 'true', sub: 'admin' },
 ].map((obj) => ({ ...obj, objType: 'permission_policy' }));
 
 const policies: Array<{

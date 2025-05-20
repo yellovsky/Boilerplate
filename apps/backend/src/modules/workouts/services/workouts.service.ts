@@ -30,17 +30,17 @@ export class WorkoutsServiceImpl implements WorkoutsService {
 
   getWorkouts(reqCtx: RequestContext, params: GetManyWorkoutsParams): Promise<ResultOrExcluded<ShortWorkoutEntity>[]> {
     return this.workoutsRepo.findManyWorkouts(reqCtx, {
+      orderBy: params.sort,
       skip: params.page.offset,
       take: params.page.limit,
-      orderBy: params.sort,
     });
   }
 
   getWorkoutsTotal(reqCtx: RequestContext, params: GetManyWorkoutsParams): Promise<number> {
     return this.workoutsRepo.findManyWorkoutsTotal(reqCtx, {
+      orderBy: params.sort,
       skip: params.page.offset,
       take: params.page.limit,
-      orderBy: params.sort,
     });
   }
 

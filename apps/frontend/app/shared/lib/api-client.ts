@@ -4,14 +4,13 @@ import { useState } from 'react';
 import { type FailedResponse, failedResponseSchema } from '@repo/api-models';
 
 const unknownFailedResponse: FailedResponse = {
-  status: 'error',
-
   error: {
     code: 'unknown_error',
     httpCode: 500,
     message: 'Unknown error',
     timestamp: new Date().toISOString(),
   },
+  status: 'error',
 } as const;
 
 export interface ApiClient {

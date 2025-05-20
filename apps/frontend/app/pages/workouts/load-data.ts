@@ -18,5 +18,5 @@ export const loadWorkoutsRouteData = async ({ params }: Route.LoaderArgs | Route
 
   await prefetchManyWorkoutsQuery(apiClient, queryClient, workoutsVars);
 
-  return { workoutsVars, dehydratedState: dehydrate(queryClient) };
+  return { dehydratedState: dehydrate(queryClient), workoutsVars };
 };

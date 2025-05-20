@@ -8,11 +8,11 @@ import { resources } from './resource';
 const i18next = new RemixI18Next({
   detection: {
     fallbackLanguage: i18n.fallbackLng,
-    supportedLanguages: i18n.supportedLngs,
 
     async findLocale(request) {
       return getRequestLocale(request);
     },
+    supportedLanguages: i18n.supportedLngs,
   },
 
   // This is the configuration for i18next used

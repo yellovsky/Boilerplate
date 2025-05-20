@@ -16,12 +16,11 @@ export class AppCacheServiceImpl implements AppCacheService {
 
   private buildKey(reqCtx: RequestContext, key: CacheKey): string {
     const sortedKey = {
-      pathname: key.pathname,
-      params: key.params,
-
       accountId: reqCtx.accountId,
-      profileId: reqCtx.profileId,
       fallbackLocale: reqCtx.locale,
+      params: key.params,
+      pathname: key.pathname,
+      profileId: reqCtx.profileId,
 
       query: key.query
         ? Object.entries(key.query)

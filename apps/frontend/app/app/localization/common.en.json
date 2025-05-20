@@ -1,20 +1,20 @@
 {
   "error": {
-    "500": {
-      "title": "Something went wrong!",
-      "description": "Looks like something unexpected happened on the server."
-    },
-    "404": {
-      "title": "Page Not found!",
-      "description": "Oops! The page you're looking for seems to have vanished into thin air."
+    "200": {
+      "description": "Looks like something unexpected happened on the server.",
+      "title": "Something went wrong!"
     },
     "403": {
-      "title": "Unauthorized!",
-      "description": "Looks like you can't access this page."
+      "description": "Looks like you can't access this page.",
+      "title": "Unauthorized!"
     },
-    "200": {
-      "title": "Something went wrong!",
-      "description": "Looks like something unexpected happened on the server."
+    "404": {
+      "description": "Oops! The page you're looking for seems to have vanished into thin air.",
+      "title": "Page Not found!"
+    },
+    "500": {
+      "description": "Looks like something unexpected happened on the server.",
+      "title": "Something went wrong!"
     }
   }
 }

@@ -4,24 +4,24 @@
   "ignoreDependencies": ["postcss", "@biomejs/biome", "@commitlint/cli"],
   "workspaces": {
     "apps/backend": {
+      "ignoreDependencies": ["@prisma/client", "@generated/prisma", "@nestjs/mapped-types"],
       "nest": true,
       "prisma": true,
-      "vitest": true,
-      "ignoreDependencies": ["@prisma/client", "@generated/prisma", "@nestjs/mapped-types"]
+      "vitest": true
     },
     "apps/frontend": {
       "entry": ["app/server/index.ts"],
+      "ignoreDependencies": ["tailwindcss", "autoprefixer", "babel-plugin-react-compiler"],
       "remix": true,
-      "tailwind": true,
-      "ignoreDependencies": ["tailwindcss", "autoprefixer", "babel-plugin-react-compiler"]
+      "tailwind": true
     },
     "packages/theme": {
-      "tailwind": true,
-      "ignoreDependencies": ["tailwindcss"]
+      "ignoreDependencies": ["tailwindcss"],
+      "tailwind": true
     },
     "packages/ui": {
-      "tailwind": true,
-      "ignoreDependencies": ["tailwindcss", "@repo/theme"]
+      "ignoreDependencies": ["tailwindcss", "@repo/theme"],
+      "tailwind": true
     }
   }
 }

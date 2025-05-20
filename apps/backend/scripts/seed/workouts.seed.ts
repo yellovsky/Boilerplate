@@ -5,29 +5,29 @@ import * as R from 'ramda';
 const seedFakeWorkout = (tx: PrismaClient) =>
   tx.workout.create({
     data: {
-      slug: faker.lorem.word(),
       createdAt: faker.date.past(),
       publishedAt: faker.date.past(),
+      slug: faker.lorem.word(),
       translations: {
         createMany: {
           data: [
             {
+              createdAt: faker.date.past(),
               languageCode: 'en',
               name: `${faker.lorem.word()} - [en]`,
-              createdAt: faker.date.past(),
               publishedAt: faker.date.past(),
-              updatedAt: faker.date.past(),
               seoDescription: faker.lorem.sentence(),
               seoKeywords: faker.lorem.words().split(' ').join(', '),
+              updatedAt: faker.date.past(),
             },
             {
+              createdAt: faker.date.past(),
               languageCode: 'ru',
               name: `${faker.lorem.word()} - [ru]`,
-              createdAt: faker.date.past(),
               publishedAt: faker.date.past(),
-              updatedAt: faker.date.past(),
               seoDescription: faker.lorem.sentence(),
               seoKeywords: faker.lorem.words().split(' ').join(', '),
+              updatedAt: faker.date.past(),
             },
           ],
         },

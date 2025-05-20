@@ -14,12 +14,12 @@ export class I18nServiceImpl implements I18nService {
       defaultNS: 'common',
       fallbackLng: FALLBACK_LNG,
       ns: ['error', 'common'],
-      supportedLngs: SUPPORTED_LNGS,
 
       resources: {
         en: { error: errorEn },
         ru: { error: errorRu },
       },
+      supportedLngs: SUPPORTED_LNGS,
     });
   }
 

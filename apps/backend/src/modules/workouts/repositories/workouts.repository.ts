@@ -33,7 +33,7 @@ export class WorkoutsRepositoryImpl implements WorkoutsRepository {
   async findOneBySlugOrId(txCtx: TxRequestContext, slugOrId: string): Promise<ResultOrExcluded<WorkoutEntity>> {
     const prisma = txCtx.tx ?? this.prismaSrv;
     const where: Prisma.WorkoutWhereUniqueInput = validate(slugOrId) ? { id: slugOrId } : { slug: slugOrId };
-    const dbWorkout = await prisma.workout.findUnique({ where, select: dbWorkoutSelect });
+    const dbWorkout = await prisma.workout.findUnique({ select: dbWorkoutSelect, where });
     return !dbWorkout ? Either.left(new NotFoundReason()) : Either.right(this.#toWorkoutEntity(dbWorkout));
   }
 
@@ -44,10 +44,10 @@ export class WorkoutsRepositoryImpl implements WorkoutsRepository {
     const tx = txCtx.tx || this.prismaSrv;
 
     const founded = await tx.workout.findMany({
-      select: dbShortWorkoutSelect,
       orderBy: this.#getOrderBy(params),
-      take: params.take,
+      select: dbShortWorkoutSelect,
       skip: params.skip,
+      take: params.take,
     });
 
     return founded.map(this.#toShortWorkoutEntity).map(Either.right);
@@ -75,7 +75,6 @@ export class WorkoutsRepositoryImpl implements WorkoutsRepository {
       id: dbShortWorkout.id,
       publishedAt: dbShortWorkout.publishedAt,
       slug: dbShortWorkout.slug,
-      updatedAt: dbShortWorkout.updatedAt,
 
       translations: dbShortWorkout.translations.map((translations) => ({
         createdAt: translations.createdAt,
@@ -84,6 +83,7 @@ export class WorkoutsRepositoryImpl implements WorkoutsRepository {
         publishedAt: translations.publishedAt,
         updatedAt: translations.updatedAt,
       })),
+      updatedAt: dbShortWorkout.updatedAt,
     });
   }
 
@@ -93,19 +93,19 @@ export class WorkoutsRepositoryImpl implements WorkoutsRepository {
       id: dbWorkout.id,
       publishedAt: dbWorkout.publishedAt,
       slug: dbWorkout.slug,
-      updatedAt: dbWorkout.updatedAt,
 
       translations: dbWorkout.translations.map((translations) => ({
         createdAt: translations.createdAt,
         languageCode: translations.languageCode,
         name: translations.name,
         publishedAt: translations.publishedAt,
-        updatedAt: translations.updatedAt,
 
         seoDescription: translations.seoDescription,
         seoKeywords: translations.seoKeywords,
         seoTitle: translations.seoTitle,
+        updatedAt: translations.updatedAt,
       })),
+      updatedAt: dbWorkout.updatedAt,
     });
   }
 }

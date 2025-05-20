@@ -15,8 +15,8 @@ export async function clientLoader(args: Route.ClientLoaderArgs) {
 export function meta(params: Route.MetaArgs) {
   return [
     { title: params.data.workout.seo.title || params.data.workout.name },
-    { name: 'keywords', content: params.data.workout.seo.keywords },
-    { name: 'description', content: params.data.workout.seo.description },
+    { content: params.data.workout.seo.keywords, name: 'keywords' },
+    { content: params.data.workout.seo.description, name: 'description' },
   ];
 }
 

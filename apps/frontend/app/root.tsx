@@ -94,9 +94,9 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html
       className={colorScheme === 'dark' ? themeDark : themeLight}
-      style={{ colorScheme }}
       dir={i18n.dir()}
       lang={i18n.language}
+      style={{ colorScheme }}
     >
       <head>
         <ClientHintCheck />

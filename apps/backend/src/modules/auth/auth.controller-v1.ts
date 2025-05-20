@@ -46,13 +46,12 @@ export class AuthControllerV1 {
   })
   @ApiBody({
     schema: {
-      required: ['email', 'password'],
-      type: 'object',
-
       properties: {
         email: { description: 'User email address', example: 'user@example.com', type: 'string' },
         password: { description: 'User password', example: 'strongPassword123', type: 'string' },
       },
+      required: ['email', 'password'],
+      type: 'object',
     },
   })
   @ApiOkResponse({ type: LoginWithEmailResponseDto })

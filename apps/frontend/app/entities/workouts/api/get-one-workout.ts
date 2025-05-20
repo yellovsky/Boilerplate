@@ -4,11 +4,20 @@ import type { FailedResponse, GetOneWorkoutQuery, GetOneWorkoutResponse } from '
 
 import { type ApiClient, useApiClient } from '@shared/lib/api-client';
 
+import { WORKOUTS_ENTITY_QUERY_KEY_TOKEN } from '../config/tokens';
+
 const WORKOUT_Q_KEY_TOKEN = 'workout';
+
 export type GetOneWorkoutVariables = GetOneWorkoutQuery & { slugOrId: string };
-type GetOneWorkoutQKey = readonly [typeof WORKOUT_Q_KEY_TOKEN, GetOneWorkoutVariables];
+
+type GetOneWorkoutQKey = readonly [
+  typeof WORKOUTS_ENTITY_QUERY_KEY_TOKEN,
+  typeof WORKOUT_Q_KEY_TOKEN,
+  GetOneWorkoutVariables,
+];
 
 const makeGetOneWorkoutQKey = (variables: GetOneWorkoutVariables): GetOneWorkoutQKey => [
+  WORKOUTS_ENTITY_QUERY_KEY_TOKEN,
   WORKOUT_Q_KEY_TOKEN,
   variables,
 ];
@@ -16,9 +25,10 @@ const makeGetOneWorkoutQKey = (variables: GetOneWorkoutVariables): GetOneWorkout
 const getOneWorkout =
   (apiClient: ApiClient): QueryFunction<GetOneWorkoutResponse, GetOneWorkoutQKey> =>
   ({ queryKey, signal }) => {
-    const { slugOrId, ...params } = queryKey[1];
+    const variables: GetOneWorkoutVariables = queryKey[2];
+    const { slugOrId, ...params } = variables;
 
-    return apiClient.get<GetOneWorkoutResponse>(`http://localhost:3001/api/v1/workouts/${slugOrId}`, {
+    return apiClient.get<GetOneWorkoutResponse>(`/v1/workouts/${slugOrId}`, {
       params,
       signal,
     });
@@ -42,8 +52,9 @@ export const prefetchOneWorkoutQuery = async (
     queryKey: makeGetOneWorkoutQKey(variables),
   });
 
-  const response = await getWorkoutQueryResult(queryClient, variables);
+  const response = getWorkoutQueryResult(queryClient, variables);
   if (!response) throw new Error('Workout not found');
+
   return response;
 };
 

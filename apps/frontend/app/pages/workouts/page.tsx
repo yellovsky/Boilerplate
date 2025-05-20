@@ -24,7 +24,7 @@ export const WorkoutsPage: FC<WorkoutsPageProps> = ({ workoutsVars }) => {
         </div>
       ))}
 
-      <button disabled={!hasNextPage} type="button" onClick={() => fetchNextPage()}>
+      <button disabled={!hasNextPage} onClick={() => fetchNextPage()} type="button">
         load more
       </button>
       <br />

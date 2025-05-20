@@ -1,10 +1,6 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
 
-  "files": {
-    "includes": ["**/src/**/*", "**/*.json", "**/scripts/**/*", "**/app/**/*", "!**/coverage/**/*", "!**/dist/**/*"]
-  },
-
   "assist": {
     "actions": {
       "source": {
@@ -67,79 +63,10 @@
               ":PATH:"
             ]
           }
-        }
-      }
-    }
-  },
-
-  "vcs": {
-    "enabled": true,
-    "clientKind": "git",
-    "defaultBranch": "main",
-    "useIgnoreFile": true
-  },
-  "formatter": {
-    "enabled": true,
-    "lineWidth": 120,
-    "indentStyle": "space"
-  },
-  "linter": {
-    "enabled": true,
-    "rules": {
-      "recommended": true,
-      "suspicious": {
-        "recommended": true,
-        "noConsole": {
-          "level": "error",
-          "options": {
-            "allow": ["assert", "error", "info", "warn"]
-          }
-        }
-      },
-      "style": {
-        "recommended": true,
-        "noParameterAssign": "error",
-        "useAsConstAssertion": "error",
-        "useDefaultParameterLast": "error",
-        "useEnumInitializers": "error",
-        "useSelfClosingElements": "error",
-        "useConst": "error",
-        "useSingleVarDeclarator": "error",
-        "noUnusedTemplateLiteral": "error",
-        "useNumberNamespace": "error",
-        "noInferrableTypes": "error",
-        "noUselessElse": "error",
-        "noProcessEnv": "error"
-      },
-      "complexity": {
-        "recommended": true
-      },
-      "security": {
-        "recommended": true
-      },
-      "performance": {
-        "recommended": true
-      },
-      "correctness": {
-        "recommended": true,
-        "noUnusedImports": "error",
-        "noUnusedVariables": "error",
-        "noUnusedLabels": "error",
-        "noUnusedFunctionParameters": "error"
-      },
-      "a11y": {
-        "recommended": true
-      },
-      "nursery": {
-        "recommended": true,
-        "noUnknownAtRule": "off",
-        "useSortedClasses": {
-          "level": "error",
-          "fix": "safe",
-          "options": {
-            "functions": ["cn", "cva", "tw", "clsx", "twMerge"]
-          }
-        }
+        },
+        "useSortedAttributes": "on",
+        "useSortedKeys": "on",
+        "useSortedProperties": "on"
       }
     }
   },
@@ -151,15 +78,108 @@
       "cssModules": true
     }
   },
+
+  "files": {
+    "includes": [
+      "**/src/**/*",
+      "**/*.json",
+      "!**/package.json",
+      "**/scripts/**/*",
+      "**/app/**/*",
+      "!**/coverage/**/*",
+      "!**/dist/**/*"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "lineWidth": 120
+  },
   "javascript": {
+    "assist": {
+      "enabled": true
+    },
     "formatter": {
-      "semicolons": "always",
-      "trailingCommas": "es5",
+      "jsxQuoteStyle": "double",
       "quoteStyle": "single",
-      "jsxQuoteStyle": "double"
+      "semicolons": "always",
+      "trailingCommas": "es5"
     },
     "parser": {
       "unsafeParameterDecoratorsEnabled": true
     }
+  },
+
+  "json": {
+    "assist": {
+      "enabled": false
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "a11y": {
+        "recommended": true
+      },
+      "complexity": {
+        "recommended": true
+      },
+      "correctness": {
+        "noUnusedFunctionParameters": "error",
+        "noUnusedImports": "error",
+        "noUnusedLabels": "error",
+        "noUnusedVariables": "error",
+        "recommended": true
+      },
+      "nursery": {
+        "noUnknownAtRule": "off",
+        "recommended": true,
+        "useSortedClasses": {
+          "fix": "safe",
+          "level": "error",
+          "options": {
+            "functions": ["cn", "cva", "tw", "clsx", "twMerge"]
+          }
+        }
+      },
+      "performance": {
+        "recommended": true
+      },
+      "recommended": true,
+      "security": {
+        "recommended": true
+      },
+      "style": {
+        "noInferrableTypes": "error",
+        "noParameterAssign": "error",
+        "noProcessEnv": "error",
+        "noUnusedTemplateLiteral": "error",
+        "noUselessElse": "error",
+        "recommended": true,
+        "useAsConstAssertion": "error",
+        "useConst": "error",
+        "useDefaultParameterLast": "error",
+        "useEnumInitializers": "error",
+        "useNumberNamespace": "error",
+        "useSelfClosingElements": "error",
+        "useSingleVarDeclarator": "error"
+      },
+      "suspicious": {
+        "noConsole": {
+          "level": "error",
+          "options": {
+            "allow": ["assert", "error", "info", "warn"]
+          }
+        },
+        "recommended": true
+      }
+    }
+  },
+
+  "vcs": {
+    "clientKind": "git",
+    "defaultBranch": "main",
+    "enabled": true,
+    "useIgnoreFile": true
   }
 }
