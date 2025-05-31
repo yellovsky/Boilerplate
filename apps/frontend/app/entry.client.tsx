@@ -1,6 +1,7 @@
 import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import Backend from 'i18next-http-backend';
+import ICU from 'i18next-icu';
 import { Provider } from 'jotai';
 import { StrictMode, startTransition } from 'react';
 import { hydrateRoot } from 'react-dom/client';
@@ -8,10 +9,12 @@ import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { HydratedRouter } from 'react-router/dom';
 import { getInitialNamespaces } from 'remix-i18next/client';
 
-import { i18n } from '@app/localization';
+// TODO do not import from nested
+import i18n from '@app/localization/i18n';
 
 async function hydrate() {
   await i18next
+    .use(ICU)
     .use(initReactI18next)
     .use(LanguageDetector)
     .use(Backend)

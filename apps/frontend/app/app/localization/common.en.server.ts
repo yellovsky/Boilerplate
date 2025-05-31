@@ -1,0 +1,20 @@
+export default {
+  error: {
+    '200': {
+      description: 'Looks like something unexpected happened on the server.',
+      title: 'Something went wrong!',
+    },
+    '403': {
+      description: "Looks like you can't access this page.",
+      title: 'Unauthorized!',
+    },
+    '404': {
+      description: "Oops! The page you're looking for seems to have vanished into thin air.",
+      title: 'Page Not found!',
+    },
+    '500': {
+      description: 'Looks like something unexpected happened on the server.',
+      title: 'Something went wrong!',
+    },
+  },
+};

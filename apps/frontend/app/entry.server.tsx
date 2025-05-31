@@ -2,6 +2,7 @@ import { PassThrough } from 'node:stream';
 
 import { createReadableStreamFromReadable } from '@react-router/node';
 import { createInstance } from 'i18next';
+import ICU from 'i18next-icu';
 import { isbot } from 'isbot';
 import { Provider } from 'jotai';
 import { renderToPipeableStream } from 'react-dom/server';
@@ -68,7 +69,10 @@ export default async function handleRequest(
   if (!isBotRequest && getRequestCookieLocale(request) !== locale) setResponseCookieLocale(responseHeaders, locale);
 
   const ns = i18next.getRouteNamespaces(context);
-  await instance.use(initReactI18next).init({ ...i18n, lng: locale, ns, resources });
+  await instance
+    .use(ICU)
+    .use(initReactI18next)
+    .init({ ...i18n, lng: locale, ns, resources });
 
   return new Promise((resolve, reject) => {
     let shellRendered = false;

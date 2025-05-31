@@ -3,6 +3,8 @@ import { useState } from 'react';
 
 import { type FailedResponse, failedResponseSchema } from '@repo/api-models';
 
+import { getGlobal } from './get-global';
+
 const unknownFailedResponse: FailedResponse = {
   error: {
     code: 'unknown_error',
@@ -80,15 +82,8 @@ class ApiClientImpl implements ApiClient {
 
 let cached: ApiClient | undefined;
 
-// TODO Fiind a better way to resolve apiClient api
 export const getApiClient = (): ApiClient => {
-  const apiHost =
-    typeof window === 'undefined'
-      ? // biome-ignore lint/style/noProcessEnv: it's temporary, I hope
-        process.env.REMIX_PUBLIC_API_HOST
-      : window.env.REMIX_PUBLIC_API_HOST;
-
-  if (!apiHost) throw new Error('env.REMIX_PUBLIC_API_HOST is not defined');
+  const apiHost = getGlobal('REMIX_PUBLIC_API_HOST');
   if (typeof window === 'undefined') return new ApiClientImpl(apiHost);
   if (!cached) cached = new ApiClientImpl(apiHost);
   return cached;

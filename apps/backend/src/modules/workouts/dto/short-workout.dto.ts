@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import * as Either from 'effect/Either';
 
 import { ISODate, type ShortWorkout } from '@repo/api-models';
@@ -28,6 +29,7 @@ export class ShortWorkoutDto implements JSONLike<ShortWorkout> {
   name: string;
 
   @ApiProperty({ example: '2025-04-09T10:00:00Z', type: String })
+  @Transform(ISODate.transformApiProperty)
   createdAt: ISODate;
 
   @ApiProperty({ type: String })
