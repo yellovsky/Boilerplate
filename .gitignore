@@ -41,3 +41,6 @@ yarn-error.log*
 # Local ppostgres-db folder
 data
 locals3root
+
+# AI
+.continue
