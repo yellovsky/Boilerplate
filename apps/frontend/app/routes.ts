@@ -7,7 +7,6 @@ export default [
       index('pages/home/index.tsx'),
       route('workouts', 'pages/workouts/index.tsx'),
       route('workouts/:slugOrId', 'pages/workout/index.tsx'),
-      route('sign-in', 'pages/sign-in/index.tsx'),
       route('*', 'pages/not-found/index.tsx'),
     ])
   ),

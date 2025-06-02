@@ -1,12 +1,15 @@
-@import "@repo/theme/tailwind.css";
-@import "@repo/ui/src/theme.css";
+@layer theme, base, components, utilities;
 
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "@mantine/core/styles.css" layer(utilities);
+
+@import "@repo/ui/src/theme.css";
 @import "./theme.css";
 
-html {
-  @apply overflow-y-auto overflow-x-hidden;
+@theme static {
+  --color-bg-dark: #282c34;
+  --color-bg-light: #fafafa;
 }
 
-body {
-  @apply text-text bg-bg relative flex h-dvh w-full flex-col;
-}
+@custom-variant dark (&:where([data-mantine-color-scheme=dark], [data-mantine-color-scheme=dark] *));

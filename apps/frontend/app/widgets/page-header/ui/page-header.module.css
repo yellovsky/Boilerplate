@@ -1,7 +1,7 @@
 @reference "../../../root.css";
 
 .pageHeader {
-  @apply bg-bg-ter h-10 flex gap-4 px-8 py-2 items-center;
+  @apply flex gap-4 items-center;
 }
 
 .nav {

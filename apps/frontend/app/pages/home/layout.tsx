@@ -1,18 +1,19 @@
+import { AppShell } from '@mantine/core';
 import { Outlet } from 'react-router';
 
-import { PageFooter } from '@widgets/page-footer';
 import { PageHeader } from '@widgets/page-header';
-
-import styles from './layout.module.css';
 
 export default function HomeLayout() {
   return (
-    <div className={styles.layout}>
-      <PageHeader className={styles.header} />
-      <div className={styles.main}>
+    <AppShell footer={{ height: 60 }} header={{ height: 72 }} padding="md">
+      <AppShell.Header>
+        <PageHeader />
+      </AppShell.Header>
+
+      <AppShell.Main>
         <Outlet />
-      </div>
-      <PageFooter className={styles.footer} />
-    </div>
+        <AppShell.Footer p="md">footer</AppShell.Footer>
+      </AppShell.Main>
+    </AppShell>
   );
 }

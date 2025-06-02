@@ -13,7 +13,7 @@ export const getCookieStringColorScheme = (cookieString: string | null | undefin
   return isColorScheme(val) ? val : null;
 };
 
-export const updateDocumentCookieColorScheme = (colorScheme: ColorScheme | 'system') => {
-  if (colorScheme === 'system') Cookies.remove(COLOR_SCHEME_COOKIE_NAME);
+export const updateDocumentCookieColorScheme = (colorScheme: ColorScheme | 'auto') => {
+  if (colorScheme === 'auto') Cookies.remove(COLOR_SCHEME_COOKIE_NAME);
   else Cookies.set(COLOR_SCHEME_COOKIE_NAME, colorScheme, { expires: 365, path: '/' });
 };

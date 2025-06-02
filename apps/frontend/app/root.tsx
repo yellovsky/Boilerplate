@@ -1,6 +1,7 @@
 import geologicaCss from '@fontsource-variable/geologica/index.css?url';
 import interCss from '@fontsource-variable/inter/index.css?url';
 import robotoMonoCss from '@fontsource-variable/roboto-mono/index.css?url';
+import { createTheme, MantineProvider, virtualColor } from '@mantine/core';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useAtomValue } from 'jotai';
@@ -22,8 +23,6 @@ import {
 import { useChangeLanguage } from 'remix-i18next/react';
 
 import twCss from '@repo/theme/tailwind.css?url';
-import { theme as themeDark } from '@repo/theme/themes/minimal-dark.module.css';
-import { theme as themeLight } from '@repo/theme/themes/minimal-light.module.css';
 
 import { getQueryClient } from '@shared/lib/query-client';
 
@@ -38,6 +37,7 @@ import {
   getCookieStringColorScheme,
   isColorScheme,
   selectedColorSchemeAtom,
+  useColorSchemeManager,
 } from './features/theme';
 import rootCss from './root.css?url';
 
@@ -62,7 +62,7 @@ export async function loader({ context, request }: Route.LoaderArgs) {
 }
 
 export const handle = {
-  i18n: 'common',
+  i18n: ['common', 'auth'],
 };
 
 export default function App({ loaderData }: Route.ComponentProps) {
@@ -79,6 +79,55 @@ export default function App({ loaderData }: Route.ComponentProps) {
   );
 }
 
+const theme = createTheme({
+  colors: {
+    bg: virtualColor({
+      dark: 'darkBg',
+      light: 'lightBg',
+      name: 'bg',
+    }),
+
+    darkBg: [
+      '#F1F2F4',
+      '#E2E4E9',
+      '#C5CAD3',
+      '#A6ADBA',
+      '#8992A4',
+      '#6D788D',
+      '#575F70',
+      '#3E4451',
+      '#282C34',
+      '#14161A',
+    ],
+
+    lightBg: [
+      '#e7f6ff',
+      '#d5e8fa',
+      '#adceed',
+      '#82b3e1',
+      '#5e9cd7',
+      '#478ed1',
+      '#3182ce',
+      '#2874b9',
+      '#1c67a6',
+      '#005994',
+    ],
+
+    primary: [
+      '#e7f6ff',
+      '#d5e8fa',
+      '#adceed',
+      '#82b3e1',
+      '#5e9cd7',
+      '#478ed1',
+      '#3182ce',
+      '#2874b9',
+      '#1c67a6',
+      '#005994',
+    ],
+  },
+});
+
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const { i18n } = useTranslation();
   const loaderData = useLoaderData<typeof loader>();
@@ -90,14 +139,10 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   ]);
 
   const colorScheme = useAtomValue(colorSchemeAtom);
+  const colorSchemeManager = useColorSchemeManager();
 
   return (
-    <html
-      className={colorScheme === 'dark' ? themeDark : themeLight}
-      dir={i18n.dir()}
-      lang={i18n.language}
-      style={{ colorScheme }}
-    >
+    <html data-mantine-color-scheme={colorScheme} dir={i18n.dir()} lang={i18n.language} style={{ colorScheme }}>
       <head>
         <ClientHintCheck />
         <meta charSet="utf-8" />
@@ -108,17 +153,12 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 
       <body className="h-full w-full">
         <Suspense fallback={<AppSuspenseWarning />}>
-          <QueryClientProvider client={queryClient}>
-            {/* <HydrateAtoms
-              fallbackColorScheme={loaderData.hints.theme}
-              queryClient={queryClient}
-              selectedColorScheme={loaderData.selectedColorScheme}
-            > */}
-            {children}
-            {/* </HydrateAtoms> */}
-
-            <ReactQueryDevtools />
-          </QueryClientProvider>
+          <MantineProvider colorSchemeManager={colorSchemeManager} theme={theme}>
+            <QueryClientProvider client={queryClient}>
+              {children}
+              <ReactQueryDevtools />
+            </QueryClientProvider>
+          </MantineProvider>
         </Suspense>
         <ScrollRestoration />
         <Scripts />

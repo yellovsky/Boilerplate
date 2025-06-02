@@ -1,0 +1,13 @@
+.flag {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  &.ru {
+    background-image: url("./images/ru.svg");
+  }
+
+  &.enUs {
+    background-image: url("./images/en-us.svg");
+  }
+}

@@ -1,6 +1,5 @@
 import { resolve } from 'node:path';
 
-import { iconsSpritesheet } from "vite-plugin-icons-spritesheet"
 import { reactRouter } from '@react-router/dev/vite';
 import tailwindcss from '@tailwindcss/vite';
 import { reactRouterDevTools } from 'react-router-devtools';
@@ -23,26 +22,7 @@ export default defineConfig({
         },
       }),
     },
-
-    reactRouterDevTools({ client: { position: 'middle-right' } }),
-
-    reactRouter(),
-
-    reactRouterHonoServer({
-      dev: {
-        exclude: [/^\/(resources)\/.+/],
-      },
-    }),
     tsconfigPaths(),
-
-		iconsSpritesheet({
-			inputDir: "./resources/icons",
-			outputDir: "./app/library/icon/icons",
-			fileName: "icon.svg",
-			withTypes: true,
-			formatter: "biome",
-			iconNameTransformer: (fileName) => fileName
-		}),
   ],
 
   ssr: {
