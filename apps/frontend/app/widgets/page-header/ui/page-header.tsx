@@ -78,7 +78,7 @@ export const PageHeader: FC = () => {
         menu
       </Drawer>
 
-      <Drawer onClose={closeAuth} opened={!!auth} position="right" title="Authentication">
+      <Drawer classNames={{ body: 'h-full' }} onClose={closeAuth} opened={!!auth} position="right">
         <SignInDrawerContent />
       </Drawer>
     </Box>

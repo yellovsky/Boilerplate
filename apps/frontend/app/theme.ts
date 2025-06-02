@@ -15,5 +15,13 @@ export const theme = createTheme({
       '#3b3979',
     ],
   },
+  defaultRadius: 'md',
+
+  fontFamily: 'Inter Variable, sans-serif',
+  fontFamilyMonospace: 'Roboto Mono Variable, monospace',
+
+  headings: {
+    fontFamily: 'Geologica Variable, sans-serif',
+  },
   primaryColor: 'palePurple',
 });

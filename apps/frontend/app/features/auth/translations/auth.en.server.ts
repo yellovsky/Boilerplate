@@ -7,6 +7,9 @@ export default {
       placeholder: '******',
       title: 'Enter your password',
     },
+    submit_button: {
+      text: 'Sign in',
+    },
     username_input: {
       'aria-label': 'Email to login',
       label: 'Email',

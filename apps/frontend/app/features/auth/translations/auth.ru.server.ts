@@ -7,6 +7,9 @@ export default {
       placeholder: '******',
       title: 'Введите пароль',
     },
+    submit_button: {
+      text: 'Войти',
+    },
     username_input: {
       'aria-label': 'Адрес электронной почты',
       label: 'Email',
