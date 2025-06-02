@@ -1,7 +1,7 @@
 import geologicaCss from '@fontsource-variable/geologica/index.css?url';
 import interCss from '@fontsource-variable/inter/index.css?url';
 import robotoMonoCss from '@fontsource-variable/roboto-mono/index.css?url';
-import { createTheme, MantineProvider, virtualColor } from '@mantine/core';
+import { MantineProvider } from '@mantine/core';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useAtomValue } from 'jotai';
@@ -22,8 +22,6 @@ import {
 } from 'react-router';
 import { useChangeLanguage } from 'remix-i18next/react';
 
-import twCss from '@repo/theme/tailwind.css?url';
-
 import { getQueryClient } from '@shared/lib/query-client';
 
 import { AppSuspenseWarning } from '@app/app-suspense-warning';
@@ -40,8 +38,9 @@ import {
   useColorSchemeManager,
 } from './features/theme';
 import rootCss from './root.css?url';
+import { theme } from './theme';
 
-const cssAssets: LinkDescriptor[] = [twCss, rootCss, geologicaCss, interCss, robotoMonoCss]
+const cssAssets: LinkDescriptor[] = [rootCss, geologicaCss, interCss, robotoMonoCss]
   .map((href) => href.split('?')[0])
   .map((href) => ({ as: 'style', href, rel: 'stylesheet' }));
 
@@ -78,55 +77,6 @@ export default function App({ loaderData }: Route.ComponentProps) {
     </>
   );
 }
-
-const theme = createTheme({
-  colors: {
-    bg: virtualColor({
-      dark: 'darkBg',
-      light: 'lightBg',
-      name: 'bg',
-    }),
-
-    darkBg: [
-      '#F1F2F4',
-      '#E2E4E9',
-      '#C5CAD3',
-      '#A6ADBA',
-      '#8992A4',
-      '#6D788D',
-      '#575F70',
-      '#3E4451',
-      '#282C34',
-      '#14161A',
-    ],
-
-    lightBg: [
-      '#e7f6ff',
-      '#d5e8fa',
-      '#adceed',
-      '#82b3e1',
-      '#5e9cd7',
-      '#478ed1',
-      '#3182ce',
-      '#2874b9',
-      '#1c67a6',
-      '#005994',
-    ],
-
-    primary: [
-      '#e7f6ff',
-      '#d5e8fa',
-      '#adceed',
-      '#82b3e1',
-      '#5e9cd7',
-      '#478ed1',
-      '#3182ce',
-      '#2874b9',
-      '#1c67a6',
-      '#005994',
-    ],
-  },
-});
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const { i18n } = useTranslation();

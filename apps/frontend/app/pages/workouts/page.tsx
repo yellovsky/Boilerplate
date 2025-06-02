@@ -1,8 +1,6 @@
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Paragraph } from '@repo/ui';
-
 import { WORKOUTS_NS, WorkoutCard } from '@features/workouts';
 
 import { type GetManyWorkoutsVariables, useManyWorkoutsQuery } from '@entities/workouts';
@@ -40,7 +38,6 @@ export const WorkoutsPage: FC<WorkoutsPageProps> = ({ workoutsVars }) => {
       <div>female - 1: {t('nested test {{gender}} {{count}}', { count: 1, gender: 'female' })}</div>
       <div>female - 2: {t('nested test {{gender}} {{count}}', { count: 2, gender: 'female' })}</div>
 
-      <Paragraph>workouts page</Paragraph>
       {workouts?.map((workout) => (
         <WorkoutCard key={workout.id} workout={workout} />
       ))}

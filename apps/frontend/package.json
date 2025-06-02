@@ -28,8 +28,6 @@
 		"@react-router/node": "7.6.0",
 		"@react-router/serve": "7.6.0",
 		"@repo/api-models": "*",
-		"@repo/theme": "*",
-		"@repo/ui": "*",
 		"@tanstack/query-core": "5.76.0",
 		"@tanstack/react-query": "5.76.1",
 		"@tanstack/react-query-devtools": "5.76.1",

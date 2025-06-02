@@ -1,27 +1,45 @@
 {
-  "$schema": "https://unpkg.com/knip@5/schema.json",
-  "commitlint": true,
-  "ignoreDependencies": ["postcss", "@biomejs/biome", "@commitlint/cli"],
-  "workspaces": {
-    "apps/backend": {
-      "ignoreDependencies": ["@prisma/client", "@generated/prisma", "@nestjs/mapped-types"],
-      "nest": true,
-      "prisma": true,
-      "vitest": true
-    },
-    "apps/frontend": {
-      "entry": ["app/server/index.ts"],
-      "ignoreDependencies": ["tailwindcss", "autoprefixer", "babel-plugin-react-compiler"],
-      "remix": true,
-      "tailwind": true
-    },
-    "packages/theme": {
-      "ignoreDependencies": ["tailwindcss"],
-      "tailwind": true
-    },
-    "packages/ui": {
-      "ignoreDependencies": ["tailwindcss", "@repo/theme"],
-      "tailwind": true
-    }
-  }
+	"$schema": "https://unpkg.com/knip@5/schema.json",
+	"commitlint": true,
+	"ignoreDependencies": [
+		"postcss",
+		"@biomejs/biome",
+		"@commitlint/cli"
+	],
+	"workspaces": {
+		"apps/backend": {
+			"ignoreDependencies": [
+				"@prisma/client",
+				"@generated/prisma",
+				"@nestjs/mapped-types"
+			],
+			"nest": true,
+			"prisma": true,
+			"vitest": true
+		},
+		"apps/frontend": {
+			"entry": [
+				"app/server/index.ts"
+			],
+			"ignoreDependencies": [
+				"tailwindcss",
+				"autoprefixer",
+				"babel-plugin-react-compiler"
+			],
+			"remix": true,
+			"tailwind": true
+		},
+		"packages/theme": {
+			"ignoreDependencies": [
+				"tailwindcss"
+			],
+			"tailwind": true
+		},
+		"packages/ui": {
+			"ignoreDependencies": [
+				"tailwindcss"
+			],
+			"tailwind": true
+		}
+	}
 }

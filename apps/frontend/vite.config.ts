@@ -48,7 +48,6 @@ export default defineConfig({
   ssr: {
     noExternal: [
       // these pachkages are internal monorepo packages
-      '@repo/ui',
       '@repo/api-models',
 
       // this packages are cjs and must be compiled to be used with esm
