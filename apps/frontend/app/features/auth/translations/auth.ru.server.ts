@@ -5,7 +5,6 @@ export default {
       'aria-label': 'Пароль от аккаунта',
       label: 'Пароль',
       placeholder: '******',
-      title: 'Введите пароль',
     },
     submit_button: {
       text: 'Войти',
@@ -14,7 +13,6 @@ export default {
       'aria-label': 'Адрес электронной почты',
       label: 'Email',
       placeholder: 'email@example.com',
-      title: 'Введите Email',
     },
   },
   sign_in_menu_item: {
@@ -22,5 +20,8 @@ export default {
   },
   sign_out_menu_item: {
     text: 'Выйти',
+  },
+  sign_up_menu_item: {
+    text: 'Зарегистрироваться',
   },
 };

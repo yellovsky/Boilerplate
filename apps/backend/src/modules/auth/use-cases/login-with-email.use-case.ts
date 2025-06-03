@@ -51,13 +51,22 @@ export class LoginWithEmailUseCase {
       profileId,
     });
 
-    res.cookie(ACCESS_TOKEN_COOKIE_KEY, accessToken, {
-      domain: req.hostname,
-      expires: addDays(Date.now(), 7),
-      httpOnly: true,
-      sameSite: 'lax',
-    });
+    const domain = this.#getCookieDomain(req);
+
+    if (domain) {
+      res.cookie(ACCESS_TOKEN_COOKIE_KEY, accessToken, {
+        domain,
+        expires: addDays(Date.now(), 7),
+        httpOnly: true,
+        sameSite: 'lax',
+      });
+    }
 
     return new LoginWithEmailResponseDto();
+  }
+
+  #getCookieDomain(req: Request): string | null {
+    const url = req.headers.origin ? new URL(req.headers.origin) : null;
+    return url?.hostname || null;
   }
 }

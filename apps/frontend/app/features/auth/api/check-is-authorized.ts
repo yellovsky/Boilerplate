@@ -4,5 +4,5 @@ import { getApiClient } from '@shared/lib/api-client';
 
 export const getIsAuthorized = async (): Promise<IsAuthorizedResponse> => {
   const apiClient = getApiClient();
-  return apiClient.get('/v1/auth/is-authorized');
+  return apiClient.get('/v1/auth/is-authorized', { withCredentials: true });
 };

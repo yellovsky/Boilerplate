@@ -7,4 +7,10 @@
 
 @import "./theme.css";
 
+@layer utilities {
+  .invalid-text {
+    --text-color: var(--mantine-color-error);
+  }
+}
+
 @custom-variant dark (&:where([data-mantine-color-scheme=dark], [data-mantine-color-scheme=dark] *));

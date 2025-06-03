@@ -6,7 +6,7 @@ import { useLocation } from 'react-router';
 
 import { Link } from '@shared/ui/link';
 
-import styles from './language-switcher.module.css';
+import styles from './LanguageSwitcher.module.css';
 
 export const LanguageSwitcherDesktop: FC = () => {
   const { i18n } = useTranslation();

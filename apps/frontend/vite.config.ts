@@ -64,4 +64,8 @@ export default defineConfig({
       '@widgets': resolve('app/widgets'),
     },
   },
+
+	server: {
+    host: true,
+  },
 });

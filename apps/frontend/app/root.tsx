@@ -129,8 +129,6 @@ export const ErrorBoundary = () => {
     if (!isRouteErrorResponse(error)) return '500';
 
     switch (error.status) {
-      case 200:
-        return '200';
       case 403:
         return '403';
       case 404:
@@ -146,7 +144,7 @@ export const ErrorBoundary = () => {
     <div className="relative flex h-full min-h-screen w-screen items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 placeholder-index sm:pt-8 sm:pb-16 dark:bg-white dark:from-blue-950 dark:to-blue-900">
       <div className="relative mx-auto max-w-[90rem] sm:px-6 lg:px-8">
         <div className="relative flex min-h-72 flex-col justify-center p-1 sm:overflow-hidden sm:rounded-2xl md:p-4 lg:p-6">
-          <h1 className="w-full pb-2 text-center text-2xl text-red-600">{t(`error.${errorStatusCode}.title`)}</h1>
+          <h1 className="w-full pb-2 text-center text-2xl text-red-600">{t(`error.${errorStatusCode}.text`)}</h1>
           <p className="w-full text-center text-lg dark:text-white">{t(`error.${errorStatusCode}.description`)}</p>
         </div>
       </div>

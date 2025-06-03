@@ -1,47 +1,33 @@
 import { Box, Burger, Drawer } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { type ComponentProps, type FC, useMemo } from 'react';
+import type { ComponentProps, FC } from 'react';
 import { type PathPattern, useMatch, useSearchParams } from 'react-router';
 
 import { Link } from '@shared/ui/link';
 
+import { type AuthStep, isAuthStep } from '@features/auth';
 import { ColorSchemeSwitcher } from '@features/theme';
 
-import { HeaderAuth } from './header-auth';
-import { LanguageSwitcherDesktop } from './language-switcher';
-import { Logo } from './logo';
-import styles from './page-header.module.css';
-import { SignInDrawerContent } from './sign-in-drawer-content';
+import { AuthDrawer } from './AuthDrawer';
+import { HeaderAuth } from './HeaderAuth';
+import { LanguageSwitcherDesktop } from './LanguageSwitcher';
+import { Logo } from './Logo';
+import styles from './PageHeader.module.css';
 
-const AUTH_SEARCH_PARAMS = ['sign-in', 'sign-up'] as const;
-type AuthSearchParams = (typeof AUTH_SEARCH_PARAMS)[number];
-const isAuthSearchParams = (val: string | null): val is AuthSearchParams => AUTH_SEARCH_PARAMS.some((v) => v === val);
-
-const useAuthSearchParams = (): {
-  auth: AuthSearchParams | null;
-  open: (state: AuthSearchParams) => void;
-  close: () => void;
-} => {
+const useAuthStep = (): [step: AuthStep | null, setStep: (step: AuthStep | null) => void] => {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchAuth = searchParams.get('auth');
-  const auth = isAuthSearchParams(searchAuth) ? searchAuth : null;
 
-  return useMemo(
-    () => ({
-      auth,
-      close: () =>
-        setSearchParams((prev) => {
-          prev.delete('auth');
-          return prev;
-        }),
-      open: (state) =>
-        setSearchParams((prev) => {
-          prev.set('auth', state);
-          return prev;
-        }),
-    }),
-    [auth, setSearchParams]
-  );
+  const step = isAuthStep(searchAuth) ? searchAuth : null;
+  const setStep = (stepToSet: AuthStep | null) => {
+    setSearchParams((prev) => {
+      if (stepToSet) prev.set('auth', stepToSet);
+      else prev.delete('auth');
+      return prev;
+    });
+  };
+
+  return [step, setStep];
 };
 
 const DesktopNavItem: FC<ComponentProps<typeof Link>> = (props) => {
@@ -56,9 +42,9 @@ const DesktopNavItem: FC<ComponentProps<typeof Link>> = (props) => {
 
 export const PageHeader: FC = () => {
   const [menuOpened, { close: closeMenu, open: openMenu }] = useDisclosure();
-  const { auth, close: closeAuth, open: openAuth } = useAuthSearchParams();
+  const [step, setStep] = useAuthStep();
 
-  const openSignIn = () => openAuth('sign-in');
+  const closeAuth = () => setStep(null);
 
   return (
     <Box className={styles.pageHeader} p="md">
@@ -70,16 +56,14 @@ export const PageHeader: FC = () => {
       </nav>
       <ColorSchemeSwitcher />
       <LanguageSwitcherDesktop />
-      <div>
-        <HeaderAuth onSignIn={openSignIn} />
-      </div>
+      <HeaderAuth onSelectStep={setStep} />
 
       <Drawer onClose={closeMenu} opened={menuOpened} position="left">
         menu
       </Drawer>
 
-      <Drawer classNames={{ body: 'h-full' }} onClose={closeAuth} opened={!!auth} position="right">
-        <SignInDrawerContent />
+      <Drawer classNames={{ body: 'h-full' }} onClose={closeAuth} opened={!!step} position="right">
+        {!step ? null : <AuthDrawer onSelectStep={setStep} step={step} />}
       </Drawer>
     </Box>
   );

@@ -3,9 +3,11 @@ import { atomWithQuery } from 'jotai-tanstack-query';
 
 import { getIsAuthorized } from '../api/check-is-authorized';
 
+export const IS_AUTHORIZED_QUERY_KEY = ['auth', 'check'] as const;
+
 const isAuthorizedQueryAtom = atomWithQuery(() => ({
   queryFn: getIsAuthorized,
-  queryKey: ['auth', 'check'],
+  queryKey: IS_AUTHORIZED_QUERY_KEY,
 }));
 
 const authorizationStatusAtom = atom((get) => {
